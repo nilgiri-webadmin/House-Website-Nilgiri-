@@ -1,0 +1,45 @@
+.hero-container {
+    height: 100vh;
+    width: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Cinzel', serif;
+    scroll-snap-align: start;
+}
+
+.masked-text {
+    font-size: 8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: transparent;
+    background-size: cover;
+    background-position: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    line-height: 1.1;
+    z-index: 10;
+}
+
+.window-frame {
+    /* Optional: subtle border or shadow to enhance "window" feel */
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+}
+
+@media (max-width: 768px) {
+    .masked-text {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .masked-text {
+        font-size: 2.5rem;
+    }
+}

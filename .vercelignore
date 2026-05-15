@@ -1,0 +1,3 @@
+# Vercel configuration
+# Note: We don't need to exclude _handlers anymore since they are imported by index.ts
+# The _handlers directory is needed for runtime imports

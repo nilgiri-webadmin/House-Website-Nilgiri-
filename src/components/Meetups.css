@@ -1,0 +1,552 @@
+.meetups-section {
+    padding: clamp(4rem, 10vw, 8rem) 0;
+    background: #000;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.meetups-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 clamp(1rem, 3vw, 3rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.meetup-item {
+    position: relative;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex;
+    flex-direction: column;
+    height: 320px;
+}
+
+.meetup-item:hover {
+    border-color: rgba(74, 222, 128, 0.3);
+    transform: translateY(-10px);
+}
+
+.meetup-image-container {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+    background: #0a0a0a;
+}
+
+.meetup-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.meetup-item:hover .meetup-image {
+    transform: scale(1.05);
+}
+
+.meetup-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+}
+
+.meetup-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.6) 80%, rgba(0,0,0,0.95) 100%);
+    pointer-events: none;
+}
+
+.meetup-content {
+    padding: 1rem 1.25rem;
+    position: relative;
+    z-index: 1;
+    background: #000;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.meetup-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin: 0 0 6px 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meetup-location {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Load More Button */
+.load-more-container {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 5;
+    position: relative;
+}
+
+.explore-button-animated {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.explore-button-animated::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.explore-button-animated:hover::before {
+    left: 100%;
+}
+
+.explore-button-animated:hover {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.6);
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+}
+
+.explore-button-animated:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .meetups-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 clamp(0.75rem, 3vw, 2rem);
+    }
+
+    .meetup-item {
+        height: 260px;
+    }
+
+    .meetup-content {
+        padding: 0.75rem 1rem;
+    }
+
+    .meetup-content h3 {
+        font-size: 15px;
+    }
+
+    .meetup-location {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .meetups-section {
+        padding: clamp(2.5rem, 8vw, 5rem) 0;
+    }
+
+    .meetups-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 10px;
+        margin-top: 16px;
+    }
+
+    .meetup-item {
+        height: 280px;
+    }
+
+    .meetup-content {
+        padding: 0.75rem 1rem;
+    }
+
+    .meetup-content h3 {
+        font-size: 16px;
+    }
+
+    .meetup-location {
+        font-size: 11px;
+    }
+}
+
+/* ── Meetup Modal ── */
+.mt-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.mt-modal {
+    position: relative;
+    width: 100%;
+    max-width: 820px;
+    max-height: 88vh;
+    background: #080808;
+    border: 1px solid rgba(52, 163, 74, 0.15);
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    z-index: 101;
+}
+
+/* Left forest-green accent line */
+.mt-modal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #4ade80, #16a34a 50%, transparent);
+    z-index: 2;
+}
+
+/* Forest glow */
+.mt-modal::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 0% 30%, rgba(22, 163, 74, 0.05) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.mt-modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s, color 0.2s;
+    backdrop-filter: blur(4px);
+}
+
+.mt-modal-close:hover {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+}
+
+/* ── Image panel (left side) ── */
+.mt-modal-img-panel {
+    width: 400px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    background: #0a0a0a;
+}
+
+.mt-modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.85;
+    display: block;
+}
+
+/* Gradient fade on right edge of image into content */
+.mt-modal-img-panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    background: linear-gradient(to right, transparent, #080808);
+}
+
+.mt-modal-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+}
+
+.mt-modal-body {
+    flex: 1;
+    padding: 2rem 2.5rem 2.5rem 2rem;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.mt-modal-body::-webkit-scrollbar {
+    width: 3px;
+}
+
+.mt-modal-body::-webkit-scrollbar-track {
+    background: #080808;
+}
+
+.mt-modal-body::-webkit-scrollbar-thumb {
+    background: #1a4d27;
+}
+
+.mt-modal-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+}
+
+.mt-modal-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    background: rgba(22, 163, 74, 0.1);
+    border: 1px solid rgba(22, 163, 74, 0.25);
+    color: #4ade80;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+}
+
+.mt-modal-date-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #4b5563;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+}
+
+.mt-modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.04em;
+    color: #f0fdf4;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+}
+
+.mt-modal-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: #6b7280;
+    margin-bottom: 2rem;
+    max-width: 600px;
+}
+
+.mt-modal-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.mt-modal-detail-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(34, 197, 94, 0.1);
+    color: #9ca3af;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.mt-modal-detail-pill svg {
+    color: #16a34a;
+}
+
+.mt-modal-divider {
+    width: 60px;
+    height: 1px;
+    background: rgba(34, 197, 94, 0.2);
+    margin: 1rem 0;
+}
+
+.mt-modal-footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: #3f3f46;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+.mt-modal-spacer {
+    height: 1rem;
+}
+
+/* Register Button in Modal */
+.mt-modal-register-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(45deg, #16a34a, #22c55e);
+    border: none;
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.mt-modal-register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+/* Instagram Button in Modal */
+.mt-modal-instagram-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+    border: none;
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.mt-modal-instagram-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(193, 53, 132, 0.4);
+}
+
+.mt-modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 560px) {
+    .mt-modal {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .mt-modal-img-panel {
+        width: 100%;
+        height: 180px;
+        flex-shrink: 0;
+    }
+
+    .mt-modal-img {
+        height: 100%;
+    }
+
+    .mt-modal::before {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        width: auto;
+        height: 2px;
+        background: linear-gradient(90deg, #4ade80, #16a34a 50%, transparent);
+    }
+
+    .mt-modal-body {
+        padding: 1.25rem;
+    }
+
+    .mt-modal-title {
+        font-size: 1.8rem;
+    }
+
+    .mt-modal-actions {
+        flex-direction: column;
+    }
+
+    .mt-modal-instagram-btn,
+    .mt-modal-register-btn {
+        width: 100%;
+    }
+}
+
+.no-events-message {
+    text-align: center;
+    padding: 50px 20px;
+    color: #666;
+    font-size: 18px;
+    font-style: italic;
+}

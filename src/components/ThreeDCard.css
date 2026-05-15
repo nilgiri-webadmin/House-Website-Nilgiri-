@@ -1,0 +1,119 @@
+.card-3d-wrapper {
+    width: 150px;
+    height: 200px;
+    position: relative;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.card-3d-content {
+    position: absolute;
+    inset: 3px;
+    background: #000;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.card-3d-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.75rem;
+}
+
+.card-3d-text h3 {
+    font-family: var(--font-heading);
+    color: #fff;
+    font-size: 0.7rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.2;
+}
+
+.card-3d-text p {
+    font-size: 0.55rem;
+    color: #ccc;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+}
+
+.play-icon {
+    width: 40px;
+    height: 40px;
+    background: #4ade80;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 1.2rem;
+    box-shadow: 0 0 15px rgba(74, 222, 128, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.card-3d-wrapper:hover .play-icon {
+    transform: scale(1.1);
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+    .card-3d-wrapper {
+        width: 130px;
+        height: 170px;
+    }
+    
+    .card-3d-text h3 {
+        font-size: 0.6rem;
+    }
+    
+    .card-3d-text p {
+        font-size: 0.5rem;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .card-3d-wrapper {
+        width: 22%;
+        min-width: 100px;
+        height: 140px;
+    }
+    
+    .card-3d-overlay {
+        padding: 0.5rem;
+    }
+    
+    .card-3d-text h3 {
+        font-size: 0.55rem;
+    }
+    
+    .card-3d-text p {
+        font-size: 0.45rem;
+    }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: 480px) {
+    .card-3d-wrapper {
+        width: 23%;
+        min-width: 80px;
+        height: 120px;
+    }
+    
+    .card-3d-overlay {
+        padding: 0.4rem;
+    }
+    
+    .card-3d-text h3 {
+        font-size: 0.5rem;
+    }
+    
+    .card-3d-text p {
+        font-size: 0.4rem;
+    }
+}

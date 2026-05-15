@@ -1,0 +1,143 @@
+    .join-section {
+    padding: clamp(60px, 15vw, 150px) 5%;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.join-bg-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(74, 222, 128, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.join-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.join-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 80px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    backdrop-filter: blur(10px);
+    width: 100%;
+}
+
+.join-icon-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.whatsapp-icon {
+    color: #4ade80;
+    z-index: 2;
+}
+
+.icon-pulse {
+    position: absolute;
+    inset: 0;
+    background: #4ade80;
+    border-radius: 50%;
+    opacity: 0.2;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.join-text h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    font-style: italic;
+    margin-bottom: 15px;
+    letter-spacing: -0.02em;
+}
+
+.join-text p {
+    font-size: 16px;
+    color: #666;
+    max-width: 500px;
+    line-height: 1.6;
+    margin: 0 auto;
+}
+
+.join-btn-primary {
+    background: transparent;
+    border: 1px solid #4ade80;
+    padding: 18px 40px;
+    color: #4ade80;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.join-btn-primary:hover {
+    background: #4ade80;
+    color: #000;
+    box-shadow: 0 0 30px rgba(74, 222, 128, 0.4);
+}
+
+@media (max-width: 768px) {
+    .join-card {
+        padding: 60px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .join-card {
+        padding: 40px 16px;
+        gap: 25px;
+    }
+
+    .join-text p {
+        font-size: 14px;
+    }
+
+    .join-btn-primary {
+        padding: 14px 28px;
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        gap: 10px;
+    }
+
+    .join-icon-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+}

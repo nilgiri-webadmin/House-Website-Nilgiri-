@@ -1,0 +1,26 @@
+.app-container {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #000;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 auto;
+}
+
+.app-container.admin-mode {
+  height: auto;
+  overflow: visible;
+}
+
+/* Ensure all sections have smooth scrolling */
+section {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+footer {
+  scroll-behavior: smooth;
+}
