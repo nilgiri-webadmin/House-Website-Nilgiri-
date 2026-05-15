@@ -1,5 +1,5 @@
 import React from "react";
-import Globe from "./Globe";
+import Globe from "./globe";
 import { cn } from "@/lib/utils";
 
 export default function GlobeSection({
