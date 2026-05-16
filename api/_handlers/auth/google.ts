@@ -43,7 +43,7 @@ export default async function handler(
     });
 
     const payload = ticket.getPayload();
-    const email = payload?.email;
+    const email = payload?.email?.trim();
     const googleId = payload?.sub;
     const name = payload?.name;
     const picture = payload?.picture;
@@ -53,19 +53,21 @@ export default async function handler(
       return res.status(401).json({ error: 'Invalid Google token' });
     }
 
-    console.log('Google token verified for email:', email);
+    const normalizedEmail = email.toLowerCase();
+
+    console.log('Google token verified for email:', normalizedEmail);
 
     // Check if email is in whitelist
     const { data: allowedEmail, error: allowedError } = await supabaseAdmin
       .from('allowed_oauth_emails')
       .select('*')
-      .eq('email', email)
+      .ilike('email', normalizedEmail)
       .single();
 
     if (allowedError || !allowedEmail) {
-      console.error('Email not in whitelist:', email);
+      console.error('Email not in whitelist:', normalizedEmail);
       return res.status(403).json({
-        error: 'Email not authorized. Please contact admin.',
+        error: `Email not authorized: ${normalizedEmail}. Please add it to the Google OAuth whitelist.`,
       });
     }
 
@@ -80,13 +82,13 @@ export default async function handler(
       .single();
 
     if (!adminUser) {
-      console.log('Creating new admin user for email:', email);
+      console.log('Creating new admin user for email:', normalizedEmail);
 
       // Create new admin user
       const { data: newUser, error: createError } = await supabaseAdmin
         .from('admin_users')
         .insert({
-          email: email.toLowerCase(),
+          email: normalizedEmail,
           oauth_provider: 'google',
           oauth_id: googleId,
           oauth_picture_url: picture,
