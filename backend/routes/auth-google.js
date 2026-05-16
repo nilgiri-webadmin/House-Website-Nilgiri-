@@ -48,15 +48,15 @@ router.post('/google', async (req, res) => {
 
     console.log('Google token verified for email:', email);
 
-    // Check if email is in whitelist
+    // Check if email is in whitelist (case-insensitive)
     const { data: allowedEmail, error: allowedError } = await supabase
       .from('allowed_oauth_emails')
       .select('*')
-      .eq('email', email)
+      .ilike('email', email)
       .single();
 
     if (allowedError || !allowedEmail) {
-      console.error('Email not in whitelist:', email);
+      console.error('Email not in whitelist (case-insensitive):', email, 'dbError:', allowedError);
       return res.status(403).json({
         error: 'Email not authorized. Please contact admin.',
       });
@@ -134,7 +134,7 @@ router.post('/google', async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Google auth error:', error);
+    console.error('Google auth error:', error?.message || error);
     return res.status(401).json({ error: 'Authentication failed' });
   }
 });
