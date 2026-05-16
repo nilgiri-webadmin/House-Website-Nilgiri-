@@ -38,7 +38,7 @@ async function handleGet(id: string, res: VercelResponse) {
       throw error;
     }
 
-    return res.status(200).json({ member: data });
+    return res.status(200).json(data);
   } catch (error: any) {
     console.error('Error fetching council member:', error);
     return res
@@ -86,7 +86,7 @@ async function handlePut(req: AuthRequest, res: VercelResponse) {
       throw error;
     }
 
-    return res.status(200).json({ member: data });
+    return res.status(200).json(data);
   } catch (error: any) {
     console.error('Error updating council member:', error);
     return res

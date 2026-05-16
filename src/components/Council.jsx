@@ -82,54 +82,62 @@ const Council = () => {
     useEffect(() => {
         const fetchCouncil = async () => {
             try {
-                // Try to fetch from YAML file first
+                const response = await client.get('/council?limit=20');
+                const councilData = Array.isArray(response.data)
+                    ? response.data
+                    : response.data?.council || [];
+
+                if (councilData.length > 0) {
+                    setCouncil(councilData);
+                    return;
+                }
+
+                // Fallback to the static YAML file for local/offline support.
                 const yamlResponse = await fetch('/council-data.yml');
-                if (yamlResponse.ok) {
-                    const yamlText = await yamlResponse.text();
-                    const yamlData = yaml.load(yamlText);
+                if (!yamlResponse.ok) {
+                    setCouncil([]);
+                    return;
+                }
 
-                    // Flatten the YAML data into an array
-                    const flattenedData = [];
-                    Object.keys(yamlData).forEach(category => {
-                        yamlData[category].forEach(member => {
-                            let team = '';
-                            let subTeam = '';
-                            if (category === 'niligiri_uhc') {
-                                team = 'UHC';
-                            } else if (category === 'operations') {
-                                team = 'Multimedia/PR/WebOps';
-                                // Assign subTeam based on position
-                                const pos = member.position.toLowerCase();
-                                if (pos.includes('pr')) {
-                                    subTeam = 'PR';
-                                } else if (pos.includes('webops') || pos.includes('web-ops')) {
-                                    subTeam = 'WebOps';
-                                } else {
-                                    subTeam = 'Multimedia';
-                                }
-                            } else if (category === 'regional_coordinators') {
-                                team = 'RC';
-                            } else if (category === 'mentors') {
-                                team = 'Mentors';
-                            } else if (category === 'community_admins') {
-                                team = 'Community Admins';
+                const yamlText = await yamlResponse.text();
+                const yamlData = yaml.load(yamlText) || {};
+
+                const flattenedData = [];
+                Object.keys(yamlData).forEach(category => {
+                    (yamlData[category] || []).forEach(member => {
+                        let team = '';
+                        let subTeam = '';
+                        if (category === 'niligiri_uhc') {
+                            team = 'UHC';
+                        } else if (category === 'operations') {
+                            team = 'Multimedia/PR/WebOps';
+                            const pos = (member.position || '').toLowerCase();
+                            if (pos.includes('pr')) {
+                                subTeam = 'PR';
+                            } else if (pos.includes('webops') || pos.includes('web-ops')) {
+                                subTeam = 'WebOps';
+                            } else {
+                                subTeam = 'Multimedia';
                             }
+                        } else if (category === 'regional_coordinators') {
+                            team = 'RC';
+                        } else if (category === 'mentors') {
+                            team = 'Mentors';
+                        } else if (category === 'community_admins') {
+                            team = 'Community Admins';
+                        }
 
-                            flattenedData.push({
-                                ...member,
-                                team,
-                                subTeam,
-                                role: member.position,
-                                profile_photo_url: member.image
-                            });
+                        flattenedData.push({
+                            ...member,
+                            team,
+                            subTeam,
+                            role: member.position,
+                            profile_photo_url: member.image
                         });
                     });
-                    setCouncil(flattenedData);
-                } else {
-                    // Fallback to API
-                    const response = await client.get('/council?limit=20');
-                    setCouncil(response.data || []);
-                }
+                });
+
+                setCouncil(flattenedData);
             } catch (error) {
                 console.error("Failed to fetch council:", error);
                 setCouncil([]);

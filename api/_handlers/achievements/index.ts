@@ -71,7 +71,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
       console.log('[Achievements GET] First achievement:', JSON.stringify(data[0]));
     }
 
-    return res.status(200).json({ achievements: data || [] });
+    return res.status(200).json(data || []);
   } catch (error: any) {
     console.error('[Achievements GET] Unexpected error:', error);
     return res
@@ -115,7 +115,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
       throw error;
     }
 
-    return res.status(201).json({ achievement: data });
+    return res.status(201).json(data);
   } catch (error: any) {
     console.error('Error creating achievement:', error);
     return res

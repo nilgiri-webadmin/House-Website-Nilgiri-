@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from './utils/supabase';
 import { authenticateRequest } from './utils/auth';
+import Busboy from 'busboy';
 
 export const config = {
   api: {
@@ -17,6 +18,67 @@ const getPublicUrl = (bucket: string, filepath: string) => {
     throw new Error('Invalid SUPABASE_URL configuration');
   }
   return `https://${projectId}.supabase.co/storage/v1/object/public/${bucket}/${filepath}`;
+};
+
+const parseMultipartRequest = (req: VercelRequest) => {
+  return new Promise<{
+    fields: Record<string, string>;
+    fileBuffer: Buffer;
+    filename: string;
+    mimetype: string;
+  }>((resolve, reject) => {
+    const fields: Record<string, string> = {};
+    const fileChunks: Buffer[] = [];
+    let filename = '';
+    let mimetype = '';
+    let fileSeen = false;
+
+    const busboy = Busboy({
+      headers: req.headers,
+      limits: { fileSize: 5 * 1024 * 1024 },
+    });
+
+    busboy.on('field', (name, value) => {
+      fields[name] = value;
+    });
+
+    busboy.on('file', (fieldname, file, info) => {
+      if (fieldname !== 'file') {
+        file.resume();
+        return;
+      }
+
+      fileSeen = true;
+      filename = info.filename || '';
+      mimetype = info.mimeType || 'application/octet-stream';
+
+      file.on('data', (data: Buffer) => {
+        fileChunks.push(data);
+      });
+
+      file.on('limit', () => {
+        reject(new Error('File exceeds 5MB limit'));
+      });
+    });
+
+    busboy.on('error', reject);
+
+    busboy.on('finish', () => {
+      if (!fileSeen) {
+        reject(new Error('No file provided'));
+        return;
+      }
+
+      resolve({
+        fields,
+        fileBuffer: Buffer.concat(fileChunks),
+        filename,
+        mimetype,
+      });
+    });
+
+    req.pipe(busboy);
+  });
 };
 
 export default async function handler(
@@ -49,27 +111,50 @@ export default async function handler(
         return res.status(403).json({ error: 'Forbidden' });
       }
 
-      const { file, bucket = 'nilgiri_media', category, filename, mimetype } = req.body;
+      const contentType = String(req.headers['content-type'] || '');
+      let bucket = 'nilgiri_media';
+      let category = 'Communities';
+      let filename = '';
+      let mimetype = 'application/octet-stream';
+      let buffer: Buffer;
 
-      if (!file || !filename) {
-        return res.status(400).json({ error: 'File data and filename required' });
+      if (contentType.includes('multipart/form-data')) {
+        const parsed = await parseMultipartRequest(req);
+        bucket = parsed.fields.bucket || bucket;
+        category = parsed.fields.category || parsed.fields.folder || category;
+        filename = parsed.filename;
+        mimetype = parsed.mimetype;
+        buffer = parsed.fileBuffer;
+      } else {
+        const body = req.body as any;
+        const { file, bucket: bodyBucket = bucket, category: bodyCategory, folder, filename: bodyFilename, mimetype: bodyMimeType } = body;
+
+        bucket = bodyBucket;
+        category = bodyCategory || folder || category;
+        filename = bodyFilename || '';
+        mimetype = bodyMimeType || mimetype;
+
+        if (!file || !filename) {
+          return res.status(400).json({ error: 'File data and filename required' });
+        }
+
+        if (typeof file === 'string' && file.startsWith('data:')) {
+          const base64Data = file.split(',')[1];
+          buffer = Buffer.from(base64Data, 'base64');
+        } else if (typeof file === 'string') {
+          buffer = Buffer.from(file, 'base64');
+        } else {
+          return res.status(400).json({ error: 'Invalid file format. Use base64 encoding.' });
+        }
       }
 
       // Build folder path: nilgiri_media/Nilgiri Website/[category]
-      let finalCategory = category || 'Communities';
+      let finalCategory = category;
       finalCategory = finalCategory.trim();
       const folder = `Nilgiri Website/${finalCategory}`;
 
-      // For Vercel, expect base64 encoded file
-      let buffer: Buffer;
-      if (typeof file === 'string' && file.startsWith('data:')) {
-        // Extract base64 from data URL
-        const base64Data = file.split(',')[1];
-        buffer = Buffer.from(base64Data, 'base64');
-      } else if (typeof file === 'string') {
-        buffer = Buffer.from(file, 'base64');
-      } else {
-        return res.status(400).json({ error: 'Invalid file format. Use base64 encoding.' });
+      if (!filename) {
+        filename = `upload-${Date.now()}.bin`;
       }
 
       // Generate unique filename

@@ -44,7 +44,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
       throw error;
     }
 
-    return res.status(200).json({ council: data || [] });
+    return res.status(200).json(data || []);
   } catch (error: any) {
     console.error('Error fetching council members:', error);
     return res
@@ -98,7 +98,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
       throw error;
     }
 
-    return res.status(201).json({ member: data });
+    return res.status(201).json(data);
   } catch (error: any) {
     console.error('Error creating council member:', error);
     return res
