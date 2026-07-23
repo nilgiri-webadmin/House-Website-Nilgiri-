@@ -1,5 +1,15 @@
 import React, { useEffect, useRef } from "react";
 
+function isWebGLAvailable() {
+    try {
+        const canvas = document.createElement("canvas");
+        const gl = canvas.getContext("webgl2") || canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        return !!(window.WebGLRenderingContext && gl);
+    } catch (e) {
+        return false;
+    }
+}
+
 const TubeCursor = ({
     initialColors = ["#f967fb", "#53bc28", "#6958d5"],
     lightColors = ["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"],
@@ -14,9 +24,14 @@ const TubeCursor = ({
         let removeClick = null;
         let destroyed = false;
 
+        if (!isWebGLAvailable()) {
+            console.warn("WebGL is not available in this browser environment. TubeCursor 3D background gracefully disabled.");
+            return;
+        }
+
         (async () => {
             try {
-                // Dynamic import from CDN as per the original component
+                // Dynamic import from CDN
                 const mod = await import(
                     /* webpackIgnore: true */
                     "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js"
@@ -37,24 +52,24 @@ const TubeCursor = ({
 
                 appRef.current = app;
 
-                if (enableRandomizeOnClick) {
+                if (enableRandomizeOnClick && canvasRef.current) {
                     const handler = () => {
-                        const colors = randomColors(initialColors.length);
-                        const lights = randomColors(lightColors.length);
-                        app.tubes.setColors(colors);
-                        app.tubes.setLightsColors(lights);
+                        try {
+                            if (!appRef.current || !appRef.current.tubes) return;
+                            const colors = randomColors(initialColors.length);
+                            const lights = randomColors(lightColors.length);
+                            appRef.current.tubes.setColors(colors);
+                            appRef.current.tubes.setLightsColors(lights);
+                        } catch (e) {
+                            console.warn("Error randomizing TubeCursor colors:", e);
+                        }
                     };
-                    // Bind click to canvas or container instead of body to respect section isolation? 
-                    // Actually, if it's a cursor effect, usually it reacts to mouse movement globally or within area.
-                    // Example code had click listener on document.body for randomizing colors.
-                    // We can keep it or scope it. Let's scope it to the canvas parent if possible, or keep global if intended interaction.
-                    // User said "in that specific area". Let's enable it on the canvas element click.
                     const element = canvasRef.current;
                     element.addEventListener("click", handler);
                     removeClick = () => element.removeEventListener("click", handler);
                 }
             } catch (err) {
-                console.error("Failed to load TubeCursor script", err);
+                console.warn("Failed to load or initialize TubeCursor script:", err);
             }
         })();
 
@@ -62,22 +77,36 @@ const TubeCursor = ({
             destroyed = true;
             if (removeClick) removeClick();
             try {
-                if (appRef.current && appRef.current.dispose) {
+                if (appRef.current && typeof appRef.current.dispose === "function") {
                     appRef.current.dispose();
                 }
-                appRef.current = null;
             } catch (e) {
-                // ignore
+                // ignore dispose error
             }
+            appRef.current = null;
         };
     }, [initialColors, lightColors, lightIntensity, enableRandomizeOnClick]);
 
     return (
-        <div className={`tube-cursor-wrapper ${className}`} style={{ position: 'absolute', inset: 0, overflow: 'hidden', zIndex: 0 }}>
+        <div
+            className={`tube-cursor-wrapper ${className}`}
+            style={{
+                position: 'absolute',
+                inset: 0,
+                overflow: 'hidden',
+                zIndex: 0,
+                backgroundColor: '#000'
+            }}
+        >
             {/* Background canvas */}
             <canvas
                 ref={canvasRef}
-                style={{ display: 'block', width: '100%', height: '100%' }}
+                style={{
+                    display: 'block',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#000'
+                }}
             />
         </div>
     );
