@@ -59,7 +59,7 @@ const Meetups = ({ isPreview = false, eventType }) => {
     const sectionTitle = isPreview ? "Nilgiri Meetups" : (type === 'upcoming' ? "Upcoming Meetups" : type === 'past' ? "Past Meetups" : "Historical Archive of Gatherings");
 
     return (
-        <section className={`meetups-section ${isPreview ? 'preview-mode' : 'full-mode'}`} id={isPreview ? "meetups-preview" : "meetups-full"}>
+        <section className={`meetups-section ${isPreview ? 'preview-mode' : 'full-mode'}`} id="meetups">
             <motion.div
                 className="section-header center"
                 initial={{ opacity: 0, y: -20 }}

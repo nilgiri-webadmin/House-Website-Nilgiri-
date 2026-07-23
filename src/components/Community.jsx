@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Link2, Calendar, ExternalLink } from 'lucide-react';
 import './Community.css';
 import client from '../api/client';
-import communityImg from '../assets/community.png';
+const communityImg = 'https://placehold.co/400x300/1a1a2e/4ade80?text=Community';
 
 const ClubCard = ({ comm, delay, onClick }) => {
     return (

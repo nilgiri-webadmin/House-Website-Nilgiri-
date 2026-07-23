@@ -337,7 +337,7 @@ const Events = ({ isPreview = false, eventType }) => {
 
             <section
                 className={`events-section ${isPreview ? 'preview-mode' : 'full-mode'}`}
-                id={isPreview ? "events-preview" : "events-full"}
+                id="events"
             >
                 <motion.div
                     className="center"

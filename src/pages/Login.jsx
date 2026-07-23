@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle, useMemo, useCallback, createContext, Children } from "react";
 import { cva } from "class-variance-authority";
-import { Mail, Gem, Lock, Eye, EyeOff, X, AlertCircle, PartyPopper, Loader } from "lucide-react";
+import { Mail, Gem, Lock, Eye, EyeOff, X, AlertCircle, Check, Loader, ArrowRight } from "lucide-react";
 import apiClient from "@/api/client";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -131,52 +131,80 @@ const GoogleIcon = (props) => (
 );
 
 /* ─────────────────────────────────────────
-   GlassInput — fully frosted, matches card glass
+   GlassInput — Floating Label with Bottom Line
 ───────────────────────────────────────── */
-const GlassInput = ({ icon, type = "text", placeholder, value, onChange, onKeyDown, inputRef }) => (
-  <div
-    className={cn(
-      "flex items-center w-full rounded-2xl overflow-hidden",
-      "bg-white/8 backdrop-blur-2xl",
-      "border border-white/25",
-      "shadow-[inset_0_1px_0_rgba(255,255,255,0.18),inset_0_-1px_0_rgba(0,0,0,0.08),0_2px_16px_rgba(0,0,0,0.15)]",
-      "transition-all duration-250",
-      "focus-within:bg-white/14 focus-within:border-white/45",
-      "focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_4px_24px_rgba(0,0,0,0.2)]"
-    )}
-  >
-    {/* left icon strip — slightly darker tint for depth */}
-    <div className="flex items-center justify-center w-12 h-13 flex-shrink-0 text-white/50"
-      style={{ minHeight: '3rem' }}>
-      {icon}
-    </div>
-    {/* subtle vertical divider */}
-    <div className="w-px self-stretch my-2.5 bg-white/12 flex-shrink-0" />
-    <input
-      ref={inputRef}
-      type={type}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      autoComplete="off"
-      style={{ minHeight: '3rem' }}
-      className="flex-1 px-4 bg-transparent text-white placeholder:text-white/38 focus:outline-none text-[0.875rem] font-medium tracking-wide"
-    />
-  </div>
-);
+const GlassInput = ({ icon, type = "text", placeholder, value, onChange, onKeyDown, inputRef, error, success, shake, helperText }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const isActive = isFocused || value.length > 0;
 
-/* ─────────────────────────────────────────
-   Modal steps data
-───────────────────────────────────────── */
-const modalSteps = [
-  { message: "Authenticating...", icon: <Loader className="w-10 h-10 text-white animate-spin" /> },
-  { message: "Welcome Back!", icon: <PartyPopper className="w-10 h-10 text-emerald-300" /> }
-];
+  let lineColor = "bg-black/60";
+  if (error) lineColor = "bg-red-500";
+  else if (success) lineColor = "bg-green-500";
+
+  let baseLineColor = "bg-black/20";
+  if (error) baseLineColor = "bg-red-500/30";
+  else if (success) baseLineColor = "bg-green-500/30";
+
+  return (
+    <div className={cn("relative w-full flex flex-col items-center mt-3 mb-1", shake && "animate-shake")}>
+      {/* Container for input and icon */}
+      <div className="relative flex items-center w-full">
+        <div className={cn("flex items-center justify-center w-10 mr-1 transition-colors", error ? "text-red-500" : success ? "text-green-500" : "text-black")}>
+          {icon}
+        </div>
+        <div className="relative flex-1 h-12">
+          <label
+            className={cn(
+              "absolute left-0 transition-all duration-300 pointer-events-none font-medium",
+              isActive ? "-top-2 text-[0.65rem]" : "top-3 text-[0.85rem]",
+              error ? "text-red-500" : success ? "text-green-500" : isActive ? "text-black" : "text-black/50"
+            )}
+          >
+            {placeholder}
+          </label>
+          <input
+            ref={inputRef}
+            type={type}
+            value={value}
+            onChange={onChange}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onKeyDown={onKeyDown}
+            autoComplete="off"
+            className={cn("w-full h-full bg-transparent focus:outline-none text-[0.9rem] pt-3 transition-colors", error ? "text-red-500" : success ? "text-green-500" : "text-black")}
+          />
+        </div>
+      </div>
+      {/* Bottom Line */}
+      <div className={cn("w-full h-px mt-1 relative transition-colors", baseLineColor)}>
+        <div className={cn(
+          "absolute left-1/2 -translate-x-1/2 top-0 h-[2px] transition-all duration-300",
+          lineColor,
+          isFocused || error || success ? "w-full" : "w-0"
+        )} />
+      </div>
+      {/* Helper text */}
+      <AnimatePresence>
+        {helperText && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, marginTop: 0 }}
+            animate={{ opacity: 1, height: "auto", marginTop: 4 }}
+            exit={{ opacity: 0, height: 0, marginTop: 0 }}
+            className="w-full text-left overflow-hidden"
+          >
+            <span className={cn("text-[0.75rem] font-medium block pt-1", error ? "text-red-500" : success ? "text-green-500" : "text-black/50")}>
+              {helperText}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const DefaultLogo = () => (
-  <div className="bg-white/20 backdrop-blur-sm text-white rounded-xl p-2 border border-white/30">
-    <Gem className="h-5 w-5" />
+  <div className="flex items-center justify-center w-[3rem] h-[3rem] rounded-full bg-black text-white font-semibold text-lg shadow-lg -mt-[3.5rem] z-10">
+    S
   </div>
 );
 
@@ -188,8 +216,10 @@ export const AuthComponent = ({ logo = <DefaultLogo /> }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [authStep, setAuthStep] = useState("email");
-  const [modalStatus, setModalStatus] = useState('closed');
-  const [modalErrorMessage, setModalErrorMessage] = useState('');
+  const [loginStatus, setLoginStatus] = useState('idle');
+  const [errorType, setErrorType] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [shakeFields, setShakeFields] = useState(false);
   const confettiRef = useRef(null);
   const passwordInputRef = useRef(null);
 
@@ -206,41 +236,55 @@ export const AuthComponent = ({ logo = <DefaultLogo /> }) => {
     }
   };
 
-  /* ── BACKEND LOGIC UNCHANGED ── */
+  /* ── BACKEND LOGIC ── */
   const handleFinalSubmit = (e) => {
     e.preventDefault();
-    if (modalStatus !== 'closed') return;
-    if (!isEmailValid || !isPasswordValid) {
-      setModalErrorMessage('Please enter a valid email and password (min 6 chars).');
-      setModalStatus('error');
+    if (loginStatus === 'loading' || loginStatus === 'success') return;
+    
+    if (!email || !password) {
+      setLoginStatus('error');
+      setErrorType('empty');
+      setShakeFields(true);
+      setTimeout(() => setShakeFields(false), 500);
       return;
     }
-    setModalStatus('loading');
+    
+    setLoginStatus('loading');
+    setErrorType(null);
+    setErrorMessage('');
+    
     apiClient.post('/auth/login', { email, password })
       .then((res) => {
         const { token } = res.data || {};
         if (token) {
           try { localStorage.setItem('token', token); } catch (e) { }
           fireSideCanons();
-          setModalStatus('success');
+          setLoginStatus('success');
           setTimeout(() => { window.location.href = '/admin'; }, 900);
         } else {
-          setModalErrorMessage('Login failed.');
-          setModalStatus('error');
+          setLoginStatus('error');
+          setErrorType('wrong_credentials');
         }
       })
       .catch((err) => {
         const message = err?.response?.data?.error || 'Login failed. Please check credentials.';
-        setModalErrorMessage(message);
-        setModalStatus('error');
+        setLoginStatus('error');
+        if (message.toLowerCase().includes('whitelist') || message.toLowerCase().includes('admin')) {
+          setErrorType('not_admin');
+          setErrorMessage(message);
+        } else {
+          setErrorType('wrong_credentials');
+          setErrorMessage(message);
+        }
       });
   };
 
   // Handle Google OAuth success
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      setModalStatus('loading');
-      setModalErrorMessage('');
+      setLoginStatus('loading');
+      setErrorType(null);
+      setErrorMessage('');
 
       // Send Google token to backend for verification
       const response = await apiClient.post('/auth/google', {
@@ -256,41 +300,42 @@ export const AuthComponent = ({ logo = <DefaultLogo /> }) => {
 
         // Fire celebration confetti
         fireSideCanons();
-        setModalStatus('success');
-        
+        setLoginStatus('success');
+
         // Redirect to admin dashboard
         setTimeout(() => { window.location.href = '/admin'; }, 900);
       }
     } catch (err) {
-      const message = err?.response?.data?.error || 'Google login failed. Please check if your email is whitelisted.';
-      setModalErrorMessage(message);
-      setModalStatus('error');
+      const message = err?.response?.data?.error || 'Google login failed.';
+      setLoginStatus('error');
+      if (message.toLowerCase().includes('whitelist') || message.toLowerCase().includes('admin')) {
+        setErrorType('not_admin');
+        setErrorMessage(message);
+      } else {
+        setErrorType('wrong_credentials');
+        setErrorMessage(message);
+      }
     }
   };
 
   const handleGoogleError = () => {
-    setModalErrorMessage('Google login failed. Please try again.');
-    setModalStatus('error');
+    setLoginStatus('error');
+    setErrorType('wrong_credentials');
+    setErrorMessage('Google login failed. Please try again.');
   };
 
   const handleProgressStep = () => { if (authStep === 'email' && isEmailValid) setAuthStep('password'); };
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (authStep === 'email') handleProgressStep();
-      else handleFinalSubmit(e);
+      handleFinalSubmit(e);
     }
   };
   const handleGoBack = () => { if (authStep === 'password') setAuthStep('email'); };
-  const closeModal = () => { setModalStatus('closed'); setModalErrorMessage(''); };
 
   useEffect(() => {
     if (authStep === 'password') setTimeout(() => passwordInputRef.current?.focus(), 300);
   }, [authStep]);
-
-  useEffect(() => {
-    if (modalStatus === 'success') fireSideCanons();
-  }, [modalStatus]);
 
   /* ── Hide any global navbar while mounted ── */
   useEffect(() => {
@@ -315,68 +360,26 @@ export const AuthComponent = ({ logo = <DefaultLogo /> }) => {
     };
   }, []);
 
-  /* ── Modal ── */
-  const Modal = () => (
-    <AnimatePresence>
-      {modalStatus !== 'closed' && (
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backdropFilter: 'blur(16px)', background: 'rgba(0,0,0,0.5)' }}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0, y: 12 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 12 }}
-            transition={{ type: 'spring', damping: 24, stiffness: 320 }}
-            className={cn(
-              "relative w-full max-w-xs mx-4 flex flex-col items-center gap-5 px-8 py-9 rounded-3xl",
-              "bg-white/12 backdrop-blur-2xl border border-white/22",
-              "shadow-[0_24px_60px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.2)]"
-            )}
-          >
-            {(modalStatus === 'error' || modalStatus === 'success') && (
-              <button onClick={closeModal}
-                className="absolute top-3 right-3 p-1.5 rounded-full text-white/50 hover:text-white hover:bg-white/10 transition-all">
-                <X className="w-4 h-4" />
-              </button>
-            )}
-            {modalStatus === 'error' && <>
-              <AlertCircle className="w-10 h-10 text-red-300" />
-              <p className="text-sm font-medium text-white/85 text-center">{modalErrorMessage}</p>
-              <GlassButton onClick={closeModal} size="sm">Try Again</GlassButton>
-            </>}
-            {modalStatus === 'loading' && <>
-              <Loader className="w-10 h-10 text-white animate-spin" />
-              <p className="text-sm font-medium text-white/85">Authenticating…</p>
-            </>}
-            {modalStatus === 'success' && <>
-              <PartyPopper className="w-10 h-10 text-emerald-300" />
-              <p className="text-sm font-medium text-white/85">Welcome back!</p>
-            </>}
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-
-  const bgUrl = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftravelbeloved.in%2Fwp-content%2Fuploads%2F2024%2F08%2Fthe-nilgiris-1654612145_6a5d2a183561e8c39267.webp&f=1&nofb=1&ipt=5913543b85acda1d4386c3efbc1adafb1253fea4d602c027c7e32dc02daf49ba';
-
   return (
     <div
+      className="min-h-screen w-screen flex flex-col relative overflow-hidden"
       style={{
-        height: '100vh',
-        overflow: 'hidden',
-        backgroundImage: `url(${bgUrl})`,
+        backgroundImage: 'url(/nilgiri-forest.webp)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        position: 'fixed',
-        inset: 0,
       }}
-      className="w-screen flex flex-col"
     >
-      {/* Autofill + animation styles */}
+      {/* Autofill styles and animations */}
       <style>{`
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          50% { transform: translateX(5px); }
+          75% { transform: translateX(-5px); }
+        }
+        .animate-shake {
+          animation: shake 0.4s ease-in-out;
+        }
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear { display: none !important; }
         input[type="password"]::-webkit-credentials-auto-fill-button,
@@ -386,160 +389,133 @@ export const AuthComponent = ({ logo = <DefaultLogo /> }) => {
         input:-webkit-autofill:focus,
         input:-webkit-autofill:active {
           -webkit-box-shadow: 0 0 0 30px transparent inset !important;
-          -webkit-text-fill-color: white !important;
+          -webkit-text-fill-color: black !important;
           background-color: transparent !important;
           background-clip: content-box !important;
           transition: background-color 5000s ease-in-out 0s !important;
-          color: white !important;
-          caret-color: white !important;
+          color: black !important;
+          caret-color: black !important;
         }
-
-        @keyframes shimmer-pan {
-          0%   { background-position: 200% center; }
-          100% { background-position: -200% center; }
-        }
-        .title-shimmer {
-          background: linear-gradient(110deg,
-            rgba(255,255,255,1) 20%,
-            rgba(255,255,255,0.48) 45%,
-            rgba(255,255,255,1) 65%
-          );
-          background-size: 250% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: shimmer-pan 5s linear infinite;
-        }
-
-        @keyframes btn-glow {
-          0%, 100% { box-shadow: 0 4px 18px rgba(255,255,255,0.20), inset 0 1px 0 rgba(255,255,255,0.7); }
-          50%       { box-shadow: 0 6px 28px rgba(255,255,255,0.34), inset 0 1px 0 rgba(255,255,255,0.85); }
-        }
-        .signin-btn-active { animation: btn-glow 2.8s ease-in-out infinite; }
       `}</style>
 
-      {/* Subtle dark vignette so card pops against background */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.52) 100%)' }} />
-
-      {/* Confetti */}
-      <Confetti ref={confettiRef} manualstart
-        className="fixed top-0 left-0 w-full h-full pointer-events-none z-[999]" />
-
-      {/* Modal */}
-      <Modal />
-
-      {/* ══ Centred card ══ */}
+      {/* ══ Centred content ══ */}
       <div className="relative z-10 flex flex-1 items-center justify-center px-6">
-        <fieldset disabled={modalStatus !== 'closed'} className="w-full" style={{ maxWidth: 420 }}>
+        <div className="relative w-[420px]">
+          {/* Translucent blur box — independent decorative layer */}
+          <div
+            className="absolute -inset-x-16 -inset-y-12 rounded-[2.5rem] bg-white/10 backdrop-blur-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)]"
+            style={{ pointerEvents: 'none' }}
+          />
 
-          <motion.div
-            initial={{ opacity: 0, y: 28, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className={cn(
-              "relative flex flex-col items-center gap-6",
-              /* generous padding — content never touches glass edge */
-              "px-12 pt-10 pb-9",
-              "rounded-3xl",
-              "bg-white/10 backdrop-blur-2xl",
-              "border border-white/22",
-              "shadow-[0_32px_80px_rgba(0,0,0,0.38),inset_0_1px_0_rgba(255,255,255,0.28)]"
-            )}
-          >
-            {/* Inner top highlight line */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px pointer-events-none"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent)' }} />
+          {/* Form content — sits on top, independent of the box */}
+          <fieldset disabled={loginStatus === 'loading' || loginStatus === 'success'} className="relative z-10 w-full" style={{ maxWidth: 420 }}>
 
-            {/* Logo */}
-            <BlurFade delay={0.1}>
-              <div className="p-3 rounded-2xl bg-white/15 border border-white/25 backdrop-blur-sm shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
-                {logo}
-              </div>
-            </BlurFade>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center w-full gap-6 py-8"
+            >
+              {/* Heading */}
+              <BlurFade delay={0.2} className="text-center w-full mb-4">
+                <h1 className="text-3xl font-bold text-black tracking-tight mb-2" style={{ fontFamily: "var(--font-body)" }}>
+                  Welcome Back
+                </h1>
+                <p className="text-[0.8rem] text-black/50 font-medium">
+                  Sign in to continue to Admin Panel
+                </p>
+              </BlurFade>
 
-            {/* Heading */}
-            <BlurFade delay={0.2} className="text-center space-y-1.5 w-full">
-              <h1
-                className="title-shimmer text-[2.1rem] font-light leading-none"
-                style={{ fontFamily: "'Georgia','Palatino Linotype',serif", letterSpacing: '-0.02em' }}
-              >
-                Welcome back
-              </h1>
-              <p className="text-[0.78rem] text-white/50 font-medium tracking-wide">
-                Sign in to Admin panel
-              </p>
-            </BlurFade>
+              {/* Inputs — fill card content width */}
+              <BlurFade delay={0.32} className="w-full flex flex-col gap-4 mb-4">
+                <GlassInput
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (loginStatus === 'error') setLoginStatus('idle');
+                  }}
+                  onKeyDown={handleKeyDown}
+                  icon={<Mail className="w-[1.1rem] h-[1.1rem]" />}
+                  error={loginStatus === 'error' && (errorType === 'empty' || errorType === 'wrong_credentials' || errorType === 'not_admin')}
+                  success={loginStatus === 'success'}
+                  shake={shakeFields}
+                  helperText={loginStatus === 'error' && errorType === 'not_admin' ? (errorMessage || 'Entered email is not an admin email') : undefined}
+                />
 
-            {/* Google — centered pill, natural (not full) width */}
-            <BlurFade delay={0.32} className="flex justify-center w-full">
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={handleGoogleError}
-                text="signin_with"
-                size="large"
-              />
-            </BlurFade>
+                <GlassInput
+                  inputRef={passwordInputRef}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (loginStatus === 'error') setLoginStatus('idle');
+                  }}
+                  onKeyDown={handleKeyDown}
+                  icon={
+                    isPasswordValid
+                      ? (
+                        <button type="button" aria-label="Toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="text-inherit hover:opacity-70 transition-opacity">
+                          {showPassword ? <EyeOff className="w-[1.1rem] h-[1.1rem]" /> : <Eye className="w-[1.1rem] h-[1.1rem]" />}
+                        </button>
+                      )
+                      : <Lock className="w-[1.1rem] h-[1.1rem] text-inherit" />
+                  }
+                  error={loginStatus === 'error' && (errorType === 'empty' || errorType === 'wrong_credentials')}
+                  success={loginStatus === 'success'}
+                  shake={shakeFields}
+                  helperText={loginStatus === 'error' && errorType === 'wrong_credentials' ? (errorMessage || 'Login credentials are wrong') : undefined}
+                />
+              </BlurFade>
 
-            {/* Divider */}
-            <BlurFade delay={0.42} className="w-full">
-              <div className="flex items-center gap-3">
-                <div className="flex-1 h-px bg-white/15" />
-                <span className="text-[0.67rem] font-semibold text-white/32 tracking-widest uppercase">or</span>
-                <div className="flex-1 h-px bg-white/15" />
-              </div>
-            </BlurFade>
+              {/* Sign in button */}
+              <BlurFade delay={0.42} className="flex justify-center w-full mt-2">
+                <button
+                  type="button"
+                  onClick={handleFinalSubmit}
+                  className={cn(
+                    "flex items-center justify-center gap-2 w-full py-4 rounded-full font-semibold",
+                    "transition-all duration-300 active:scale-[0.97]",
+                    loginStatus === 'loading' || loginStatus === 'success'
+                      ? "bg-black/80 text-white cursor-wait"
+                      : "bg-black text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
+                  )}
+                >
+                  {loginStatus === 'loading' ? <Loader className="w-6 h-6 animate-spin" /> : loginStatus === 'success' ? <Check className="w-6 h-6 text-emerald-400" /> : loginStatus === 'error' ? <X className="w-6 h-6 text-red-400" /> : <ArrowRight className="w-6 h-6" />}
+                </button>
+              </BlurFade>
 
-            {/* Inputs — fill card content width (padding gives breathing room from edge) */}
-            <BlurFade delay={0.5} className="w-full" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <GlassInput
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={handleKeyDown}
-                icon={<Mail className="w-4 h-4" />}
-              />
+              {/* Divider */}
+              <BlurFade delay={0.52} className="w-[80%] flex items-center justify-center py-1 mt-2">
+                <span className="text-[0.7rem] font-medium text-black/40 uppercase tracking-widest">or</span>
+              </BlurFade>
 
-              <GlassInput
-                inputRef={passwordInputRef}
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={handleKeyDown}
-                icon={
-                  isPasswordValid
-                    ? (
-                      <button type="button" aria-label="Toggle password visibility"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="text-white/58 hover:text-white transition-colors">
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
-                    )
-                    : <Lock className="w-4 h-4" />
-                }
-              />
-            </BlurFade>
+              {/* Spherical Google Button */}
+              <BlurFade delay={0.62} className="flex justify-center mt-2 relative w-12 h-12">
+                {/* Visible Custom Button */}
+                <div className="absolute inset-0 w-full h-full rounded-full flex items-center justify-center bg-white shadow-md pointer-events-none">
+                  <GoogleIcon className="w-6 h-6" />
+                </div>
 
-            {/* Sign in — wide pill, prominent */}
-            <BlurFade delay={0.65} className="flex justify-center w-full">
-              <button
-                type="button"
-                onClick={handleFinalSubmit}
-                className={cn(
-                  "px-16 py-3.5 rounded-full font-semibold text-base tracking-wide",
-                  "transition-all duration-200 ease-out active:scale-[0.97]",
-                  isEmailValid && isPasswordValid
-                    ? "bg-white text-gray-800 signin-btn-active hover:scale-[1.02]"
-                    : "bg-white/12 text-white/32 border border-white/14 cursor-not-allowed"
-                )}
-              >
-                Sign in
-              </button>
-            </BlurFade>
-          </motion.div>
-        </fieldset>
+                {/* Invisible Actual Google Login Button */}
+                <div className="opacity-0 w-[48px] h-[48px] overflow-hidden absolute inset-0 z-10 flex items-center justify-center cursor-pointer rounded-full">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    type="icon"
+                    shape="circle"
+                    theme="outline"
+                    size="large"
+                  />
+                </div>
+              </BlurFade>
+            </motion.div>
+          </fieldset>
+        </div>
       </div>
     </div>
   );

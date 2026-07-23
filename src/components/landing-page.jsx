@@ -14,6 +14,7 @@ export default function GlobeSection({
 }) {
   return (
     <section
+      id="about"
       className={cn(
         "relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-background text-foreground px-6 sm:px-10 md:px-16 lg:px-20",
         className

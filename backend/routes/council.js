@@ -80,6 +80,52 @@ router.get('/team/:teamName', async (req, res) => {
   }
 });
 
+// POST /api/council/sync-yaml - Sync database to public YAML file (admin only)
+router.post('/sync-yaml', authenticateToken, requireClubAdmin, async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('council_members').select('*');
+    if (error) throw error;
+
+    const fs = await import('fs/promises');
+    const path = await import('path');
+    const yaml = await import('js-yaml');
+
+    const yamlData = {
+      niligiri_uhc: [],
+      operations: [],
+      regional_coordinators: [],
+      mentors: [],
+      community_admins: []
+    };
+
+    data.forEach(member => {
+      const entry = {
+        name: member.name,
+        position: member.position,
+        region: member.region,
+        image: member.profile_photo_url || ''
+      };
+      
+      const team = member.team || '';
+      if (team === 'UHC') yamlData.niligiri_uhc.push(entry);
+      else if (team === 'Operations') yamlData.operations.push(entry);
+      else if (team === 'RC') yamlData.regional_coordinators.push(entry);
+      else if (team === 'Mentor') yamlData.mentors.push(entry);
+      else if (team === 'Community Admin' || team === 'Community Admins') yamlData.community_admins.push(entry);
+    });
+
+    const yamlString = yaml.dump(yamlData);
+    const targetPath = path.join(process.cwd(), '../public/council-data.yml');
+    
+    await fs.writeFile(targetPath, yamlString, 'utf8');
+
+    res.json({ success: true, stats: { total: data.length } });
+  } catch (error) {
+    console.error('Sync YAML error:', error);
+    res.status(500).json({ error: 'Failed to sync to YAML' });
+  }
+});
+
 // POST /api/council - Create new council member (admin only)
 router.post('/', authenticateToken, requireClubAdmin, async (req, res) => {
   try {

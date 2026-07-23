@@ -79,6 +79,32 @@ const Council = () => {
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState('UHC');
 
+    // Normalize team names from the API to match our UI category buttons
+    const normalizeTeam = (member) => {
+        const rawTeam = (member.team || '').trim();
+        let team = rawTeam;
+        let subTeam = '';
+
+        if (rawTeam === 'Operations') {
+            team = 'Multimedia/PR/WebOps';
+            const pos = (member.position || member.role || '').toLowerCase();
+            if (pos.includes('pr')) {
+                subTeam = 'PR';
+            } else if (pos.includes('webops') || pos.includes('web-ops') || pos.includes('web admin') || pos.includes('web-admin')) {
+                subTeam = 'WebOps';
+            } else {
+                subTeam = 'Multimedia';
+            }
+        } else if (rawTeam === 'Mentor') {
+            team = 'Mentors';
+        } else if (rawTeam === 'Community Admin' || rawTeam === 'Commnunity Admin') {
+            team = 'Community Admins';
+        }
+        // UHC and RC already match
+
+        return { ...member, team, subTeam, role: member.role || member.position };
+    };
+
     useEffect(() => {
         const fetchCouncil = async () => {
             try {
@@ -88,7 +114,7 @@ const Council = () => {
                     : response.data?.council || [];
 
                 if (councilData.length > 0) {
-                    setCouncil(councilData);
+                    setCouncil(councilData.map(normalizeTeam));
                     return;
                 }
 

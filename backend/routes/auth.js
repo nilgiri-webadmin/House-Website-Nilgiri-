@@ -31,7 +31,10 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Compare password
+    // Compare password — guard against null hash (e.g. OAuth-only accounts)
+    if (!user.password_hash) {
+      return res.status(401).json({ error: 'This account uses Google sign-in. Please use the Google button to log in.' });
+    }
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
