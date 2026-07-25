@@ -12,6 +12,10 @@ const supabase = createClient(
 const cache = new Map();
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 
+export const clearCommunitiesCache = () => {
+  cache.delete('all_communities');
+};
+
 function getCached(key) {
   const item = cache.get(key);
   if (!item) return null;

@@ -1,6 +1,7 @@
 import express from 'express';
 import { createClient } from '@supabase/supabase-js';
 import { authenticateToken, requireAdmin } from '../middleware/auth.js';
+import { clearCommunitiesCache } from './communities.js';
 
 const router = express.Router();
 
@@ -108,6 +109,7 @@ router.post('/communities', authenticateToken, requireAdmin, async (req, res) =>
       return res.status(500).json({ error: error.message });
     }
 
+    clearCommunitiesCache();
     console.log(`✅ Community created: ${data.id}`);
     res.status(201).json(data);
   } catch (error) {
@@ -144,6 +146,7 @@ router.put('/communities/:id', authenticateToken, requireAdmin, async (req, res)
       return res.status(404).json({ error: 'Community not found' });
     }
 
+    clearCommunitiesCache();
     console.log(`✅ Community updated: ${data.id}`);
     res.json(data);
   } catch (error) {
@@ -164,6 +167,7 @@ router.delete('/communities/:id', authenticateToken, requireAdmin, async (req, r
       return res.status(500).json({ error: error.message });
     }
 
+    clearCommunitiesCache();
     console.log(`✅ Community deleted: ${req.params.id}`);
     res.json({ message: 'Community deleted successfully' });
   } catch (error) {
