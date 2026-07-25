@@ -4,9 +4,38 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Grid, LogOut, LayoutDashboard, Users, Calendar, MessageSquare, Trophy, UserCircle, BookOpen } from 'lucide-react';
 import Sidebar from '../pages/admin/Sidebar';
 
+const ROLE_DISPLAY_NAMES = {
+    secretary: 'Secretary',
+    depsec: 'Deputy Secretary',
+    webadmin: 'Web Admin',
+    admin: 'Admin',
+    club: 'Club Admin',
+};
+
 const AdminLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    // Read logged-in user info
+    const getUserInfo = () => {
+        try {
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                return { name: user.name || user.email || 'User', role: user.role || 'admin' };
+            }
+            // Fallback: decode JWT payload
+            const token = localStorage.getItem('token');
+            if (token) {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                return { name: payload.name || payload.email || 'User', role: payload.role || 'admin' };
+            }
+        } catch (e) { /* ignore */ }
+        return { name: 'User', role: 'admin' };
+    };
+
+    const userInfo = getUserInfo();
+    const displayRole = ROLE_DISPLAY_NAMES[userInfo.role?.toLowerCase()] || userInfo.role || 'Admin';
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -17,6 +46,7 @@ const AdminLayout = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         navigate('/login');
     };
 
@@ -60,7 +90,7 @@ const AdminLayout = () => {
 
                     <div className="flex items-center gap-4 border-l border-white/10 pl-8">
                         <div className="flex flex-col text-right">
-                            <span className="text-[10px] font-black text-white leading-none uppercase tracking-widest">Secretary</span>
+                            <span className="text-[10px] font-black text-white leading-none uppercase tracking-widest">{displayRole}</span>
                             <span className="text-[8px] text-white/40 font-black uppercase mt-1 tracking-widest">Authorized</span>
                         </div>
                         <button

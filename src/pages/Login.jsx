@@ -242,9 +242,10 @@ export const AuthComponent = ({ logo = <DefaultLogo /> }) => {
 
     apiClient.post('/auth/login', { email, password })
       .then((res) => {
-        const { token } = res.data || {};
+        const { token, user } = res.data || {};
         if (token) {
           try { localStorage.setItem('token', token); } catch (e) { }
+          try { if (user) localStorage.setItem('user', JSON.stringify(user)); } catch (e) { }
           fireSideCanons();
           setLoginStatus('success');
           setTimeout(() => { window.location.href = '/admin'; }, 900);

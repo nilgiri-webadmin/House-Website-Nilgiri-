@@ -57,7 +57,7 @@ export const requireRole = (...allowedRoles) => {
 };
 
 // Check if user is secretary or webadmin
-export const requireAdmin = requireRole('secretary', 'webadmin');
+export const requireAdmin = requireRole('secretary', 'depsec', 'webadmin', 'admin');
 
 // Check if user is club admin (or higher)
-export const requireClubAdmin = requireRole('secretary', 'webadmin', 'club');
+export const requireClubAdmin = requireRole('secretary', 'depsec', 'webadmin', 'admin', 'club');
