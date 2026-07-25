@@ -4,9 +4,13 @@ dotenv.config({ path: '.env' });
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 async function test() {
   const { data, error } = await supabase.from('communities').select('*').limit(1);
-  console.log('Columns:', Object.keys(data[0]));
-  const { data: updateData, error: updateError } = await supabase.from('communities').update({ lead: 'Test', joining_form: 'test', instagram: 'test' }).eq('id', data[0].id).select();
+  if (!data || data.length === 0) return console.log('No data');
+  const community = data[0];
+  
+  const updateData = { lead: 'Test Lead', joining_form: 'test-form', events: null, image: null };
+  const { data: updated, error: updateError } = await supabase.from('communities').update(updateData).eq('id', community.id).select().single();
+  
   if (updateError) console.error('Update error:', updateError);
-  else console.log('Update success');
+  else console.log('Update success:', updated);
 }
 test();
