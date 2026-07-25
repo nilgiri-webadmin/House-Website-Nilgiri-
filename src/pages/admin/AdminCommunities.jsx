@@ -14,7 +14,7 @@ const AdminCommunities = () => {
     const [uploadError, setUploadError] = useState('');
     const fileInputRef = useRef(null);
 
-    const emptyForm = { name: '', description: '', image: '' };
+    const emptyForm = { name: '', description: '', image: '', lead: '', joining_form: '' };
     const [formData, setFormData] = useState(emptyForm);
 
     useEffect(() => { fetchCommunities(); }, []);
@@ -33,7 +33,7 @@ const AdminCommunities = () => {
 
     const handleEdit = (item) => {
         setEditingItem(item);
-        setFormData({ name: item.name || '', description: item.description || '', image: item.image || '' });
+        setFormData({ name: item.name || '', description: item.description || '', image: item.image || '', lead: item.lead || '', joining_form: item.joining_form || '' });
         setImagePreview(item.image || '');
         setSelectedFile(null);
         setUploadError('');
@@ -386,11 +386,25 @@ const AdminCommunities = () => {
                                         {uploadError && <div className="error-msg" style={{ marginTop: '0.5rem' }}>{uploadError}</div>}
                                     </div>
 
-                                    {/* Name */}
+                                    {/* Identity */}
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                        <div>
+                                            <label className="field-label">Identity (Name)</label>
+                                            <input className="field-input" type="text" required placeholder="Community name"
+                                                value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                                        </div>
+                                        <div>
+                                            <label className="field-label">Lead (Required)</label>
+                                            <input className="field-input" type="text" required placeholder="Lead name"
+                                                value={formData.lead} onChange={e => setFormData({ ...formData, lead: e.target.value })} />
+                                        </div>
+                                    </div>
+
+                                    {/* Links */}
                                     <div>
-                                        <label className="field-label">Identity</label>
-                                        <input className="field-input" type="text" required placeholder="Community name"
-                                            value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                                        <label className="field-label">Joining Form Link</label>
+                                        <input className="field-input" type="url" placeholder="https://forms.google.com/..."
+                                            value={formData.joining_form} onChange={e => setFormData({ ...formData, joining_form: e.target.value })} />
                                     </div>
 
                                     {/* Description */}

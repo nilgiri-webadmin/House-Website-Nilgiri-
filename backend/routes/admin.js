@@ -84,7 +84,7 @@ router.get('/communities', authenticateToken, requireAdmin, async (req, res) => 
 // POST /api/admin/communities - Create new community
 router.post('/communities', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const { name, description, image, instagram, discord, website } = req.body;
+    const { name, description, lead, joining_form, events, image } = req.body;
 
     if (!name) {
       return res.status(400).json({ error: 'Community name is required' });
@@ -95,10 +95,10 @@ router.post('/communities', authenticateToken, requireAdmin, async (req, res) =>
       .insert({
         name,
         description: description || null,
+        lead: lead || null,
+        joining_form: joining_form || null,
+        events: events || null,
         image: image || null,
-        instagram: instagram || null,
-        discord: discord || null,
-        website: website || null,
         created_at: new Date().toISOString()
       })
       .select()
@@ -119,15 +119,15 @@ router.post('/communities', authenticateToken, requireAdmin, async (req, res) =>
 // PUT /api/admin/communities/:id - Update community
 router.put('/communities/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const { name, description, image, instagram, discord, website } = req.body;
+    const { name, description, lead, joining_form, events, image } = req.body;
 
     const updateData = {};
     if (name !== undefined) updateData.name = name;
     if (description !== undefined) updateData.description = description;
+    if (lead !== undefined) updateData.lead = lead;
+    if (joining_form !== undefined) updateData.joining_form = joining_form;
+    if (events !== undefined) updateData.events = events;
     if (image !== undefined) updateData.image = image;
-    if (instagram !== undefined) updateData.instagram = instagram;
-    if (discord !== undefined) updateData.discord = discord;
-    if (website !== undefined) updateData.website = website;
 
     const { data, error } = await supabase
       .from('communities')
