@@ -38,7 +38,7 @@ const AdminEvents = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Purge this operation?")) return;
         try {
-            await client.delete(`/admin/events/${id}`, {
+            await client.delete(`/events/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setEvents(events.filter(e => e.id !== id));
@@ -101,9 +101,9 @@ const AdminEvents = () => {
 
             const payload = { ...formData, img_url: finalImageUrl };
             if (editingItem) {
-                await client.put(`/admin/events/${editingItem.id}`, payload, config);
+                await client.put(`/events/${editingItem.id}`, payload, config);
             } else {
-                await client.post('/admin/events', payload, config);
+                await client.post('/events', payload, config);
             }
             setShowModal(false);
             resetForm();

@@ -43,7 +43,7 @@ const AdminCommunities = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Purge this community?")) return;
         try {
-            await client.delete(`/admin/communities/${id}`, {
+            await client.delete(`/communities/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setCommunities(communities.filter(c => c.id !== id));
@@ -81,9 +81,9 @@ const AdminCommunities = () => {
 
             const payload = { ...formData, image: finalImageUrl };
             if (editingItem) {
-                await client.put(`/admin/communities/${editingItem.id}`, payload, config);
+                await client.put(`/communities/${editingItem.id}`, payload, config);
             } else {
-                await client.post('/admin/communities', payload, config);
+                await client.post('/communities', payload, config);
             }
             setShowModal(false);
             setSelectedFile(null);
