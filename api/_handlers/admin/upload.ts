@@ -7,6 +7,20 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // CORS
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT,DELETE');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method === 'POST') {
     return requireAdmin()(handlePost)(req, res);
   } else {
@@ -99,6 +113,6 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     });
   } catch (error: any) {
     console.error('Error uploading file:', error);
-    return res.status(500).json({ error: error.message || 'Failed to upload file' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

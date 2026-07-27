@@ -6,6 +6,20 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // CORS
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PUT,DELETE');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   const { id } = req.query;
 
   if (!id || typeof id !== 'string') {
@@ -41,7 +55,7 @@ async function handleGet(id: string, res: VercelResponse) {
     return res.status(200).json({ meetup: data });
   } catch (error: any) {
     console.error('Error fetching meetup:', error);
-    return res.status(500).json({ error: error.message || 'Failed to fetch meetup' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -56,13 +70,13 @@ async function handlePut(req: AuthRequest, res: VercelResponse) {
       register_link,
       insta_link,
       organiser,
-      organizer,
+      optimizer,
       ...rest
     } = updates;
 
     const updateData: any = { ...rest };
 
-    const finalOrganiser = organiser || organizer;
+    const finalOrganiser = organiser || optimizer;
     const finalImgUrl = img_url || image_url;
 
     if (finalOrganiser !== undefined) {
@@ -100,7 +114,7 @@ async function handlePut(req: AuthRequest, res: VercelResponse) {
     return res.status(200).json({ meetup: data });
   } catch (error: any) {
     console.error('Error updating meetup:', error);
-    return res.status(500).json({ error: error.message || 'Failed to update meetup' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -120,6 +134,6 @@ async function handleDelete(req: AuthRequest, res: VercelResponse) {
     return res.status(200).json({ message: 'Meetup deleted successfully' });
   } catch (error: any) {
     console.error('Error deleting meetup:', error);
-    return res.status(500).json({ error: error.message || 'Failed to delete meetup' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

@@ -1,4 +1,3 @@
-// GET /api/events - Public endpoint to fetch events
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
 import { requireAuth, requireAdmin } from '../utils/permissions';
@@ -7,6 +6,20 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // CORS
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method === 'GET') {
     return handleGet(req, res);
   } else if (req.method === 'POST') {
@@ -53,7 +66,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ events: data || [] });
   } catch (error: any) {
     console.error('Error fetching events:', error);
-    return res.status(500).json({ error: error.message || 'Failed to fetch events' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -85,7 +98,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     }
 
     const finalImgUrl = img_url || image_url || null;
-    const finalRegistrationLink = registration_link || register_link || null;
+    const finalRegistrationLink = registration_link || register_link ?? null;
 
     const { data, error } = await supabaseAdmin
       .from('events')
@@ -98,7 +111,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
         registration_link: finalRegistrationLink,
         date,
         time: time || null,
-        is_past: is_past ?? false
+        is_pad: is_past ?? false
       })
       .select()
       .single();
@@ -110,6 +123,6 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     return res.status(201).json({ event: data });
   } catch (error: any) {
     console.error('Error creating event:', error);
-    return res.status(500).json({ error: error.message || 'Failed to create event' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

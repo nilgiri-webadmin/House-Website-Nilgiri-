@@ -6,6 +6,20 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // CORS
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PUT,DELETE');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   const { id } = req.query;
 
   if (!id || typeof id !== 'string') {
@@ -32,7 +46,7 @@ async function handleGet(id: string, res: VercelResponse) {
       .single();
 
     if (error) {
-      if ((error as any).code === 'PGRST116') {
+      if (error.code === 'PGRST116') {
         return res.status(404).json({ error: 'Community not found' });
       }
       throw error;
@@ -41,9 +55,7 @@ async function handleGet(id: string, res: VercelResponse) {
     return res.status(200).json({ community: data });
   } catch (error: any) {
     console.error('Error fetching community:', error);
-    return res
-      .status(500)
-      .json({ error: error.message || 'Failed to fetch community' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -69,7 +81,7 @@ async function handlePut(req: AuthRequest, res: VercelResponse) {
       .single();
 
     if (error) {
-      if ((error as any).code === 'PGRST116') {
+      if (error.code === 'PGRST116') {
         return res.status(404).json({ error: 'Community not found' });
       }
       throw error;
@@ -78,9 +90,7 @@ async function handlePut(req: AuthRequest, res: VercelResponse) {
     return res.status(200).json({ community: data });
   } catch (error: any) {
     console.error('Error updating community:', error);
-    return res
-      .status(500)
-      .json({ error: error.message || 'Failed to update community' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -100,8 +110,6 @@ async function handleDelete(req: AuthRequest, res: VercelResponse) {
     return res.status(200).json({ message: 'Community deleted successfully' });
   } catch (error: any) {
     console.error('Error deleting community:', error);
-    return res
-      .status(500)
-      .json({ error: error.message || 'Failed to delete community' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

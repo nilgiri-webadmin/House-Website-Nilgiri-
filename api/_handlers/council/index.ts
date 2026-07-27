@@ -6,6 +6,20 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // CORS
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method === 'GET') {
     return handleGet(req, res);
   } else if (req.method === 'POST') {
@@ -47,9 +61,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json(data || []);
   } catch (error: any) {
     console.error('Error fetching council members:', error);
-    return res
-      .status(500)
-      .json({ error: error.message || 'Failed to fetch council members' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -101,8 +113,6 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     return res.status(201).json(data);
   } catch (error: any) {
     console.error('Error creating council member:', error);
-    return res
-      .status(500)
-      .json({ error: error.message || 'Failed to create council member' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

@@ -6,6 +6,20 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  // CORS
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method === 'GET') {
     return handleGet(req, res);
   } else if (req.method === 'POST') {
@@ -26,7 +40,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
       .from('meetups')
       .select('*', { count: 'exact', head: true });
 
-    if (isPat !== undefined) {
+    if (isPast !== undefined) {
       countQuery = countQuery.eq('is_past', isPast === 'true');
     }
 
@@ -58,7 +72,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     });
   } catch (error: any) {
     console.error('Error fetching meetups:', error);
-    return res.status(500).json({ error: error.message || 'Failed to fetch meetups' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
@@ -112,6 +126,6 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     return res.status(201).json({ meetup: data });
   } catch (error: any) {
     console.error('Error creating meetup:', error);
-    return res.status(500).json({ error: error.message || 'Failed to create meetup' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

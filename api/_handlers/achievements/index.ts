@@ -8,8 +8,9 @@ export default async function handler(
   res: VercelResponse
 ) {
   // Handle CORS
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT,DELETE');
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -77,7 +78,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     console.error('[Achievements GET] Unexpected error:', error);
     return res
       .status(500)
-      .json({ error: error.message || 'Failed to fetch achievements' });
+      .json({ error: 'Internal server error' });
   }
 }
 
@@ -121,6 +122,6 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     console.error('Error creating achievement:', error);
     return res
       .status(500)
-      .json({ error: error.message || 'Failed to create achievement' });
+      .json({ error: 'Internal server error' });
   }
 }
