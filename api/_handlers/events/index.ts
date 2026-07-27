@@ -1,8 +1,8 @@
+// GET /api/events - Public endpoint to fetch events
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
-import { requireAuth, requireRole, AuthRequest } from '../utils/auth';
+import { requireAuth, requireAdmin } from '../utils/permissions';
 
-// GET /api/events - Public endpoint to fetch events
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
@@ -10,7 +10,7 @@ export default async function handler(
   if (req.method === 'GET') {
     return handleGet(req, res);
   } else if (req.method === 'POST') {
-    return requireRole(['secretary', 'webadmin'])(handlePost)(req, res);
+    return requireAdmin()(handlePost)(req, res);
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -20,13 +20,13 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
   try {
     const { checkSupabaseConfig } = await import('../utils/supabase.js');
     checkSupabaseConfig();
-    
+
     if (!supabaseClient) {
       return res.status(500).json({ error: 'Database not configured' });
     }
 
     const { isPast, limit, category } = req.query;
-    
+
     let query = supabaseClient
       .from('events')
       .select('*')
@@ -61,7 +61,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
   try {
     const { checkSupabaseConfig } = await import('../utils/supabase.js');
     checkSupabaseConfig();
-    
+
     if (!supabaseAdmin) {
       return res.status(500).json({ error: 'Database not configured' });
     }

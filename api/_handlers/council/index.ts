@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin } from '../utils/permissions';
 
 export default async function handler(
   req: VercelRequest,
@@ -9,7 +9,7 @@ export default async function handler(
   if (req.method === 'GET') {
     return handleGet(req, res);
   } else if (req.method === 'POST') {
-    return requireRole(['secretary', 'webadmin'])(handlePost)(req, res);
+    return requireAdmin()(handlePost)(req, res);
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -106,4 +106,3 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
       .json({ error: error.message || 'Failed to create council member' });
   }
 }
-

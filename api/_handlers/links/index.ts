@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs/promises';
 import path from 'path';
+import { requireAdmin } from '../utils/permissions';
 
 // Initialize Supabase
 const supabase = createClient(
@@ -135,59 +136,9 @@ export default async function handler(
       });
     }
 
-    // POST - Create a new link
+    // POST - Create a new link (admin only)
     if (req.method === 'POST') {
-      const { title, url, description, category } = req.body;
-
-      // Validate input
-      const link = { title, url, description, category };
-      const validationErrors = validateLink(link);
-
-      if (validationErrors.length > 0) {
-        return res.status(400).json({ errors: validationErrors });
-      }
-
-      const newLink = {
-        id: `link_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        title: title.trim(),
-        url: url.trim(),
-        description: description ? description.trim() : null,
-        category: category ? category.trim() : null,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-
-      // Try to save to Supabase first
-      if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        try {
-          const { data, error } = await supabase
-            .from('important_links')
-            .insert([newLink])
-            .select()
-            .single();
-
-          if (!error && data) {
-            return res.status(201).json({
-              link: data,
-              message: 'Link created successfully',
-              source: 'supabase'
-            });
-          }
-        } catch (supabaseError: any) {
-          console.warn('Supabase unavailable, saving to JSON file:', supabaseError.message);
-        }
-      }
-
-      // Fallback to JSON file
-      const links = await readLinksFromFile();
-      links.push(newLink);
-      await writeLinksToFile(links);
-
-      return res.status(201).json({
-        link: newLink,
-        message: 'Link created successfully',
-        source: 'json'
-      });
+      return requireAdmin()(handlePost)(req, res);
     }
 
     return res.status(405).json({ error: 'Method not allowed' });
@@ -195,4 +146,58 @@ export default async function handler(
     console.error('Links handler error:', error);
     return res.status(500).json({ error: error.message || 'Internal server error' });
   }
+}
+
+async function handlePost(req: AuthRequest, res: VercelResponse) {
+  const { title, url, description, category } = req.body;
+
+  // Validate input
+  const link = { title, url, description, category };
+  const validationErrors = validateLink(link);
+
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ errors: validationErrors });
+  }
+
+  const newLink = {
+    id: `link_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    title: title.trim(),
+    url: url.trim(),
+    description: description ? description.trim() : null,
+    category: category ? category.trim() : null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+
+  // Try to save to Supabase first
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const { data, error } = await supabase
+        .from('important_links')
+        .insert([newLink])
+        .select()
+        .single();
+
+      if (!error && data) {
+        return res.status(201).json({
+          link: data,
+          message: 'Link created successfully',
+          source: 'supabase'
+        });
+      }
+    } catch (supabaseError: any) {
+      console.warn('Supabase unavailable, saving to JSON file:', supabaseError.message);
+    }
+  }
+
+  // Fallback to JSON file
+  const links = await readLinksFromFile();
+  links.push(newLink);
+  await writeLinksToFile(links);
+
+  return res.status(201).json({
+    link: newLink,
+    message: 'Link created successfully',
+    source: 'json'
+  });
 }

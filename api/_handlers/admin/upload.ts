@@ -1,21 +1,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin, AuthRequest } from '../utils/permissions';
 import { Readable } from 'stream';
 
-export default requireRole(['secretary', 'webadmin'])(async function handler(
-  req: AuthRequest,
+export default async function handler(
+  req: VercelRequest,
   res: VercelResponse
 ) {
-  if (req.method !== 'POST') {
+  if (req.method === 'POST') {
+    return requireAdmin()(handlePost)(req, res);
+  } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+}
 
+async function handlePost(req: AuthRequest, res: VercelResponse) {
   try {
     // Handle file upload
     // Note: Vercel serverless functions have limitations with multipart/form-data
     // For production, consider using a service like Cloudinary or handling uploads client-side
-    
+
     const { file, fileName, folder, bucket } = req.body;
 
     if (!file || !fileName) {
@@ -33,12 +37,12 @@ export default requireRole(['secretary', 'webadmin'])(async function handler(
 
     const bucketName = bucket || 'nilgiri_media';
     const folderPath = folder || 'Nilgiri Website/Communities';
-    
+
     // Generate unique filename
     const ext = fileName.substring(fileName.lastIndexOf('.'));
     const uniqueId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const uniqueFileName = `${uniqueId}${ext}`;
-    
+
     // Full path for storage
     const filePath = `${folderPath}/${uniqueFileName}`;
 
@@ -97,4 +101,4 @@ export default requireRole(['secretary', 'webadmin'])(async function handler(
     console.error('Error uploading file:', error);
     return res.status(500).json({ error: error.message || 'Failed to upload file' });
   }
-});
+}

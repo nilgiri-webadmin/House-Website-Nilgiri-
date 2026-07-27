@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin } from '../utils/permissions';
 
 export default async function handler(
   req: VercelRequest,
@@ -9,7 +9,7 @@ export default async function handler(
   if (req.method === 'GET') {
     return handleGet(req, res);
   } else if (req.method === 'POST') {
-    return requireRole(['secretary', 'webadmin'])(handlePost)(req, res);
+    return requireAdmin()(handlePost)(req, res);
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -20,13 +20,13 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     const { isPast, limit, offset } = req.query;
     const pageSize = limit ? parseInt(limit as string, 10) : 12;
     const pageOffset = offset ? parseInt(offset as string, 10) : 0;
-    
+
     // First, get the total count with the filter applied
     let countQuery = supabaseClient
       .from('meetups')
       .select('*', { count: 'exact', head: true });
 
-    if (isPast !== undefined) {
+    if (isPat !== undefined) {
       countQuery = countQuery.eq('is_past', isPast === 'true');
     }
 
@@ -51,7 +51,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
       throw error;
     }
 
-    return res.status(200).json({ 
+    return res.status(200).json({
       meetups: data || [],
       total: totalCount || 0,
       hasMore: totalCount ? (pageOffset + pageSize) < totalCount : false

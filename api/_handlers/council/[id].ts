@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin } from '../utils/permissions';
 
 export default async function handler(
   req: VercelRequest,
@@ -15,9 +15,9 @@ export default async function handler(
   if (req.method === 'GET') {
     return handleGet(id, res);
   } else if (req.method === 'PUT') {
-    return requireRole(['secretary', 'webadmin'])(handlePut)(req, res);
+    return requireAdmin()(handlePut)(req, res);
   } else if (req.method === 'DELETE') {
-    return requireRole(['secretary', 'webadmin'])(handleDelete)(req, res);
+    return requireAdmin()(handleDelete)(req, res);
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -122,8 +122,12 @@ async function handleDelete(req: AuthRequest, res: VercelResponse) {
 // Helper function to sync council data to YAML
 async function syncCouncilToYaml(councilData: any) {
   try {
-    const yamlPath = path.join(process.cwd(), 'public/council-data.yml');
-    const fileContent = await fs.readFile(yamlPath, 'utf-8');
+    const { resolve } = await import('path');
+    const { readFile, writeFile } = await import('fs');
+    const yaml = await import('js-yaml');
+
+    const yamlPath = resolve(process.cwd(), 'public/council-data.yml');
+    const fileContent = await readFile(yamlPath, 'utf-8');
     const content = yaml.load(fileContent) as any || {};
 
     // Get team key for this member
@@ -135,5 +139,27 @@ async function syncCouncilToYaml(councilData: any) {
       'Mentors': 'mentors'
     };
     const teamKey = teamMap[councilData.team] || 'niligiri_uhc';
-  } catch (error: any) {
 
+    // Update the specific council member in the YAML
+    if (content[teamKey] && Array.isArray(content[teamKey])) {
+      const memberIndex = content[teamKey].findIndex((m: any) => m.id === councilData.id);
+      if (memberIndex !== -1) {
+        content[teamKey][memberIndex] = {
+          id: councilData.id,
+          name: councilData.name,
+          position: councilData.position,
+          region: councilData.region,
+          email: councilData.email,
+          linkedin: councilData.linkedin,
+          profile_photo_url: councilData.profile_photo_url,
+          tenure_year: councilData tenure_year
+        };
+
+        await writeFile(yamlPath, yaml.dump(content), 'utf-8');
+      }
+    }
+  } catch (error: any) {
+    console.warn('Could not sync council data to YAML:', error);
+    // Don't fail the request if YAML sync fails
+  }
+}

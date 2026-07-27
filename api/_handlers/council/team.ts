@@ -34,4 +34,3 @@ export default async function handler(
       .json({ error: error.message || 'Failed to fetch team members' });
   }
 }
-

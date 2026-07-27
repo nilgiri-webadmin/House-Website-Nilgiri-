@@ -8,7 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-producti
 export interface AuthUser {
   id: string;
   email: string;
-  role: 'secretary' | 'webadmin' | 'club';
+  // Extended role types to include all admin roles
+  role: 'secretary' | 'webadmin' | 'depsec' | 'admin' | 'club';
   clubId?: string;
 }
 
@@ -41,14 +42,14 @@ export function verifyToken(token: string): AuthUser | null {
 
 export async function authenticateRequest(req: VercelRequest): Promise<AuthUser | null> {
   const authHeader = req.headers.authorization;
-  
+
   console.log('🔐 Auth check:', {
     hasAuthHeader: !!authHeader,
     authHeaderValue: authHeader ? `${authHeader.substring(0, 20)}...` : 'none',
     method: req.method,
     url: req.url
   });
-  
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     console.log('❌ No valid auth header');
     return null;
@@ -78,10 +79,12 @@ export async function authenticateRequest(req: VercelRequest): Promise<AuthUser 
 
   console.log('✅ User authenticated:', { id: data.id, role: data.role });
 
+  // All admin roles have same role types (secretary, webadmin, depsec, admin) are treated as having full admin privileges
+  // No need to map - we will allow all these roles in requireRole checks
   return {
     id: data.id,
     email: data.email,
-    role: data.role as 'secretary' | 'webadmin' | 'club',
+    role: data.role,
     clubId: data.club_id || undefined
   };
 }
@@ -89,7 +92,7 @@ export async function authenticateRequest(req: VercelRequest): Promise<AuthUser 
 export function requireAuth(handler: (req: AuthRequest, res: any) => Promise<any>) {
   return async (req: VercelRequest, res: any) => {
     const user = await authenticateRequest(req);
-    
+
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -99,11 +102,12 @@ export function requireAuth(handler: (req: AuthRequest, res: any) => Promise<any
   };
 }
 
-export function requireRole(allowedRoles: Array<'secretary' | 'webadmin' | 'club'>) {
+// Updated to allow all admin roles: secretary, webadmin, depsec, admin
+export function requireRole(allowedRoles: Array<'secretary' | 'webadmin' | 'depsec' | 'admin' | 'club'>) {
   return (handler: (req: AuthRequest, res: any) => Promise<any>) => {
     return async (req: VercelRequest, res: any) => {
       const user = await authenticateRequest(req);
-      
+
       if (!user) {
         return res.status(401).json({ error: 'Unauthorized' });
       }

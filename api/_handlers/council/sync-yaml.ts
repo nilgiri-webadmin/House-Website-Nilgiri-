@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseClient } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin } from '../utils/permissions';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import * as yaml from 'js-yaml';
@@ -10,7 +10,7 @@ export default async function handler(
   res: VercelResponse
 ) {
   if (req.method === 'POST') {
-    return requireRole(['secretary', 'webadmin'])(handlePost)(req, res);
+    return requireAdmin()(handlePost)(req, res);
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }

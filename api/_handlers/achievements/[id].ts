@@ -1,6 +1,7 @@
+// GET /api/achievements/:id - Public endpoint to fetch achievement by ID
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin } from '../utils/permissions';
 
 export default async function handler(
   req: VercelRequest,
@@ -9,7 +10,10 @@ export default async function handler(
   // Handle CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PUT,DELETE');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET,OPTIONS,PUT,DELETE'
+  );
   res.setHeader(
     'Access-Control-Allow-Headers',
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
@@ -28,9 +32,9 @@ export default async function handler(
   if (req.method === 'GET') {
     return handleGet(id, res);
   } else if (req.method === 'PUT') {
-    return requireRole(['secretary', 'webadmin'])(handlePut)(req, res);
+    return requireAdmin()(handlePut)(req, res);
   } else if (req.method === 'DELETE') {
-    return requireRole(['secretary', 'webadmin'])(handleDelete)(req, res);
+    return requireAdmin()(handleDelete)(req, res);
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -120,4 +124,3 @@ async function handleDelete(req: AuthRequest, res: VercelResponse) {
       .json({ error: error.message || 'Failed to delete achievement' });
   }
 }
-

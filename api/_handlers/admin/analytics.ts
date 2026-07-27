@@ -1,15 +1,19 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin, AuthRequest } from '../utils/permissions';
 
-export default requireRole(['secretary', 'webadmin'])(async function handler(
-  req: AuthRequest,
+export default async function handler(
+  req: VercelRequest,
   res: VercelResponse
 ) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  return requireAdmin()(handleGet)(req, res);
+}
+
+async function handleGet(req: AuthRequest, res: VercelResponse) {
   try {
     const { startDate, endDate } = req.query;
 
@@ -41,29 +45,49 @@ export default requireRole(['secretary', 'webadmin'])(async function handler(
       .select('page_path')
       .select('*', { count: 'exact', head: false });
 
+    if (viewsByPathError) {
+      throw viewsByPathError;
+    }
+
     // Get event registrations count
     const { count: eventRegistrations, error: eventRegError } = await supabaseAdmin
       .from('event_registrations')
       .select('*', { count: 'exact', head: true });
+
+    if (eventRegError) {
+      throw eventRegError;
+    }
 
     // Get meetup registrations count
     const { count: meetupRegistrations, error: meetupRegError } = await supabaseAdmin
       .from('meetup_registrations')
       .select('*', { count: 'exact', head: true });
 
+    if (meetupRegError) {
+      throw meetupRegError;
+    }
+
     // Get popular events (by registration count)
     const { data: popularEvents, error: popularEventsError } = await supabaseAdmin
       .from('event_registrations')
       .select('event_id, events(title)')
-      .select('*', { count: 'exact' })
+      .order('count', { ascending: false })
       .limit(10);
+
+    if (popularEventsError) {
+      throw popularEventsError;
+    }
 
     // Get popular meetups
     const { data: popularMeetups, error: popularMeetupsError } = await supabaseAdmin
       .from('meetup_registrations')
       .select('meetup_id, meetups(title)')
-      .select('*', { count: 'exact' })
+      .order('count', { ascending: false })
       .limit(10);
+
+    if (popularMeetupsError) {
+      throw popularMeetupsError;
+    }
 
     return res.status(200).json({
       pageViews: {
@@ -83,4 +107,4 @@ export default requireRole(['secretary', 'webadmin'])(async function handler(
     console.error('Error fetching analytics:', error);
     return res.status(500).json({ error: error.message || 'Failed to fetch analytics' });
   }
-});
+}

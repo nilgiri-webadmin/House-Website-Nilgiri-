@@ -1,15 +1,15 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../utils/supabase';
-import { requireRole, AuthRequest } from '../utils/auth';
+import { requireAdmin, AuthRequest } from '../utils/permissions';
 
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
   if (req.method === 'GET') {
-    return requireRole(['secretary', 'webadmin'])(handleGet)(req, res);
+    return requireAdmin()(handleGet)(req, res);
   } else if (req.method === 'DELETE') {
-    return requireRole(['secretary', 'webadmin'])(handleDelete)(req, res);
+    return requireAdmin()(handleDelete)(req, res);
   } else {
     return res.status(405).json({ error: 'Method not allowed' });
   }

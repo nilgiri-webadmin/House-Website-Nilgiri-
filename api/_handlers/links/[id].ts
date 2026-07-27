@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs/promises';
 import path from 'path';
+import { requireAdmin } from '../utils/permissions';
 
 // Initialize Supabase
 const supabase = createClient(
@@ -126,108 +127,14 @@ export default async function handler(
       });
     }
 
-    // PUT - Update a link
+    // PUT - Update a link (admin only)
     if (req.method === 'PUT') {
-      const { title, url, description, category } = req.body;
-
-      // Validate input
-      const link = { title, url, description, category };
-      const validationErrors = validateLink(link);
-
-      if (validationErrors.length > 0) {
-        return res.status(400).json({ errors: validationErrors });
-      }
-
-      const updatedLink = {
-        title: title.trim(),
-        url: url.trim(),
-        description: description ? description.trim() : null,
-        category: category ? category.trim() : null,
-        updated_at: new Date().toISOString()
-      };
-
-      // Try to update in Supabase first
-      if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        try {
-          const { data, error } = await supabase
-            .from('important_links')
-            .update(updatedLink)
-            .eq('id', id)
-            .select()
-            .single();
-
-          if (!error && data) {
-            return res.status(200).json({
-              link: data,
-              message: 'Link updated successfully',
-              source: 'supabase'
-            });
-          }
-        } catch (supabaseError: any) {
-          console.warn('Supabase unavailable, updating JSON file:', supabaseError.message);
-        }
-      }
-
-      // Fallback to JSON file
-      const links = await readLinksFromFile();
-      const index = links.findIndex((l: any) => l.id === id);
-
-      if (index === -1) {
-        return res.status(404).json({ error: 'Link not found' });
-      }
-
-      const oldLink = links[index];
-      const updatedLinkData = {
-        ...oldLink,
-        ...updatedLink
-      };
-
-      links[index] = updatedLinkData;
-      await writeLinksToFile(links);
-
-      return res.status(200).json({
-        link: updatedLinkData,
-        message: 'Link updated successfully',
-        source: 'json'
-      });
+      return requireAdmin()(handlePut)(req, res);
     }
 
-    // DELETE - Delete a link
+    // DELETE - Delete a link (admin only)
     if (req.method === 'DELETE') {
-      // Try to delete from Supabase first
-      if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        try {
-          const { error } = await supabase
-            .from('important_links')
-            .delete()
-            .eq('id', id);
-
-          if (!error) {
-            return res.status(200).json({
-              message: 'Link deleted successfully',
-              source: 'supabase'
-            });
-          }
-        } catch (supabaseError: any) {
-          console.warn('Supabase unavailable, deleting from JSON file:', supabaseError.message);
-        }
-      }
-
-      // Fallback to JSON file
-      const links = await readLinksFromFile();
-      const index = links.findIndex((l: any) => l.id === id);
-
-      if (index === -1) {
-        return res.status(404).json({ error: 'Link not found' });
-      }
-
-      links.splice(index, 1);
-      await writeLinksToFile(links);
-
-      return res.status(200).json({
-        message: 'Link deleted successfully',
-        source: 'json'
-      });
+      return requireAdmin()(handleDelete)(req, res);
     }
 
     return res.status(405).json({ error: 'Method not allowed' });
@@ -235,4 +142,106 @@ export default async function handler(
     console.error('Link handler error:', error);
     return res.status(500).json({ error: error.message || 'Internal server error' });
   }
+}
+
+async function handlePut(req: AuthRequest, res: VercelResponse) {
+  const { title, url, description, category } = req.body;
+
+  // Validate input
+  const link = { title, url, description, category };
+  const validationErrors = validateLink(link);
+
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ errors: validationErrors });
+  }
+
+  const updatedLink = {
+    title: title.trim(),
+    url: url.trim(),
+    description: description ? description.trim() : null,
+    category: category ? category.trim() : null,
+    updated_at: new Date().toISOString()
+  };
+
+  // Try to update in Supabase first
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const { data, error } = await supabase
+        .from('important_links')
+        .update(updatedLink)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (!error && data) {
+        return res.status(200).json({
+          link: data,
+          message: 'Link updated successfully',
+          source: 'supabase'
+        });
+      }
+    } catch (supabaseError: any) {
+      console.warn('Supabase unavailable, updating JSON file:', supabaseError.message);
+    }
+  }
+
+  // Fallback to JSON file
+  const links = await readLinksFromFile();
+  const index = links.findIndex((l: any) => l.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: 'Link not found' });
+  }
+
+  const oldLink = links[index];
+  const updatedLinkData = {
+    ...oldLink,
+    ...updatedLink
+  };
+
+  links[index] = updatedLinkData;
+  await writeLinksToFile(links);
+
+  return res.status(200).json({
+    link: updatedLinkData,
+    message: 'Link updated successfully',
+    source: 'json'
+  });
+}
+
+async function handleDelete(req: AuthRequest, res: VercelResponse) {
+  // Try to delete from Supabase first
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const { error } = await supabase
+        .from('important_links')
+        .delete()
+        .eq('id', id);
+
+      if (!error) {
+        return res.status(200).json({
+          message: 'Link deleted successfully',
+          source: 'supabase'
+        });
+      }
+    } catch (supabaseError: any) {
+      console.warn('Supabase unavailable, deleting from JSON file:', supabaseError.message);
+    }
+  }
+
+  // Fallback to JSON file
+  const links = await readLinksFromFile();
+  const index = links.findIndex((l: any) => l.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: 'Link not found' });
+  }
+
+  links.splice(index, 1);
+  await writeLinksToFile(links);
+
+  return res.status(200).json({
+    message: 'Link deleted successfully',
+    source: 'json'
+  });
 }
