@@ -22,9 +22,14 @@ function getAppsScriptUrlForCommunity(communityKey: string): string {
     .filter(Boolean);
 
   const index = COMMUNITY_APPS_SCRIPT_INDEX[communityKey] ?? 0;
-  const url = urls[index];
+  let url = urls[index];
   if (!url) {
-    throw new Error(`No Apps Script deployment configured for "${communityKey}" (expected URL at position ${index + 1} in APPS_SCRIPT_WEBAPP_URL)`);
+    // Fallback to index 0 if the specific index is not available
+    url = urls[0];
+    if (!url) {
+      throw new Error(`No Apps Script deployment configured for "${communityKey}" (no valid URLs found)`);
+    }
+    console.warn(`Apps Script URL for community "${communityKey}" at index ${index} not found, falling back to index 0`);
   }
   return url;
 }
@@ -60,8 +65,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       appsScriptUrl = getAppsScriptUrlForCommunity(communityKey);
     } catch (configError: any) {
-      console.error(configError.message);
-      return res.status(500).json({ error: 'Server configuration error' });
+      console.error(`Apps Script configuration error for community '${communityKey}':`, configError.message);
+      return res.status(500).json({
+        error: 'Server configuration error: Missing or invalid APPS_SCRIPT_WEBAPP_URL environment variable. Please check your deployment settings.'
+      });
     }
 
     const response = await fetch(appsScriptUrl, {

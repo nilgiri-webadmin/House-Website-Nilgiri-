@@ -5,14 +5,23 @@ import client from '../api/client';
 import { getCommunityFormUrl } from '../data/communityForms';
 import './JoinPage.css';
 
-const FIELDS_PER_STEP = 7;
+const TARGET_STEPS = 3;
 
 const getInitialValue = (field) => field.type === 'checkboxes' ? [] : '';
 
 const chunkFields = (fields) => {
+  if (!fields || fields.length === 0) return [[]];
+  const totalFields = fields.length;
+  const fieldsPerStep = Math.max(1, Math.ceil(totalFields / TARGET_STEPS));
   const chunks = [];
-  for (let index = 0; index < fields.length; index += FIELDS_PER_STEP) {
-    chunks.push(fields.slice(index, index + FIELDS_PER_STEP));
+  for (let index = 0; index < totalFields; index += fieldsPerStep) {
+    chunks.push(fields.slice(index, index + fieldsPerStep));
+  }
+  // Ensure we don't have more than TARGET_STEPS chunks
+  if (chunks.length > TARGET_STEPS) {
+    // Redistribute last chunk into previous ones
+    const lastChunk = chunks.pop();
+    chunks[chunks.length - 1] = [...chunks[chunks.length - 1], ...lastChunk];
   }
   return chunks;
 };
@@ -64,7 +73,16 @@ const GlassInput = ({ icon, type = "text", placeholder, value, onChange, onBlur,
           <label className={`join-floating-label ${isActive ? 'active' : ''}`}>
             {placeholder}{required && <span className="required">*</span>}
           </label>
-          <input type={type} value={value || ''} onChange={(e) => onChange(e.target.value)} onFocus={handleFocus} onBlur={handleBlur} autoComplete="off" className="join-input" />
+          <input 
+            type={type} 
+            value={value || ''} 
+            onChange={(e) => onChange(e.target.value)} 
+            onFocus={handleFocus} 
+            onBlur={handleBlur} 
+            autoComplete="off" 
+            className="join-input" 
+            placeholder={placeholder}
+          />
         </div>
       </div>
       <div className="join-input-line"><div className={`join-input-line-fill ${isActive ? 'filled' : ''}`} /></div>
@@ -211,7 +229,11 @@ const JoinPage = () => {
     loadSchema(); return () => { mounted = false; };
   }, [community?.joining_form]);
 
-  const steps = useMemo(() => chunkFields(schema?.fields || []), [schema?.fields]);
+  const steps = useMemo(() => {
+    const result = chunkFields(schema?.fields || []);
+    console.log('Steps:', result.length, 'chunks', result.map(c => c.length));
+    return result;
+  }, [schema?.fields]);
   const activeFields = steps[step] || [];
   const isLastStep = step >= steps.length - 1;
 
@@ -260,7 +282,7 @@ const JoinPage = () => {
       <div className="join-bg" />
       <section className="join-hero">
         <Link to="/community" className="join-back-link"><ArrowLeft size={16} /> Communities</Link>
-        <div className="join-hero-grid">
+        <div className="join-hero-centered">
           <div className="join-copy">
             <span className="join-kicker">Nilgiri Community Trail</span>
             <h1>{communityName}</h1>
@@ -271,7 +293,6 @@ const JoinPage = () => {
               <span><CheckCircle2 size={15} /> Records go to Google Forms</span>
             </div>
           </div>
-          <div className="join-image-panel"><img src={communityImage} alt={communityName} /></div>
         </div>
       </section>
 
@@ -287,23 +308,27 @@ const JoinPage = () => {
           {loading ? <div className="join-loading">Loading the community form...</div> : error ? <div className="join-error">{error}</div> : null}
 
           {!loading && !submitted && (
-            <div className="join-field-stack" key={step}>
-              {activeFields.map(field => {
-                const value = answers[field.entryId];
-                const icon = getFieldIcon(field);
-                const props = { field, value, onChange: v => updateAnswer(field.entryId, v), required: field.required };
-                return (
-                  <div className="join-field-block" key={field.entryId}>
-                    {field.type === 'paragraph' && <GlassTextarea icon={icon} {...props} />}
-                    {field.type === 'multiple_choice' && <GlassRadioGroup {...props} />}
-                    {field.type === 'checkboxes' && <GlassCheckboxGroup {...props} />}
-                    {field.type === 'dropdown' && <GlassSelect icon={icon} {...props} />}
-                    {!['paragraph', 'multiple_choice', 'checkboxes', 'dropdown'].includes(field.type) && (
-                      <GlassInput icon={icon} type={field.type === 'date' ? 'date' : field.type === 'time' ? 'time' : 'text'} {...props} />
-                    )}
-                  </div>
-                );
-              })}
+            <div className="join-field-stack" key={step} data-step={step}>
+              {activeFields.length === 0 ? (
+                <div className="join-empty-step">No fields in this section</div>
+              ) : (
+                activeFields.map(field => {
+                  const value = answers[field.entryId];
+                  const icon = getFieldIcon(field);
+                  const props = { field, value, onChange: v => updateAnswer(field.entryId, v), required: field.required };
+                  return (
+                    <div className="join-field-block" key={field.entryId}>
+                      {field.type === 'paragraph' && <GlassTextarea icon={icon} {...props} />}
+                      {field.type === 'multiple_choice' && <GlassRadioGroup {...props} />}
+                      {field.type === 'checkboxes' && <GlassCheckboxGroup {...props} />}
+                      {field.type === 'dropdown' && <GlassSelect icon={icon} {...props} />}
+                      {!['paragraph', 'multiple_choice', 'checkboxes', 'dropdown'].includes(field.type) && (
+                        <GlassInput icon={icon} type={field.type === 'date' ? 'date' : field.type === 'time' ? 'time' : 'text'} {...props} />
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
           )}
 
