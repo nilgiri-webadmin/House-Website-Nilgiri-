@@ -12,8 +12,12 @@ import GlobeScrollDemo from '../components/landing-page';
 const Home = () => {
     return (
         <div className="bg-black">
+            <div className="text-center text-white p-10">
+                <h1>HOME PAGE MODIFICATION TEST</h1>
+                <p>If you can see this, the home page is being rendered correctly.</p>
+            </div>
             <Hero />
-            
+
             {/* Globe animation landing page section */}
             <GlobeScrollDemo />
 

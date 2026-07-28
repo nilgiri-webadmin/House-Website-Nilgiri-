@@ -1,284 +1,125 @@
 niligiri_uhc:
-  - id: "1"
-    name: "Anubrata De"
-    position: "Secretary"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Anubrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0FudWJyYXRhLndlYnAiLCJpYXQiOjE3Njg4MDcyMDksImV4cCI6MTgwMDM0MzIwOX0.XXcXRjwUOnqeCsArsZaozlXcp75JIA-fyT-mylI0J-M"
-    email: "23f3001069@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/anubratade/"
-    region: "Kolkata"
-    team: "UHC"
-    tenure: "25-26"
-
-  - id: "2"
-    name: "Aman Gupta"
-    position: "Deputy Secretary"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Aman.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0FtYW4ud2VicCIsImlhdCI6MTc2ODgwNzIyNywiZXhwIjoxODAwMzQzMjI3fQ.fb2SfIow_VHyOIcXw8DKUVeLRvcsPjKDblncg3V3MXQ"
-    email: "24f2002969@ds.study.iitm.ac.in"
-    linkedin: "https://linkedin.com/in/aman-gupta-73a737323"
-    region: "Mumbai"
-    team: "UHC"
-    tenure: "25-26"
-
-  - id: "3"
-    name: "Kirandwip Paul"
-    position: "Web-Admin"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Kirandwip.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0tpcmFuZHdpcC53ZWJwIiwiaWF0IjoxNzY4ODA3MjQyLCJleHAiOjE4MDAzNDMyNDJ9.RfCU21YSP7W7lTr6cvNANIC8x8kzrtNARKJmbKhgctc"
-    email: "23f2001831@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/kirandwip-paul-40812025a/"
-    region: "Kolkata"
-    team: "UHC"
-    tenure: "25-26"
-
+  - name: Kirandwip Paul
+    position: Web-Admin
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Kirandwip.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0tpcmFuZHdpcC53ZWJwIiwiaWF0IjoxNzY4ODA3MjQyLCJleHAiOjE4MDAzNDMyNDJ9.RfCU21YSP7W7lTr6cvNANIC8x8kzrtNARKJmbKhgctc
+  - name: Anubrata De
+    position: Secretary
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Anubrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0FudWJyYXRhLndlYnAiLCJpYXQiOjE3Njg4MDcyMDksImV4cCI6MTgwMDM0MzIwOX0.XXcXRjwUOnqeCsArsZaozlXcp75JIA-fyT-mylI0J-M
+  - name: Aman Gupta
+    position: Deputy Secretary
+    region: Mumbai
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Aman.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0FtYW4ud2VicCIsImlhdCI6MTc2ODgwNzIyNywiZXhwIjoxODAwMzQzMjI3fQ.fb2SfIow_VHyOIcXw8DKUVeLRvcsPjKDblncg3V3MXQ
 operations:
-  - id: "m1"
-    name: "Drushti Surkar"
-    position: "Multimedia"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Drushti.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0RydXNodGkud2VicCIsImlhdCI6MTc2ODgwNzI2MywiZXhwIjoxODAwMzQzMjYzfQ.R2f6z_uzeP-zji1SheMmratnytjiQApJmRSVa0y0bVc"
-    email: "23f2001500@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/drushtisurkar/"
-    region: "Mumbai"
-    team: "Operations"
-    tenure: "25-26"
-
-  - id: "m2"
-    name: "Kangana Yadav"
-    position: "Multimedia"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Kangna.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0thbmduYS53ZWJwIiwiaWF0IjoxNzY4ODA3MzQwLCJleHAiOjE4MDAzNDMzNDB9.sQvftMqVnf-ujSFVNUPUuMvekdH5uxlc-0FuuWdNeTo"
-    email: "24f2007116@ds.study.iitm.ac.in"
-    linkedin: ""
-    region: "Delhi"
-    team: "Operations"
-    tenure: "25-26"
-
-  - id: "m3"
-    name: "Poulami Saha"
-    position: "Multimedia"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Poulami.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1BvdWxhbWkud2VicCIsImlhdCI6MTc2ODgwNzQ4MywiZXhwIjoxODAwMzQzNDgzfQ.umOnxus8s3MaXUheg2uzohvG0_dSPPTqcGSXg5HWEbs"
-    email: "25F1002454@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/poulami-saha-972297381?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-    region: "Kolkata"
-    team: "Operations"
-    tenure: "25-26"
-    
-  - id: "m4"
-    name: "Tandra Ganguly"
-    position: "Multimedia"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Tandra.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1RhbmRyYS53ZWJwIiwiaWF0IjoxNzY4ODA3MzYxLCJleHAiOjE4MDAzNDMzNjF9.wgJeHe9pUaT9uUYwk9n-Hbb_V0mAVNsxM4gf0BGaVB8"
-    email: "25f2000191@ds.study.iitm.ac.in"
-    linkedin: "http://www.linkedin.com/in/tandra-ganguly-998257314"
-    region: "Mumbai"
-    team: "Operations"
-    tenure: "25-26"
-
-  - id: "m5 "
-    name: "Aditya Raj"
-    position: "Webops Team"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Aditya.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0FkaXR5YS53ZWJwIiwiaWF0IjoxNzY4ODIzMjU4LCJleHAiOjE4MDAzNTkyNTh9._rrzoXXOlzw9jhM7OLB_J-jElw5JxsPm56wd1K5k1jI"
-    email: "23f2003845@ds.study.iitm.ac.in"
-    linkedin: ""
-    region: "Patna"
-    team: "Operations"
-    tenure: "25-26"
-
-  - id: "m6"
-    name: "Brahmi Paliwal"
-    position: "Multimedia"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Brahmi.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0JyYWhtaS53ZWJwIiwiaWF0IjoxNzY4ODIzNTI3LCJleHAiOjE4MDAzNTk1Mjd9.DnoP8ScSwGTNmznTNEyyhkOiUru9Y4mFC9HEwWmbDng"
-    email: "24f3004026@ds.study.iitm.ac.in"
-    linkedin: ""
-    region: "Mumbai"
-    team: "Operations"
-    tenure: "25-26"
-
+  - name: Kangana Yadav
+    position: MultiMedia & PR team
+    region: Mumbai
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Kangna.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0thbmduYS53ZWJwIiwiaWF0IjoxNzY4ODA3MzQwLCJleHAiOjE4MDAzNDMzNDB9.sQvftMqVnf-ujSFVNUPUuMvekdH5uxlc-0FuuWdNeTo
+  - name: Tandra Ganguly
+    position: MultiMedia & PR team
+    region: Mumbai
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Tandra.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1RhbmRyYS53ZWJwIiwiaWF0IjoxNzY4ODA3MzYxLCJleHAiOjE4MDAzNDMzNjF9.wgJeHe9pUaT9uUYwk9n-Hbb_V0mAVNsxM4gf0BGaVB8
+  - name: Poulami Saha
+    position: MultiMedia & PR team
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Poulami.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1BvdWxhbWkud2VicCIsImlhdCI6MTc2ODgwNzQ4MywiZXhwIjoxODAwMzQzNDgzfQ.umOnxus8s3MaXUheg2uzohvG0_dSPPTqcGSXg5HWEbs
+  - name: Premanand Jena
+    position: PR Coordinator
+    region: Mumbai
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Premamand.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1ByZW1hbWFuZC53ZWJwIiwiaWF0IjoxNzY4ODA3NDYyLCJleHAiOjE4MDAzNDM0NjJ9.0LmAoM1OdKMFev6UQpGTWWaJfQFsx0bfrPZx8gUjPXM
+  - name: Brahmi Paliwal
+    position: PR team
+    region: Mumbai
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Brahmi.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0JyYWhtaS53ZWJwIiwiaWF0IjoxNzY4ODIzNTI3LCJleHAiOjE4MDAzNTk1Mjd9.DnoP8ScSwGTNmznTNEyyhkOiUru9Y4mFC9HEwWmbDng
+  - name: Aditya Raj
+    position: Webops Team
+    region: Patna
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Aditya.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0FkaXR5YS53ZWJwIiwiaWF0IjoxNzY4ODIzMjU4LCJleHAiOjE4MDAzNTkyNTh9._rrzoXXOlzw9jhM7OLB_J-jElw5JxsPm56wd1K5k1jI
+  - name: Drushti Surkar
+    position: Multimedia Team
+    region: Mumbai
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Drushti.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0RydXNodGkud2VicCIsImlhdCI6MTc2ODgwNzI2MywiZXhwIjoxODAwMzQzMjYzfQ.R2f6z_uzeP-zji1SheMmratnytjiQApJmRSVa0y0bVc
 regional_coordinators:
-  - id: "r1"
-    name: "Sonia S"
-    position: "Bangalore RC"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Sonia.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvbmlhLndlYnAiLCJpYXQiOjE3Njg4MDc1MTUsImV4cCI6MTgwMDM0MzUxNX0.wWXFxiB7CZDG2KwxnuSA1CZxv-JH4oBUcy5B2YXyjZM"
-    email: "24f2004150@ds.study.iitm.ac.in"
-    linkedin: ""
-    region: "Bangalore"
-    team: "RC"
-    tenure: "25-26"
-
-  - id: "r2"
-    name: "Monu Sahu"
-    position: "Chandigarh RC"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Monu.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L01vbnUud2VicCIsImlhdCI6MTc2ODgwNzUzOCwiZXhwIjoxODAwMzQzNTM4fQ.OU-RwXLR2sjRgwRlQVlFCFU-dYO2oPjXCFxOrgIiq30"
-    email: "25f1002767@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/monu-sahu-b13a85303?utm_source=share&utm_campaign=share_via&utm_content=profile&utm"
-    region: "Chandigarh"
-    team: "RC"
-    tenure: "25-26"
-
-  - id: "r3"
-    name: "Shambhavi Verma"
-    position: "Delhi RC"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Shambhavi.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NoYW1iaGF2aS53ZWJwIiwiaWF0IjoxNzY4ODA3NTU2LCJleHAiOjE4MDAzNDM1NTZ9.iW-_ZlU0mg2VbhiiJaGa_08EkdPAsD-wFHJhmzE2qqg"
-    email: "24f2003130@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/shambhavi-verma-996902313"
-    region: "Delhi"
-    team: "RC"
-    tenure: "25-26"
-
-  - id: "r4"
-    name: ""
-    position: "Hyderabad RC"
-    image: ""
-    email: ""
-    linkedin: ""
-    region: "Hyderabad"
-    team: "RC"
-    tenure: "26-27"
-
-  - id: "r5"
-    name: "Ranak De"
-    position: "Kolkata RC"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Ranak.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1JhbmFrLndlYnAiLCJpYXQiOjE3Njg4MDc2MzEsImV4cCI6MTgwMDM0MzYzMX0.WhT56azvBENmawnVOQdc1fqRlotAzZUxyd5P91X1hCE"
-    email: "25f1002493@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/ranak-de-12211a268"
-    region: "Kolkata"
-    team: "RC"
-    tenure: "25-26"
-
-  - id: "r6"
-    name: "Kushagra Gupta"
-    position: "UP-Gwalior RC"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Kushagra.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0t1c2hhZ3JhLndlYnAiLCJpYXQiOjE3Njg4MDc2NTksImV4cCI6MTgwMDM0MzY1OX0.HDBUmAvjjQocD-d7LFSmZlciyvrmsnkB3imnxeOugPU"
-    email: "24f2005860@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/kushagra-gupta-55ba90380?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
-    region: "Lucknow"
-    team: "RC"
-    tenure: "25-26"
-
-  - id: "r7"
-    name: "Alok Raj"
-    position: "Patna RC"
-    image: ""
-    email: "25f3001077@ds.study.iitm.ac.in"
-    linkedin: ""
-    region: "Patna"
-    team: "RC"
-    tenure: "26-27"
-
-  - id: "r8"
-    name: "Aniket Raj"
-    position: "Chennai RC"
-    image: ""
-    email: "25f2000532@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/aniket-raj0451"
-    region: "Chennai"
-    team: "RC"
-    tenure: "26-27"
-
-  - id: "r9"
-    name: "J Ilakkiya"
-    position: "Chennai RC"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Illakiya.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0lsbGFraXlhLndlYnAiLCJpYXQiOjE3Njg4MDc3NDAsImV4cCI6MTgwMDM0Mzc0MH0._lgZLez5m6SkcL6zEXwYMAYRtnLzbOc-2fY_CGEkF_k"
-    email: "24f3002460@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/ilakkiya-j-816975326?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-    region: "Chennai"
-    team: "RC"
-    tenure: "25-26"
-
-  - id: "r10"
-    name: "Premanand Jena"
-    position: "Mumbai RC"
-    image: ""
-    email: "24f3004592@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/pratik-shukla-aa8950363/"
-    region: "Mumbai"
-    team: "RC"
-    tenure: "25-26"
-
+  - name: Sonia S
+    position: Bangalore RC
+    region: Bangalore
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Sonia.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvbmlhLndlYnAiLCJpYXQiOjE3Njg4MDc1MTUsImV4cCI6MTgwMDM0MzUxNX0.wWXFxiB7CZDG2KwxnuSA1CZxv-JH4oBUcy5B2YXyjZM
+  - name: Monu Sahu
+    position: Chandigarh RC
+    region: Chandigarh
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Monu.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L01vbnUud2VicCIsImlhdCI6MTc2ODgwNzUzOCwiZXhwIjoxODAwMzQzNTM4fQ.OU-RwXLR2sjRgwRlQVlFCFU-dYO2oPjXCFxOrgIiq30
+  - name: Shambhavi Verma
+    position: Delhi RC
+    region: Delhi
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Shambhavi.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NoYW1iaGF2aS53ZWJwIiwiaWF0IjoxNzY4ODA3NTU2LCJleHAiOjE4MDAzNDM1NTZ9.iW-_ZlU0mg2VbhiiJaGa_08EkdPAsD-wFHJhmzE2qqg
+  - name: Ranak De
+    position: Kolkata RC
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Ranak.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1JhbmFrLndlYnAiLCJpYXQiOjE3Njg4MDc2MzEsImV4cCI6MTgwMDM0MzYzMX0.WhT56azvBENmawnVOQdc1fqRlotAzZUxyd5P91X1hCE
+  - name: Kushagra Gupta
+    position: UP-Gwalior RC
+    region: Lucknow
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Kushagra.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L0t1c2hhZ3JhLndlYnAiLCJpYXQiOjE3Njg4MDc2NTksImV4cCI6MTgwMDM0MzY1OX0.HDBUmAvjjQocD-d7LFSmZlciyvrmsnkB3imnxeOugPU
 mentors:
-  - id: "M1"
-    name: "Soumyabrata Mahapatra"
-    position: "Mentor"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Soumyabrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvdW15YWJyYXRhLndlYnAiLCJpYXQiOjE3Njg4MDc5NDAsImV4cCI6MTgwMDM0Mzk0MH0.P5yOlz13e0F2RLY4G9YPmUWQOuDrLBEBFhYYDDgYa70"
-    email: "21f1003070@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/soumyabrata-mahapatra-6bba821b2/"
-    region: "Kolkata"
-    team: "Mentor"
-    tenure: "25-26"
-
-  - id: "M2"
-    name: "Somsankar Chakraborty"
-    position: "Mentor"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Somshankar.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvbXNoYW5rYXIud2VicCIsImlhdCI6MTc2ODgwNzgxMCwiZXhwIjoxODAwMzQzODEwfQ.BtXpjjlxS5cNjpIIsu7CaE5cPoXTyTVpkpHTfdM8_R4"
-    email: "21f3003023@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/somsankar-chakraborty-583968232/"
-    region: "Kolkata"
-    team: "Mentor"
-    tenure: "25-26"
-
+  - name: Soumyabrata Mahapatra
+    position: Mentor
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Soumyabrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvdW15YWJyYXRhLndlYnAiLCJpYXQiOjE3Njg4MDc5NDAsImV4cCI6MTgwMDM0Mzk0MH0.P5yOlz13e0F2RLY4G9YPmUWQOuDrLBEBFhYYDDgYa70
+  - name: Somsankar Chakraborty
+    position: Mentor
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Somshankar.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvbXNoYW5rYXIud2VicCIsImlhdCI6MTc2ODgwNzgxMCwiZXhwIjoxODAwMzQzODEwfQ.BtXpjjlxS5cNjpIIsu7CaE5cPoXTyTVpkpHTfdM8_R4
+  - name: Shramadeep Debnath
+    position: Mentor
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/council/com_%20(8).jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9jb3VuY2lsL2NvbV8gKDgpLmpwZyIsImlhdCI6MTc1NTgyMzQzNSwiZXhwIjoxNzg3MzU5NDM1fQ.UINO1stsxoqrBjKMHy_sUIXAm1KF7G0z7jQ3hYLhZms
 community_admins:
-  - id: "c1"
-    name: "Samyabrata Roy"
-    position: "Statistics Community Admin"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Samyabrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NhbXlhYnJhdGEud2VicCIsImlhdCI6MTc2ODgwNzg2OSwiZXhwIjoxODAwMzQzODY5fQ.6_AoZGevspwHjyuW-yO_SPJ_WCYI9PfanfjNV0FsycU"
-    email: "22f2001443@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/samyabrata23/"
-    region: "Kolkata"
-    team: "Commnunity Admin"
-    tenure: "25-26"
-
-  - id: "c2"
-    name: "Pranav Deepak Patle"
-    position: "Chess Community Admin"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Pranav.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1ByYW5hdi53ZWJwIiwiaWF0IjoxNzY4ODA3OTAzLCJleHAiOjE4MDAzNDM5MDN9.H2DWIGQqRQNnZucJuLCkaZAVLG-ZbfiObYQAHvGI6pE"
-    email: "24f2003774@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/pranav-patle-b29a6037a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-    region: "Mumbai"
-    team: "Commnunity Admin"
-    tenure: "25-26"
-
-  - id: "c3"
-    name: "Somsankar Chakraborty"
-    position: "Esports Community Admin"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Somshankar.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvbXNoYW5rYXIud2VicCIsImlhdCI6MTc2ODgwNzkyMCwiZXhwIjoxODAwMzQzOTIwfQ.fn-UoIjLaZPM3bB4QJdZRjDfuUlXjzFKGwoMuX1qql8"
-    email: "21f3003023@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/somsankar-chakraborty-583968232/"
-    region: "Kolkata"
-    team: "Commnunity Admin"
-    tenure: "25-26"
-
-  - id: "c4"
-    name: "Soumyabrata Mahapatra"
-    position: "Quiz Community Admin"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Soumyabrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvdW15YWJyYXRhLndlYnAiLCJpYXQiOjE3Njg4MDc5NDAsImV4cCI6MTgwMDM0Mzk0MH0.P5yOlz13e0F2RLY4G9YPmUWQOuDrLBEBFhYYDDgYa70"
-    email: "21f1003070@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/soumyabrata-mahapatra-6bba821b2/"
-    region: "Kolkata"
-    team: "Commnunity Admin"
-    tenure: "25-26"
-
-  - id: "c5"
-    name: "Suhail Ahamad"
-    position: "Sports Community Admin"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Suhail_sports.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1N1aGFpbF9zcG9ydHMud2VicCIsImlhdCI6MTc2ODgwNzk2MiwiZXhwIjoxODAwMzQzOTYyfQ.0AuIcPTeaARbDGGZWEv0Whm827g2QAF5Q6MAAYY9T5g"
-    email: "demo@collegehouse.edu"
-    linkedin: "https://www.linkedin.com/in/suhail-ahamad?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-    region: "Hyderabad"
-    team: "Commnunity Admin"
-    tenure: "25-26"
-
-  - id: "c6"
-    name: ""
-    position: "Tech community Admin"
-    image: ""
-    email: ""
-    linkedin: ""
-    region: ""
-    team: "Commnunity Admin"
-    tenure: "26-27"
-
-  - id: "c7"
-    name: "Neeharika Singh"
-    position: "Cultural Community Admin"
-    image: "https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Neeharika.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L05lZWhhcmlrYS53ZWJwIiwiaWF0IjoxNzY4ODA4MDEwLCJleHAiOjE4MDAzNDQwMTB9.l5t7Wa93MV2tTisTnWVPAfv52iX-o--X3ySy9SByWsU"
-    email: "25f1002767@ds.study.iitm.ac.in"
-    linkedin: "https://www.linkedin.com/in/neeharika-singh-094930232/"
-    region: "Patna"
-    team: "Commnunity Admin"
-    tenure: "25-26"
+  - name: Pranav Deepak Patle
+    position: Chess Community Admin
+    region: Mumbai
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Pranav.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1ByYW5hdi53ZWJwIiwiaWF0IjoxNzY4ODA3OTAzLCJleHAiOjE4MDAzNDM5MDN9.H2DWIGQqRQNnZucJuLCkaZAVLG-ZbfiObYQAHvGI6pE
+  - name: Samyabrata Roy
+    position: Statistics Community Admin
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Samyabrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NhbXlhYnJhdGEud2VicCIsImlhdCI6MTc2ODgwNzg2OSwiZXhwIjoxODAwMzQzODY5fQ.6_AoZGevspwHjyuW-yO_SPJ_WCYI9PfanfjNV0FsycU
+  - name: Somsankar Chakraborty
+    position: Esports Community Admin
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Somshankar.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvbXNoYW5rYXIud2VicCIsImlhdCI6MTc2ODgwNzkyMCwiZXhwIjoxODAwMzQzOTIwfQ.fn-UoIjLaZPM3bB4QJdZRjDfuUlXjzFKGwoMuX1qql8
+  - name: Soumyabrata Mahapatra
+    position: Quiz Community Admin
+    region: Kolkata
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Soumyabrata.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1NvdW15YWJyYXRhLndlYnAiLCJpYXQiOjE3Njg4MDc5NDAsImV4cCI6MTgwMDM0Mzk0MH0.P5yOlz13e0F2RLY4G9YPmUWQOuDrLBEBFhYYDDgYa70
+  - name: Suhail Ahamad
+    position: Sports Community Admin
+    region: Hyderabad
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Suhail_sports.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L1N1aGFpbF9zcG9ydHMud2VicCIsImlhdCI6MTc2ODgwNzk2MiwiZXhwIjoxODAwMzQzOTYyfQ.0AuIcPTeaARbDGGZWEv0Whm827g2QAF5Q6MAAYY9T5g
+  - name: Neeharika Singh
+    position: Cultural Community Admin
+    region: Patna
+    image: >-
+      https://pnatddmdgxtyjaglenxk.supabase.co/storage/v1/object/sign/nilgiri_media/Nilgiri%20Website/Council%2025-26/Neeharika.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTQzZGYzZC1lZGY1LTQ1MDgtOThmZS1kZGVkNDE3Yzg3ZjIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJuaWxnaXJpX21lZGlhL05pbGdpcmkgV2Vic2l0ZS9Db3VuY2lsIDI1LTI2L05lZWhhcmlrYS53ZWJwIiwiaWF0IjoxNzY4ODA4MDEwLCJleHAiOjE4MDAzNDQwMTB9.l5t7Wa93MV2tTisTnWVPAfv52iX-o--X3ySy9SByWsU

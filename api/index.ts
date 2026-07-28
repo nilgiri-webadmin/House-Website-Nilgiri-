@@ -83,6 +83,16 @@ export default async function handler(
       return uploadHandler(req, res);
     }
 
+    if (path === '/api/google-forms/schema') {
+      const { default: schemaHandler } = await import('./_handlers/google-forms/schema');
+      return schemaHandler(req, res);
+    }
+
+    if (path === '/api/google-forms/submit') {
+      const { default: submitHandler } = await import('./_handlers/google-forms/submit');
+      return submitHandler(req, res);
+    }
+
     if (path === '/api/admin/analytics') {
       const { default: analyticsHandler } = await import('./_handlers/admin/analytics');
       return analyticsHandler(req, res);

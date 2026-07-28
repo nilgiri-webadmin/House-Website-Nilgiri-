@@ -1,0 +1,245 @@
+.joinable-communities-section {
+    padding: clamp(60px, 10vw, 100px) 5%;
+    background: #000;
+    min-height: 100vh;
+}
+
+.joinable-communities-section .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.joinable-communities-section .section-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.joinable-communities-section .section-header p {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #888;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.joinable-communities-section .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: clamp(20px, 4vw, 30px);
+}
+
+.joinable-community-card {
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.joinable-community-card:hover {
+    border-color: rgba(74, 222, 128, 0.3);
+    transform: translateY(-8px);
+}
+
+.community-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    position: relative;
+    overflow: hidden;
+}
+
+.community-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    transition: transform 0.8s ease;
+}
+
+.joinable-community-card:hover .community-image img {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.community-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, #0a0a0a 0%, transparent 80%);
+}
+
+.community-info {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.community-info h3 {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 15px;
+}
+
+.community-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #aaa;
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.community-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+
+.join-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(45deg, #16a34a, #22c55e);
+    color: white;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.join-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    background: linear-gradient(45deg, #15803d, #16a34a);
+}
+
+.join-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Loading States */
+.joinable-communities-loading {
+    text-align: center;
+    padding: 60px 0;
+    color: #888;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #4ade80;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.joinable-communities-error {
+    text-align: center;
+    padding: 60px 0;
+}
+
+.joinable-communities-error p {
+    color: #f87171;
+    margin-bottom: 20px;
+}
+
+.retry-button {
+    background: #4ade80;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+    background: #38d39a;
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.joinable-communities-empty {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.joinable-communities-empty h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.joinable-communities-empty p {
+    color: #888;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .joinable-communities-section .cards-container {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+
+    .community-info h3 {
+        font-size: 18px;
+    }
+
+    .joinable-communities-section .section-header h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .joinable-communities-section .cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .community-info {
+        padding: 20px;
+    }
+
+    .community-info h3 {
+        font-size: 16px;
+    }
+
+    .community-description {
+        font-size: 13px;
+    }
+
+    .join-button {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+    }
+}

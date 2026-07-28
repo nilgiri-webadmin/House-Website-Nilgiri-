@@ -10,6 +10,7 @@ import CommunityPage from './pages/CommunityPage';
 import CouncilPage from './pages/CouncilPage';
 import GalleryPage from './pages/GalleryPage';
 import Login from './pages/Login';
+import JoinPage from './pages/JoinPage';
 import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
 import AdminEvents from './pages/admin/AdminEvents';
@@ -40,7 +41,7 @@ const ScrollToTop = () => {
   }, [pathname]);
 
   return null;
-}
+};
 
 function App() {
   return (
@@ -54,9 +55,10 @@ function App() {
 const AppContent = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin') || location.pathname === '/login';
+  const isJoin = location.pathname === '/join';
 
   return (
-    <div className={`app-container ${isAdmin ? 'admin-mode' : ''}`}>
+    <div className={`app-container ${isAdmin ? 'admin-mode' : ''} ${isJoin ? 'join-mode' : ''}`}>
       {!isAdmin && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -64,6 +66,7 @@ const AppContent = () => {
         <Route path="/meetups" element={<MeetupsPage />} />
         <Route path="/achievements" element={<AchievementsPage />} />
         <Route path="/community" element={<CommunityPage />} />
+        <Route path="/join" element={<JoinPage />} />
         <Route path="/council" element={<CouncilPage />} />
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/login" element={<Login />} />
@@ -83,6 +86,6 @@ const AppContent = () => {
       {!isAdmin && <Footer />}
     </div>
   );
-}
+};
 
 export default App;

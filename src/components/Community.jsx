@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Link2, Calendar, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { X, User, Link2, ArrowRight } from 'lucide-react';
 import './Community.css';
 import client from '../api/client';
+import { getCommunityFormUrl } from '../data/communityForms';
 const communityImg = 'https://placehold.co/400x300/1a1a2e/4ade80?text=Community';
 
 const ClubCard = ({ comm, delay, onClick }) => {
@@ -94,7 +96,7 @@ const Community = () => {
         setDetailsLoading(true);
         try {
             const response = await client.get(`/communities/${id}`);
-            setCommunityDetails(response.data);
+            setCommunityDetails(response.data?.community || response.data);
         } catch (err) {
             console.error("Failed to fetch community details:", err);
         } finally {
@@ -103,6 +105,17 @@ const Community = () => {
     };
 
     const closeModal = () => setSelectedCommunity(null);
+
+    const buildJoinState = () => ({
+        fromJoinButton: true,
+        community: {
+            id: communityDetails?.id || selectedCommunity?.id,
+            name: communityDetails?.name || selectedCommunity?.name,
+            description: communityDetails?.description || selectedCommunity?.desc || '',
+            image: communityDetails?.image || selectedCommunity?.image || null,
+            joining_form: communityDetails?.joining_form || getCommunityFormUrl(communityDetails?.name || selectedCommunity?.name)
+        }
+    });
 
     const handleCardClick = (comm) => {
         setSelectedCommunity(comm);
@@ -303,16 +316,16 @@ const Community = () => {
                                         <div className="comm-modal-divider" />
 
                                         <div className="comm-modal-actions">
-                                            {communityDetails?.joining_form && (
-                                                <a
-                                                    href={communityDetails.joining_form}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
+                                            {(communityDetails?.joining_form || getCommunityFormUrl(communityDetails?.name || selectedCommunity?.name)) && (
+                                                <Link
+                                                    to="/join"
+                                                    state={buildJoinState()}
                                                     className="comm-modal-register-btn"
+                                                    onClick={closeModal}
                                                 >
-                                                    <ExternalLink size={14} strokeWidth={2} />
+                                                    <ArrowRight size={14} strokeWidth={2} />
                                                     Join Community
-                                                </a>
+                                                </Link>
                                             )}
                                             {communityDetails?.instagram && (
                                                 <a

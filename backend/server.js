@@ -19,6 +19,7 @@ import logsRoutes from './routes/logs.js';
 import linksRoutes from './routes/links.js';
 import statsRoutes from './routes/stats.js';
 import complaintsRoutes from './routes/complaints.js';
+import googleFormsRoutes from './routes/google-forms.js';
 
 dotenv.config();
 
@@ -72,6 +73,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/links', linksRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/complaints', complaintsRoutes);
+app.use('/api/google-forms', googleFormsRoutes);
 
 // Log tracking API
 app.use('/api/logs', logsRoutes);

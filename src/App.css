@@ -10,7 +10,8 @@
   margin: 0 auto;
 }
 
-.app-container.admin-mode {
+.app-container.admin-mode,
+.app-container.join-mode {
   height: auto;
   overflow: visible;
 }
