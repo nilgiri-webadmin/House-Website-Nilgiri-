@@ -13,6 +13,27 @@ const FORM_ID_TO_COMMUNITY = {
   '1FAIpQLScO2WWuZZ4zZfFVv9IZOf3xBpBOiT5-YefZ3n3hSLvjBDvgug': 'chess'
 };
 
+const COMMUNITY_APPS_SCRIPT_INDEX = {
+  chess: 1
+};
+
+function getAppsScriptUrls() {
+  return String(process.env.APPS_SCRIPT_WEBAPP_URL || '')
+    .split(',')
+    .map((url) => url.trim())
+    .filter(Boolean);
+}
+
+function getAppsScriptUrlForCommunity(communityKey) {
+  const urls = getAppsScriptUrls();
+  const index = COMMUNITY_APPS_SCRIPT_INDEX[communityKey] ?? 0;
+  const url = urls[index];
+  if (!url) {
+    throw new Error(`No Apps Script deployment configured for "${communityKey}" (expected URL at position ${index + 1} in APPS_SCRIPT_WEBAPP_URL)`);
+  }
+  return url;
+}
+
 function extractFormId(formUrl) {
   const match = formUrl.match(FORM_URL_PATTERN);
   return match ? match[1] : null;
@@ -149,8 +170,7 @@ async function submitGoogleFormResponse(formUrl, answers) {
 
   if (!communityKey) throw new Error('Unknown community form');
 
-  const appsScriptUrl = process.env.APPS_SCRIPT_WEBAPP_URL;
-  if (!appsScriptUrl) throw new Error('APPS_SCRIPT_WEBAPP_URL not configured');
+  const appsScriptUrl = getAppsScriptUrlForCommunity(communityKey);
 
   const response = await fetch(appsScriptUrl, {
     method: 'POST',

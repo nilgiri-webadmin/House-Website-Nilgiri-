@@ -50,7 +50,8 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* centres all direct section children */
+  align-items: center;
+  /* centres all direct section children */
 }
 
 .container {
@@ -64,22 +65,28 @@ body.modal-open {
   overflow: hidden;
 }
 
-/* Scrollbar Styling */
+/* Scrollbar hidden site-wide. Scrolling itself is untouched — mouse wheel, trackpad,
+   touch, and keyboard scrolling all still work exactly as before. This only suppresses
+   the visual bar/thumb the browser draws. */
+html {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* old Edge / IE */
+}
+
+*,
+*::before,
+*::after {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #000;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  display: none;
+  /* Chrome, Safari, new Edge */
+  width: 0;
+  height: 0;
 }
 
 /* ===== SHARED SECTION HEADER ===== */
@@ -208,10 +215,12 @@ button,
       opacity: 1;
       transform: translateX(0) scale(1);
     }
+
     70% {
       opacity: 1;
       transform: translateX(0) scale(1);
     }
+
     100% {
       opacity: 0;
       transform: translateX(0.5rem) scale(0.95);

@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 100%;
   min-height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   background-color: #000;
   scroll-behavior: smooth;
@@ -12,8 +12,8 @@
 
 .app-container.admin-mode,
 .app-container.join-mode {
-  height: auto;
-  overflow: visible;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 /* Ensure all sections have smooth scrolling */

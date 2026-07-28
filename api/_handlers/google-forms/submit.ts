@@ -11,6 +11,24 @@ const FORM_ID_TO_COMMUNITY: Record<string, string> = {
 
 };
 
+const COMMUNITY_APPS_SCRIPT_INDEX: Record<string, number> = {
+  chess: 1
+};
+
+function getAppsScriptUrlForCommunity(communityKey: string): string {
+  const urls = String(process.env.APPS_SCRIPT_WEBAPP_URL || '')
+    .split(',')
+    .map((url) => url.trim())
+    .filter(Boolean);
+
+  const index = COMMUNITY_APPS_SCRIPT_INDEX[communityKey] ?? 0;
+  const url = urls[index];
+  if (!url) {
+    throw new Error(`No Apps Script deployment configured for "${communityKey}" (expected URL at position ${index + 1} in APPS_SCRIPT_WEBAPP_URL)`);
+  }
+  return url;
+}
+
 function extractFormId(formUrl: string): string | null {
   const match = formUrl.match(/\/forms\/d\/e\/([^\/]+)\//);
   return match ? match[1] : null;
@@ -31,17 +49,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Missing formUrl or answers' });
     }
 
-    const appsScriptUrl = process.env.APPS_SCRIPT_WEBAPP_URL;
-    if (!appsScriptUrl) {
-      console.error('APPS_SCRIPT_WEBAPP_URL not configured');
-      return res.status(500).json({ error: 'Server configuration error' });
-    }
-
     const formId = extractFormId(formUrl);
     const communityKey = formId ? FORM_ID_TO_COMMUNITY[formId] : null;
 
     if (!communityKey) {
       return res.status(400).json({ error: 'Unknown community form' });
+    }
+
+    let appsScriptUrl: string;
+    try {
+      appsScriptUrl = getAppsScriptUrlForCommunity(communityKey);
+    } catch (configError: any) {
+      console.error(configError.message);
+      return res.status(500).json({ error: 'Server configuration error' });
     }
 
     const response = await fetch(appsScriptUrl, {
