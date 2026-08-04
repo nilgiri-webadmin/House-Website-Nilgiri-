@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseClient } from '../utils/supabase';
+import { supabaseAdmin } from '../utils/supabase';
 import { requireAdmin } from '../utils/permissions';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
@@ -18,8 +18,12 @@ export default async function handler(
 
 async function handlePost(req: AuthRequest, res: VercelResponse) {
   try {
-    // Fetch all council members from database
-    const { data: members, error } = await supabaseClient
+    if (!supabaseAdmin) {
+      throw new Error('Supabase admin client is not configured');
+    }
+
+    // Fetch all council members from database using admin credentials
+    const { data: members, error } = await supabaseAdmin
       .from('council_members')
       .select('*')
       .order('position', { ascending: true });

@@ -34,13 +34,13 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     const { checkSupabaseConfig } = await import('../utils/supabase.js');
     checkSupabaseConfig();
 
-    if (!supabaseClient) {
+    if (!supabaseAdmin) {
       return res.status(500).json({ error: 'Database not configured' });
     }
 
     const { team, region } = req.query;
 
-    let query = supabaseClient
+    let query = supabaseAdmin
       .from('council_members')
       .select('*');
 

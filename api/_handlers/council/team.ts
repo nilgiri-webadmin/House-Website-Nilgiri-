@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseClient } from '../utils/supabase';
+import { supabaseAdmin } from '../utils/supabase';
 
 export default async function handler(
   req: VercelRequest,
@@ -16,7 +16,11 @@ export default async function handler(
       return res.status(400).json({ error: 'Invalid team name' });
     }
 
-    const { data, error } = await supabaseClient
+    if (!supabaseAdmin) {
+      return res.status(500).json({ error: 'Database not configured' });
+    }
+
+    const { data, error } = await supabaseAdmin
       .from('council_members')
       .select('*')
       .eq('team', team)
