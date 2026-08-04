@@ -43,7 +43,7 @@
   position: relative;
   min-height: 100vh;
   padding: 90px 5% 60px;
-  background: linear-gradient(180deg, rgba(0, 10, 0, .92), rgba(0, 5, 0, .98) 60%, #000 100%), url('/nilgiri-forest.webp') center/cover;
+  background: linear-gradient(180deg, rgba(0, 10, 0, .92), rgba(0, 5, 0, .98) 60%, #000 100%), url('/file.png') center/cover;
   color: #fff;
   font-family: 'DM Sans', sans-serif
 }

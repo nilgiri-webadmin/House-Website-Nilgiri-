@@ -106,7 +106,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
       .insert({
         title,
         description: description || null,
-        meetup_number: meetup_number ?? null,
+        meetup_number: meetup_number || null,
         location,
         date,
         time,
@@ -114,7 +114,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
         insta_link: insta_link || null,
         img_url: finalImgUrl || null,
         register_link: register_link || null,
-        is_past: is_past ?? false
+        is_past: is_past || false
       })
       .select()
       .single();

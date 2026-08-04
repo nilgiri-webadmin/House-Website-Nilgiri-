@@ -21,7 +21,7 @@ function getAppsScriptUrlForCommunity(communityKey: string): string {
     .map((url) => url.trim())
     .filter(Boolean);
 
-  const index = COMMUNITY_APPS_SCRIPT_INDEX[communityKey] ?? 0;
+  const index = COMMUNITY_APPS_SCRIPT_INDEX[communityKey] || 0;
   let url = urls[index];
   if (!url) {
     // Fallback to index 0 if the specific index is not available

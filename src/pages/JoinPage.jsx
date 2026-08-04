@@ -274,7 +274,7 @@ const JoinPage = () => {
 
   const communityName = community?.name || initialCommunity.name;
   const communityDesc = community?.description || initialCommunity.description;
-  const communityImage = community?.image || initialCommunity.image || '/nilgiri-forest.webp';
+  const communityImage = community?.image || initialCommunity.image || '/file.png';
   const backupLink = community?.joining_form || initialCommunity.joining_form;
 
   return (

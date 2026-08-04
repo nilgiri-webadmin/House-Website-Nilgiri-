@@ -130,6 +130,11 @@ export default async function handler(
       return councilTeamHandler(req, res);
     }
 
+    if (path === '/api/council/sync-yaml') {
+      const { default: syncYamlHandler } = await import('./_handlers/council/sync-yaml');
+      return syncYamlHandler(req, res);
+    }
+
     if (path.match(/^\/api\/council\/[^/]+$/)) {
       const councilId = path.split('/')[3];
       req.query = { ...req.query, id: councilId };
@@ -140,11 +145,6 @@ export default async function handler(
     if (path === '/api/council') {
       const { default: councilHandler } = await import('./_handlers/council/index');
       return councilHandler(req, res);
-    }
-
-    if (path === '/api/council/sync-yaml') {
-      const { default: syncYamlHandler } = await import('./_handlers/council/sync-yaml');
-      return syncYamlHandler(req, res);
     }
 
     if (path.match(/^\/api\/achievements\/[^/]+$/)) {

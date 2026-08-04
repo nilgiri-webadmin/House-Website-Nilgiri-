@@ -75,7 +75,7 @@ async function handlePut(req: AuthRequest, res: VercelResponse) {
     const updateData: any = { ...rest };
 
     const finalImgUrl = img_url || image_url;
-    const finalRegistrationLink = registration_link || register_link;
+    const finalRegistrationLink = registration_link || register_link || null;
 
     if (finalImgUrl !== undefined) {
       updateData.img_url = finalImgUrl;

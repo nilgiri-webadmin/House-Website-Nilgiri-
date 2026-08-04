@@ -98,7 +98,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     }
 
     const finalImgUrl = img_url || image_url || null;
-    const finalRegistrationLink = registration_link || register_link ?? null;
+    const finalRegistrationLink = registration_link || register_link || null;
 
     const { data, error } = await supabaseAdmin
       .from('events')

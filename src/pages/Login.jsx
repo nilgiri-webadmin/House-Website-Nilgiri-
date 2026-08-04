@@ -352,7 +352,7 @@ export const AuthComponent = ({ logo = <DefaultLogo /> }) => {
     <div
       className="min-h-screen w-screen flex flex-col relative overflow-hidden"
       style={{
-        backgroundImage: 'url(/nilgiri-forest.webp)',
+        backgroundImage: 'url(/file.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
