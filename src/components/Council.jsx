@@ -238,7 +238,7 @@ const Council = () => {
 
             {filteredCouncil.length === 0 ? (
                 <div className="forest-empty-state">
-                    <p>The forest is quiet now, come back later to check</p>
+                    <p>The council is yet to be decided. Kindly check back later</p>
                 </div>
             ) : (
                 <div className="council-grid">
