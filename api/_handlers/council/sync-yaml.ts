@@ -77,13 +77,18 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
       sortKeys: false
     });
 
-    // Write to public/council-data.yml
+    // Attempt to write a static copy for local development, but do not fail in read-only production environments.
     const yamlPath = join(process.cwd(), 'public', 'council-data.yml');
-    writeFileSync(yamlPath, yamlContent, 'utf-8');
+    try {
+      writeFileSync(yamlPath, yamlContent, 'utf-8');
+    } catch (writeError: any) {
+      console.warn('Unable to write council YAML to public folder; continuing without static file save.', writeError);
+    }
 
     return res.status(200).json({
       success: true,
-      message: 'Council data synced to YAML successfully',
+      message: 'Council data synced successfully',
+      yamlSaved: false,
       stats: {
         total: members?.length || 0,
         uhc: yamlData.niligiri_uhc.length,

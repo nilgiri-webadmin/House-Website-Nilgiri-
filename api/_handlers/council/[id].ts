@@ -161,7 +161,11 @@ async function syncCouncilToYaml(councilData: any) {
           tenure_year: councilData.tenure_year
         };
 
-        await writeFile(yamlPath, yaml.dump(content), 'utf-8');
+        try {
+          await writeFile(yamlPath, yaml.dump(content), 'utf-8');
+        } catch (writeError: any) {
+          console.warn('Unable to write council YAML update in read-only environment:', writeError);
+        }
       }
     }
   } catch (error: any) {
