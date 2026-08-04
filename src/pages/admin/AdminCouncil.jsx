@@ -74,7 +74,14 @@ const AdminCouncil = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
             const response = await client.post('/council/sync-yaml', {}, config);
-            setSyncMessage(`Synced successfully! ${response.data.stats.total} members updated.`);
+            const total = response.data.stats?.total ?? 0;
+            const yamlSaved = response.data.yamlSaved;
+
+            if (yamlSaved === false) {
+                setSyncMessage(`Synced successfully! ${total} members updated. Static YAML could not be written in this environment.`);
+            } else {
+                setSyncMessage(`Synced successfully! ${total} members updated.`);
+            }
             setTimeout(() => setSyncMessage(''), 3000);
         } catch (e) {
             console.error(e);

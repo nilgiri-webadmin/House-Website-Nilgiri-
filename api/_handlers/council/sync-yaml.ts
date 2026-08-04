@@ -79,16 +79,21 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
 
     // Attempt to write a static copy for local development, but do not fail in read-only production environments.
     const yamlPath = join(process.cwd(), 'public', 'council-data.yml');
+    let yamlSaved = false;
+
     try {
       writeFileSync(yamlPath, yamlContent, 'utf-8');
+      yamlSaved = true;
     } catch (writeError: any) {
       console.warn('Unable to write council YAML to public folder; continuing without static file save.', writeError);
     }
 
     return res.status(200).json({
       success: true,
-      message: 'Council data synced successfully',
-      yamlSaved: false,
+      message: yamlSaved
+        ? 'Council data synced successfully.'
+        : 'Council data synced successfully, but static YAML could not be written in this environment.',
+      yamlSaved,
       stats: {
         total: members?.length || 0,
         uhc: yamlData.niligiri_uhc.length,

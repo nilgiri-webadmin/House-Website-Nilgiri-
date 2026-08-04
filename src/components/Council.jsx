@@ -105,6 +105,8 @@ const Council = () => {
         return { ...member, team, subTeam, role: member.role || member.position };
     };
 
+    const useYamlFallback = import.meta.env.DEV;
+
     useEffect(() => {
         const fetchCouncil = async () => {
             try {
@@ -115,6 +117,11 @@ const Council = () => {
 
                 if (councilData.length > 0) {
                     setCouncil(councilData.map(normalizeTeam));
+                    return;
+                }
+
+                if (!useYamlFallback) {
+                    setCouncil([]);
                     return;
                 }
 
