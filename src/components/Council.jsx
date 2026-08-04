@@ -105,7 +105,7 @@ const Council = () => {
         return { ...member, team, subTeam, role: member.role || member.position };
     };
 
-    const useYamlFallback = import.meta.env.DEV;
+
 
     useEffect(() => {
         const fetchCouncil = async () => {
@@ -120,13 +120,10 @@ const Council = () => {
                     return;
                 }
 
-                if (!useYamlFallback) {
-                    setCouncil([]);
-                    return;
-                }
+                // Fallback to the static YAML file from Supabase Storage bucket if the API request above fails or is empty.
 
-                // Fallback to the static YAML file for local/offline support.
-                const yamlResponse = await fetch('/council-data.yml');
+                // Fetch the static YAML file from Supabase Storage bucket.
+                const yamlResponse = await fetch('https://nvzrcjadhflrsoieqxyu.supabase.co/storage/v1/object/public/public-data/council-data.yml');
                 if (!yamlResponse.ok) {
                     setCouncil([]);
                     return;

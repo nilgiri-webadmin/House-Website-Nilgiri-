@@ -81,15 +81,25 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
       sortKeys: false
     });
 
-    // Attempt to write a static copy for local development, but do not fail in read-only production environments.
-    const yamlPath = join(process.cwd(), 'public', 'council-data.yml');
     let yamlSaved = false;
-
+    
+    // Attempt to upload to Supabase storage bucket 'public-data'
     try {
-      writeFileSync(yamlPath, yamlContent, 'utf-8');
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from('public-data')
+        .upload('council-data.yml', yamlContent, {
+          contentType: 'text/yaml',
+          upsert: true
+        });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+      
       yamlSaved = true;
-    } catch (writeError: any) {
-      console.warn('Unable to write council YAML to public folder; continuing without static file save.', writeError);
+      console.log('Successfully uploaded council-data.yml to Supabase public-data bucket.');
+    } catch (uploadError: any) {
+      console.error('Unable to upload council YAML to Supabase bucket:', uploadError);
     }
 
     return res.status(200).json({
