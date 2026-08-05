@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { randomUUID } from 'crypto';
 import { authenticateToken, requireClubAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -147,7 +148,7 @@ router.post('/', authenticateToken, requireClubAdmin, async (req, res) => {
     }
 
     const newLink = {
-      id: `link_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: randomUUID(),
       title: title.trim(),
       url: url.trim(),
       description: description ? description.trim() : null,
