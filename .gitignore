@@ -1,6 +1,44 @@
+# dependencies
 node_modules
+/.pnp
+.pnp.js
 
+# testing
+/coverage
+
+# production
+/dist
+/build
+/.vercel/output
+
+# vite and env files
 .env
-.env.download
-.env.production
-.env.development
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# misc
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# local scratch files
+scratch/
+test.cjs
+test.js

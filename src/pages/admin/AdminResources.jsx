@@ -9,7 +9,7 @@ const AdminResources = () => {
     const [showModal, setShowModal] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
 
-    const emptyForm = { title: '', url: '', section: 'Academics', subsection: '' };
+    const emptyForm = { title: '', url: '', section: 'Academics' };
     const [formData, setFormData] = useState(emptyForm);
 
     const SECTIONS = ['Academics', 'Official', 'Community', 'Extracurriculars', 'Forms', 'Other'];
@@ -33,8 +33,7 @@ const AdminResources = () => {
 
     const handleEdit = (item) => {
         setEditingItem(item);
-        const [sec, sub] = (item.category || '').split(' > ');
-        setFormData({ title: item.title || '', url: item.url || '', section: sec || 'Academics', subsection: sub || '' });
+        setFormData({ title: item.title || '', url: item.url || '', section: item.category || 'Academics' });
         setShowModal(true);
     };
 
@@ -44,10 +43,9 @@ const AdminResources = () => {
             const config = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
             const payload = { 
                 ...formData, 
-                category: formData.subsection.trim() ? `${formData.section} > ${formData.subsection.trim()}` : formData.section 
+                category: formData.section 
             };
             delete payload.section;
-            delete payload.subsection;
 
             if (editingItem) await client.put(`/links/${editingItem.id}`, payload, config);
             else await client.post('/links', payload, config);
@@ -200,18 +198,11 @@ const AdminResources = () => {
                                         <input className="field-input" type="url" required placeholder="https://..."
                                             value={formData.url} onChange={e => setFormData({ ...formData, url: e.target.value })} />
                                     </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                        <div>
-                                            <label className="field-label"><Tag size={9} />Section</label>
-                                            <select className="field-select" value={formData.section} onChange={e => setFormData({ ...formData, section: e.target.value })}>
-                                                {SECTIONS.map(c => <option key={c} value={c}>{c}</option>)}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="field-label">Sub-section (Optional)</label>
-                                            <input className="field-input" type="text" placeholder="e.g. Question Papers"
-                                                value={formData.subsection} onChange={e => setFormData({ ...formData, subsection: e.target.value })} />
-                                        </div>
+                                    <div>
+                                        <label className="field-label"><Tag size={9} />Section</label>
+                                        <select className="field-select" value={formData.section} onChange={e => setFormData({ ...formData, section: e.target.value })}>
+                                            {SECTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+                                        </select>
                                     </div>
 
                                 </div>

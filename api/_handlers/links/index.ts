@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { randomUUID } from 'crypto';
 import { requireAdmin } from '../utils/permissions';
 import type { AuthRequest } from '../utils/auth';
 
@@ -161,7 +162,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
   }
 
   const newLink = {
-    id: `link_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: randomUUID(),
     title: title.trim(),
     url: url.trim(),
     description: description ? description.trim() : null,
