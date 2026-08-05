@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
-import { requireAuth, requireAdmin } from '../utils/permissions';
+import { requireAdmin } from '../utils/permissions';
+import type { AuthRequest } from '../utils/auth';
 
 export default async function handler(
   req: VercelRequest,
@@ -84,6 +85,7 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
       description,
       mode,
       category,
+      location,
       img_url,
       image_url,
       registration_link,
@@ -107,11 +109,12 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
         description: description || null,
         mode: mode || null,
         category: category || null,
+        location: location || null,
         img_url: finalImgUrl,
         registration_link: finalRegistrationLink,
         date,
         time: time || null,
-        is_pad: is_past ?? false
+        is_past: is_past ?? false
       })
       .select()
       .single();
