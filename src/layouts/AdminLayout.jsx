@@ -58,7 +58,7 @@ const AdminLayout = () => {
         { path: '/admin/achievements', label: 'Achievements', icon: Trophy },
         { path: '/admin/council', label: 'Council Members', icon: UserCircle },
         { path: '/admin/complaints', label: 'Complaints', icon: BookOpen },
-        { path: '/admin/study-space', label: 'Study Space', icon: BookOpen },
+        { path: '/admin/resources', label: 'Resources', icon: BookOpen },
     ];
 
     return (
