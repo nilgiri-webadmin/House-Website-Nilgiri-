@@ -9,7 +9,7 @@ const AdminResources = () => {
     const [showModal, setShowModal] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
 
-    const emptyForm = { title: '', url: '', description: '', section: 'Academics', subsection: '' };
+    const emptyForm = { title: '', url: '', section: 'Academics', subsection: '' };
     const [formData, setFormData] = useState(emptyForm);
 
     const SECTIONS = ['Academics', 'Official', 'Community', 'Extracurriculars', 'Forms', 'Other'];
@@ -34,7 +34,7 @@ const AdminResources = () => {
     const handleEdit = (item) => {
         setEditingItem(item);
         const [sec, sub] = (item.category || '').split(' > ');
-        setFormData({ title: item.title || '', url: item.url || '', description: item.description || '', section: sec || 'Academics', subsection: sub || '' });
+        setFormData({ title: item.title || '', url: item.url || '', section: sec || 'Academics', subsection: sub || '' });
         setShowModal(true);
     };
 
@@ -213,11 +213,7 @@ const AdminResources = () => {
                                                 value={formData.subsection} onChange={e => setFormData({ ...formData, subsection: e.target.value })} />
                                         </div>
                                     </div>
-                                    <div>
-                                        <label className="field-label"><AlignLeft size={9} />Description</label>
-                                        <textarea className="field-textarea" rows="2" placeholder="Brief description of this resource"
-                                            value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} />
-                                    </div>
+
                                 </div>
                                 <div className="modal-footer-row">
                                     <button type="button" className="modal-btn abort" onClick={() => setShowModal(false)}>Discard</button>
