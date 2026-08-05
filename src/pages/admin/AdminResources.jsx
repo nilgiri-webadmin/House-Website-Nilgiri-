@@ -3,22 +3,22 @@ import client from '../../api/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Link2, Tag, AlignLeft } from 'lucide-react';
 
-const AdminStudySpace = () => {
+const AdminResources = () => {
     const [links, setLinks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
 
-    const emptyForm = { title: '', url: '', description: '', category: 'Resources' };
+    const emptyForm = { title: '', url: '', description: '', section: 'Academics', subsection: '' };
     const [formData, setFormData] = useState(emptyForm);
 
-    const CATEGORIES = ['Resources', 'Forms', 'Official', 'Academics', 'Community'];
+    const SECTIONS = ['Academics', 'Official', 'Community', 'Extracurriculars', 'Forms', 'Other'];
 
     useEffect(() => { fetchLinks(); }, []);
 
     /* ── BACKEND LOGIC UNCHANGED ── */
     const fetchLinks = async () => {
-        try { const r = await client.get('/links'); setLinks(r.data.links); }
+        try { const r = await client.get('/links'); const sorted = (r.data.links || []).sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); setLinks(sorted); }
         catch (e) { console.error("Failed to fetch links:", e); }
         finally { setLoading(false); }
     };
@@ -33,7 +33,8 @@ const AdminStudySpace = () => {
 
     const handleEdit = (item) => {
         setEditingItem(item);
-        setFormData({ title: item.title || '', url: item.url || '', description: item.description || '', category: item.category || 'Resources' });
+        const [sec, sub] = (item.category || '').split(' > ');
+        setFormData({ title: item.title || '', url: item.url || '', description: item.description || '', section: sec || 'Academics', subsection: sub || '' });
         setShowModal(true);
     };
 
@@ -41,8 +42,15 @@ const AdminStudySpace = () => {
         e.preventDefault();
         try {
             const config = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
-            if (editingItem) await client.put(`/links/${editingItem.id}`, formData, config);
-            else await client.post('/links', formData, config);
+            const payload = { 
+                ...formData, 
+                category: formData.subsection.trim() ? `${formData.section} > ${formData.subsection.trim()}` : formData.section 
+            };
+            delete payload.section;
+            delete payload.subsection;
+
+            if (editingItem) await client.put(`/links/${editingItem.id}`, payload, config);
+            else await client.post('/links', payload, config);
             setShowModal(false); setEditingItem(null); setFormData(emptyForm); fetchLinks();
         } catch (e) { console.error("Failed to save link:", e); alert("Failed to save link"); }
     };
@@ -50,8 +58,11 @@ const AdminStudySpace = () => {
     const openNew = () => { setEditingItem(null); setFormData(emptyForm); setShowModal(true); };
 
     /* Category accent colors */
-    const CAT_COLOR = { Resources: '#34d399', Forms: '#60a5fa', Official: '#f59e0b', Academics: '#a78bfa', Community: '#f87171' };
-    const catColor = (cat) => CAT_COLOR[cat] || '#34d399';
+    const CAT_COLOR = { Academics: '#a78bfa', Official: '#f59e0b', Community: '#f87171', Extracurriculars: '#34d399', Forms: '#60a5fa', Other: '#a1a1aa' };
+    const catColor = (cat) => {
+        const mainCat = (cat || '').split(' > ')[0];
+        return CAT_COLOR[mainCat] || '#34d399';
+    };
 
     if (loading) return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '40vh' }}>
@@ -127,7 +138,7 @@ const AdminStudySpace = () => {
                             </span>
                         </div>
                         <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2.5rem,5vw,4rem)', lineHeight: .9, color: 'white', letterSpacing: '.03em', marginBottom: '.6rem' }}>
-                            Study Space
+                            Resources
                         </h1>
                         <p style={{ fontFamily: "'DM Mono',monospace", fontSize: '.6rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '.25em', color: '#3f3f46' }}>
                             {links.length} resource{links.length !== 1 ? 's' : ''} archived
@@ -189,11 +200,18 @@ const AdminStudySpace = () => {
                                         <input className="field-input" type="url" required placeholder="https://..."
                                             value={formData.url} onChange={e => setFormData({ ...formData, url: e.target.value })} />
                                     </div>
-                                    <div>
-                                        <label className="field-label"><Tag size={9} />Category</label>
-                                        <select className="field-select" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })}>
-                                            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                                        </select>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                        <div>
+                                            <label className="field-label"><Tag size={9} />Section</label>
+                                            <select className="field-select" value={formData.section} onChange={e => setFormData({ ...formData, section: e.target.value })}>
+                                                {SECTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="field-label">Sub-section (Optional)</label>
+                                            <input className="field-input" type="text" placeholder="e.g. Question Papers"
+                                                value={formData.subsection} onChange={e => setFormData({ ...formData, subsection: e.target.value })} />
+                                        </div>
                                     </div>
                                     <div>
                                         <label className="field-label"><AlignLeft size={9} />Description</label>
@@ -214,4 +232,4 @@ const AdminStudySpace = () => {
     );
 };
 
-export default AdminStudySpace;
+export default AdminResources;

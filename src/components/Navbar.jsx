@@ -64,6 +64,7 @@ const Navbar = () => {
     const studentItems = [
         { name: "Hall of Fame", path: "/achievements" },
         { name: "Community", path: "/community" },
+        { name: "Resources", path: "/resources" },
     ];
 
     return (

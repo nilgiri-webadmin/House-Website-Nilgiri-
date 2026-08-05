@@ -27,7 +27,8 @@ const AdminEvents = () => {
     const fetchEvents = async () => {
         try {
             const response = await client.get('/events?limit=100');
-            setEvents(response.data.events);
+            const sorted = (response.data.events || []).sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date));
+            setEvents(sorted);
         } catch (error) {
             console.error("Failed to fetch events:", error);
         } finally {

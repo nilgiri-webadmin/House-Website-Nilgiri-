@@ -19,7 +19,8 @@ import AdminComplaints from './pages/admin/AdminComplaints';
 import AdminAchievements from './pages/admin/AdminAchievements';
 import AdminMeetups from './pages/admin/AdminMeetups';
 import AdminCouncil from './pages/admin/AdminCouncil';
-import AdminStudySpace from './pages/admin/AdminStudySpace';
+import AdminResources from './pages/admin/AdminResources';
+import ResourcesPage from './pages/ResourcesPage';
 import './App.css';
 
 const ScrollToTop = () => {
@@ -69,6 +70,7 @@ const AppContent = () => {
         <Route path="/join" element={<JoinPage />} />
         <Route path="/council" element={<CouncilPage />} />
         <Route path="/gallery" element={<GalleryPage />} />
+        <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/login" element={<Login />} />
 
         {/* Admin Routes */}
@@ -80,7 +82,7 @@ const AppContent = () => {
           <Route path="achievements" element={<AdminAchievements />} />
           <Route path="council" element={<AdminCouncil />} />
           <Route path="complaints" element={<AdminComplaints />} />
-          <Route path="study-space" element={<AdminStudySpace />} />
+          <Route path="resources" element={<AdminResources />} />
         </Route>
       </Routes>
       {!isAdmin && <Footer />}

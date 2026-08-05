@@ -27,7 +27,8 @@ const AdminMeetups = () => {
     const fetchMeetups = async () => {
         try {
             const response = await client.get('/meetups?limit=100');
-            setMeetups(response.data.meetups || []);
+            const sorted = (response.data.meetups || []).sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date));
+            setMeetups(sorted);
         } catch (error) {
             console.error("Failed to fetch meetups:", error);
         } finally {

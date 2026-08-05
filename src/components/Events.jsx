@@ -77,8 +77,8 @@ const Events = ({ isPreview = false, eventType }) => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const limit = isPreview ? 4 : 100;
-                const response = await client.get(`/events?limit=${limit}`);
+                // Fetch a large limit first to ensure we find upcoming events after filtering
+                const response = await client.get(`/events?limit=100`);
                 const rawEvents = response.data.events || [];
 
                 const today = new Date();
@@ -111,7 +111,9 @@ const Events = ({ isPreview = false, eventType }) => {
                     const dA = new Date(a.date), dB = new Date(b.date);
                     return type === 'past' ? dB - dA : dA - dB;
                 });
-                setEvents(filtered);
+                
+                // If in preview mode, take only the first 4 AFTER filtering and sorting
+                setEvents(isPreview ? filtered.slice(0, 4) : filtered);
             } catch (err) {
                 console.error("Failed to fetch events:", err);
                 setError("Failed to load events.");

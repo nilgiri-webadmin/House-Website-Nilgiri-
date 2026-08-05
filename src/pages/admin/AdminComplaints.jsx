@@ -17,7 +17,9 @@ const AdminComplaints = () => {
         try {
             setLoading(true);
             const response = await client.get(`/complaints?status=${filter}`);
-            setComplaints(response.data);
+            const data = Array.isArray(response.data) ? response.data : [];
+            const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            setComplaints(sorted);
         } catch (error) { console.error("Failed to fetch complaints:", error); }
         finally { setLoading(false); }
     };

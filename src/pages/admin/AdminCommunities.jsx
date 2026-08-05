@@ -23,7 +23,9 @@ const AdminCommunities = () => {
     const fetchCommunities = async () => {
         try {
             const response = await client.get('/communities?cache=false');
-            setCommunities(response.data);
+            const data = Array.isArray(response.data) ? response.data : [];
+            const sorted = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            setCommunities(sorted);
         } catch (error) {
             console.error("Fetch failed:", error);
         } finally {

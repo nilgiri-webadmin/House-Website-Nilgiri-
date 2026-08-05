@@ -76,7 +76,9 @@ const AdminAchievements = () => {
     const fetchAchievements = async () => {
         try {
             const response = await client.get('/achievements');
-            setAchievements(response.data);
+            const data = Array.isArray(response.data) ? response.data : [];
+            const sorted = data.sort((a, b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date));
+            setAchievements(sorted);
         } catch (error) { console.error("Failed to fetch achievements:", error); }
         finally { setLoading(false); }
     };

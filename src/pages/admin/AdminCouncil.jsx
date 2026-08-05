@@ -23,7 +23,7 @@ const AdminCouncil = () => {
 
     /* ── BACKEND LOGIC UNCHANGED ── */
     const fetchMembers = async () => {
-        try { const r = await client.get('/council'); setMembers(r.data); }
+        try { const r = await client.get('/council'); const sorted = (Array.isArray(r.data) ? r.data : []).sort((a, b) => (a.name || '').localeCompare(b.name || '')); setMembers(sorted); }
         catch (e) { console.error(e); } finally { setLoading(false); }
     };
 
