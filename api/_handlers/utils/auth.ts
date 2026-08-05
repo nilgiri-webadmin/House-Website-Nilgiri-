@@ -1,6 +1,6 @@
 // JWT token verification and authentication utilities
 import type { VercelRequest } from '@vercel/node';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { supabaseAdmin } from './supabase';
 
 if (!process.env.JWT_SECRET) {

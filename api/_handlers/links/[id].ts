@@ -1,8 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
-import fs from 'fs/promises';
-import path from 'path';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 import { requireAdmin } from '../utils/permissions';
+import type { AuthRequest } from '../utils/auth';
 
 // Initialize Supabase
 const supabase = createClient(
@@ -145,6 +146,7 @@ export default async function handler(
 }
 
 async function handlePut(req: AuthRequest, res: VercelResponse) {
+  const { id } = req.query;
   const { title, url, description, category } = req.body;
 
   // Validate input
@@ -210,6 +212,8 @@ async function handlePut(req: AuthRequest, res: VercelResponse) {
 }
 
 async function handleDelete(req: AuthRequest, res: VercelResponse) {
+  const { id } = req.query;
+  
   // Try to delete from Supabase first
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     try {
