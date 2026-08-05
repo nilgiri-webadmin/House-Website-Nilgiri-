@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, ExternalLink, Database, AlignLeft } from 'lucide-react';
 import client from '../api/client';
-import './EventsPage.css'; // Reusing layout CSS
 
 const ResourcesPage = () => {
     const [links, setLinks] = useState([]);
