@@ -36,10 +36,9 @@ const ResourcesPage = () => {
 
     const catColors = {
         Academics: '#a78bfa',
-        Official: '#f59e0b',
-        Community: '#f87171',
-        Extracurriculars: '#34d399',
-        Forms: '#60a5fa',
+        'Quick Links': '#60a5fa',
+        'Student Activity': '#34d399',
+        'Annual Fest': '#f59e0b',
         Other: '#a1a1aa'
     };
 

@@ -58,10 +58,6 @@ const validateLink = (link: any) => {
     }
   }
 
-  if (link.description && typeof link.description !== 'string') {
-    errors.push('Description must be a string');
-  }
-
   if (link.category && typeof link.category !== 'string') {
     errors.push('Category must be a string');
   }
@@ -165,7 +161,6 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
     id: randomUUID(),
     title: title.trim(),
     url: url.trim(),
-    description: description ? description.trim() : null,
     category: category ? category.trim() : null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()

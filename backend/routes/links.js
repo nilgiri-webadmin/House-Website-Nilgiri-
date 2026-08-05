@@ -61,10 +61,6 @@ const validateLink = (link) => {
     }
   }
 
-  if (link.description && typeof link.description !== 'string') {
-    errors.push('Description must be a string');
-  }
-
   if (link.category && typeof link.category !== 'string') {
     errors.push('Category must be a string');
   }
@@ -151,7 +147,6 @@ router.post('/', authenticateToken, requireClubAdmin, async (req, res) => {
       id: randomUUID(),
       title: title.trim(),
       url: url.trim(),
-      description: description ? description.trim() : null,
       category: category ? category.trim() : null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
@@ -175,6 +170,7 @@ router.post('/', authenticateToken, requireClubAdmin, async (req, res) => {
 
       if (error) {
         console.error('Supabase create link error:', error);
+        return res.status(500).json({ error: error.message, details: error });
       }
     } catch (supabaseError) {
       console.warn('Supabase unavailable, saving to JSON file:', supabaseError.message);
@@ -217,7 +213,6 @@ router.put('/:id', authenticateToken, requireClubAdmin, async (req, res) => {
     const updatedLink = {
       title: title.trim(),
       url: url.trim(),
-      description: description ? description.trim() : null,
       category: category ? category.trim() : null,
       updated_at: new Date().toISOString()
     };

@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 export const authenticateToken = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.startsWith('Bearer ') 
-      ? authHeader.substring(7) 
+    const token = authHeader && authHeader.startsWith('Bearer ')
+      ? authHeader.substring(7)
       : null;
 
     if (!token) {
@@ -13,7 +13,7 @@ export const authenticateToken = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret');
-    
+
     // Normalize user object for consistency
     req.user = {
       userId: decoded.id || decoded.userId,
@@ -22,7 +22,7 @@ export const authenticateToken = (req, res, next) => {
       role: decoded.role?.toLowerCase() || '',
       clubId: decoded.clubId || decoded.club_id
     };
-    
+
     console.log('✅ Token authenticated for user:', req.user.email, 'Role:', req.user.role);
     next();
   } catch (error) {
@@ -39,13 +39,13 @@ export const requireRole = (...allowedRoles) => {
     }
 
     const userRole = req.user.role?.toLowerCase() || '';
-    const isAuthorized = allowedRoles.some(role => 
+    const isAuthorized = allowedRoles.some(role =>
       userRole === role.toLowerCase()
     );
 
     if (!isAuthorized) {
       console.warn(`❌ Permission denied for user ${req.user.email} with role ${req.user.role}. Required roles: ${allowedRoles.join(', ')}`);
-      return res.status(403).json({ 
+      return res.status(403).json({
         error: 'Forbidden - insufficient permissions',
         userRole: req.user.role,
         requiredRoles: allowedRoles

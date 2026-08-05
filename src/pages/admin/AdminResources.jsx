@@ -12,7 +12,7 @@ const AdminResources = () => {
     const emptyForm = { title: '', url: '', section: 'Academics' };
     const [formData, setFormData] = useState(emptyForm);
 
-    const SECTIONS = ['Academics', 'Official', 'Community', 'Extracurriculars', 'Forms', 'Other'];
+    const SECTIONS = ['Academics', 'Quick Links', 'Student Activity', 'Annual Fest', 'Other'];
 
     useEffect(() => { fetchLinks(); }, []);
 
@@ -56,7 +56,7 @@ const AdminResources = () => {
     const openNew = () => { setEditingItem(null); setFormData(emptyForm); setShowModal(true); };
 
     /* Category accent colors */
-    const CAT_COLOR = { Academics: '#a78bfa', Official: '#f59e0b', Community: '#f87171', Extracurriculars: '#34d399', Forms: '#60a5fa', Other: '#a1a1aa' };
+    const CAT_COLOR = { Academics: '#a78bfa', 'Quick Links': '#60a5fa', 'Student Activity': '#34d399', 'Annual Fest': '#f59e0b', Other: '#a1a1aa' };
     const catColor = (cat) => {
         const mainCat = (cat || '').split(' > ')[0];
         return CAT_COLOR[mainCat] || '#34d399';
