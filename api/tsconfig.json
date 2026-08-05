@@ -8,6 +8,7 @@
     "strict": false,
     "noEmit": true,
     "baseUrl": "..",
+    "esModuleInterop": true,
     "paths": {
       "@/*": [
         "./src/*"
