@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from './utils/supabase';
 import { authenticateRequest } from './utils/auth';
+import { ALL_ROLES } from './utils/permissions';
 import Busboy from 'busboy';
 
 export const config = {
@@ -107,7 +108,7 @@ export default async function handler(
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (!['secretary', 'webadmin', 'club'].includes(user.role)) {
+      if (!ALL_ROLES.includes(user.role)) {
         return res.status(403).json({ error: 'Forbidden' });
       }
 
@@ -249,7 +250,7 @@ export default async function handler(
         return res.status(401).json({ error: 'Unauthorized' });
       }
 
-      if (!['secretary', 'webadmin', 'club'].includes(user.role)) {
+      if (!ALL_ROLES.includes(user.role)) {
         return res.status(403).json({ error: 'Forbidden' });
       }
 
