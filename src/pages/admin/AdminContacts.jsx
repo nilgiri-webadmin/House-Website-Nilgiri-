@@ -3,6 +3,7 @@ import client from '../../api/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Mail, User, Trash2 } from 'lucide-react';
 import { ROLE_OPTIONS } from '@/lib/permissions';
+import '../ResourcesPage.css';
 
 const AdminContacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -82,138 +83,15 @@ const AdminContacts = () => {
   };
 
   return (
-    <>
+    <div className="resources-page admin-contacts-admin-page">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500;700&display=swap');
-
-        .admin-contacts-header {
+        .admin-contacts-actions {
           display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          gap: 1.5rem;
-          align-items: flex-end;
-          margin-bottom: 2.5rem;
+          justify-content: flex-end;
+          margin-top: 1.5rem;
         }
 
-        .admin-contacts-meta {
-          display: grid;
-          gap: 0.75rem;
-        }
-
-        .admin-contacts-subtitle {
-          font-family: 'DM Mono', monospace;
-          text-transform: uppercase;
-          letter-spacing: 0.3em;
-          color: #34d399;
-          font-size: 0.68rem;
-        }
-
-        .admin-contacts-title {
-          margin: 0;
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(2.4rem, 4vw, 3.4rem);
-          color: white;
-          line-height: 0.95;
-        }
-
-        .admin-contacts-description {
-          margin: 0;
-          max-width: 680px;
-          color: #cbd5e1;
-          font-family: 'DM Mono', monospace;
-          font-size: 0.92rem;
-          line-height: 1.8;
-        }
-
-        .contacts-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 1rem;
-        }
-
-        .contact-card {
-          background: #090b12;
-          border: 1px solid rgba(255,255,255,.06);
-          border-radius: 1.25rem;
-          padding: 1.5rem;
-          display: grid;
-          gap: 1rem;
-        }
-
-        .contact-card-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 1rem;
-        }
-
-        .contact-person {
-          display: grid;
-          gap: 0.45rem;
-        }
-
-        .contact-person-name {
-          margin: 0;
-          color: white;
-          font-size: 1.15rem;
-          font-weight: 700;
-          font-family: 'DM Mono', monospace;
-        }
-
-        .contact-person-role {
-          margin: 0;
-          color: #9ca3af;
-          font-size: 0.8rem;
-          font-family: 'DM Mono', monospace;
-          text-transform: uppercase;
-          letter-spacing: 0.18em;
-        }
-
-        .contact-email-link {
-          color: #a5b4fc;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.55rem;
-          text-decoration: none;
-          font-family: 'DM Mono', monospace;
-          font-size: 0.9rem;
-        }
-
-        .contact-actions {
-          display: flex;
-          gap: 0.75rem;
-          flex-wrap: wrap;
-          margin-top: 0.5rem;
-        }
-
-        .contact-button {
-          font-family: 'DM Mono', monospace;
-          font-size: 0.75rem;
-          text-transform: uppercase;
-          letter-spacing: 0.18em;
-          padding: 0.8rem 1rem;
-          border: 1px solid rgba(255,255,255,.08);
-          background: rgba(255,255,255,.03);
-          color: #cbd5e1;
-          cursor: pointer;
-          transition: background 0.2s, color 0.2s, transform 0.15s;
-        }
-
-        .contact-button:hover {
-          background: rgba(52,211,153,.12);
-          color: white;
-        }
-
-        .delete-button {
-          border-color: rgba(248,113,113,.25);
-        }
-
-        .delete-button:hover {
-          background: rgba(248,113,113,.16);
-          color: #fecaca;
-        }
-
-        .new-contact-button {
+        .admin-contacts-actions button {
           display: inline-flex;
           align-items: center;
           gap: 0.65rem;
@@ -222,7 +100,7 @@ const AdminContacts = () => {
           background: #34d399;
           color: black;
           padding: 0.95rem 1.35rem;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 0.82rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -255,7 +133,7 @@ const AdminContacts = () => {
 
         .modal-title {
           margin: 0;
-          font-family: 'Bebas Neue', sans-serif;
+          font-family: var(--font-heading);
           font-size: 2rem;
           color: white;
         }
@@ -263,7 +141,7 @@ const AdminContacts = () => {
         .modal-subtitle {
           margin: 0.5rem 0 0;
           color: #cbd5e1;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 0.75rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -279,7 +157,7 @@ const AdminContacts = () => {
           display: block;
           margin-bottom: 0.5rem;
           color: #94a3b8;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 0.75rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -293,7 +171,7 @@ const AdminContacts = () => {
           background: #071018;
           color: white;
           padding: 0.95rem 1rem;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 0.95rem;
           outline: none;
         }
@@ -317,7 +195,7 @@ const AdminContacts = () => {
           cursor: pointer;
           border-radius: 0.85rem;
           padding: 0.95rem 1.25rem;
-          font-family: 'DM Mono', monospace;
+          font-family: var(--font-body);
           font-size: 0.85rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -334,42 +212,56 @@ const AdminContacts = () => {
         }
 
         @media (max-width: 720px) {
-          .admin-contacts-header {
-            align-items: stretch;
+          .admin-contacts-actions {
+            justify-content: stretch;
           }
-          .admin-contacts-title {
-            font-size: 2.2rem;
+          .admin-contacts-actions button {
+            width: 100%;
+            justify-content: center;
           }
         }
       `}</style>
 
-      <div className="admin-contacts-header">
-        <div className="admin-contacts-meta">
-          <span className="admin-contacts-subtitle">Administrative Directory</span>
-          <h1 className="admin-contacts-title">Important Contacts</h1>
-          <p className="admin-contacts-description">
-            Create and maintain the official student contact directory for the secretary team, web admin, and other key roles.
-          </p>
+      <div className="resources-header-wrapper section-header">
+        <span className="section-tag">Administrative Directory</span>
+        <h1 className="section-title">Important Contacts</h1>
+        <div className="resources-intro-text">
+          Create and maintain the official student contact directory for UHC, LHC, Web Administrators, Community Admin, and Mentor roles.
         </div>
-        <button className="new-contact-button" onClick={() => openForm()}>
+      </div>
+
+      <div className="admin-contacts-actions">
+        <button onClick={() => openForm()}>
           <Plus size={16} /> Add Contact
         </button>
       </div>
 
       {loading ? (
-        <div style={{ color: '#94a3b8', fontFamily: 'DM Mono, monospace' }}>Loading contacts...</div>
+        <div className="resources-loading">Loading contacts...</div>
       ) : contacts.length === 0 ? (
-        <div style={{ color: '#94a3b8', fontFamily: 'DM Mono, monospace' }}>No contacts created yet.</div>
+        <div className="resources-empty">No contacts created yet.</div>
       ) : (
-        <div className="contacts-grid">
+        <div className="resource-grid">
           {contacts.map((contact) => (
-            <div key={contact.id} className="contact-card">
-              <div className="contact-card-top">
-                <div className="contact-person">
-                  <p className="contact-person-name">{contact.name}</p>
-                  <p className="contact-person-role">{contact.role}</p>
+            <div key={contact.id} className="resource-card">
+              <div className="resource-card-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div className="resource-section-icon">
+                    <User size={20} />
+                  </div>
+                  <div>
+                    <p className="contact-role">{contact.role}</p>
+                    <h4 className="resource-card-title">{contact.name}</h4>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+              </div>
+
+              <div className="resource-card-body" style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
+                <div className="contact-detail">
+                  <Mail size={14} />
+                  <span>{contact.email}</span>
+                </div>
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                   <button className="contact-button" onClick={() => openForm(contact)}>
                     <User size={14} /> Edit
                   </button>
@@ -378,9 +270,6 @@ const AdminContacts = () => {
                   </button>
                 </div>
               </div>
-              <a className="contact-email-link" href={`mailto:${contact.email}`}>
-                <Mail size={14} /> <span>{contact.email}</span>
-              </a>
             </div>
           ))}
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, User, Briefcase } from 'lucide-react';
 import client from '../api/client';
-import './ImportantContactsPage.css';
+import './ResourcesPage.css';
 
 const ImportantContactsPage = () => {
   const [contacts, setContacts] = useState([]);
@@ -41,16 +41,18 @@ const ImportantContactsPage = () => {
       ) : !hasContacts ? (
         <div className="resources-empty">the forest is quite right now, come back later to find something new here</div>
       ) : (
-        <div className="important-contacts-grid">
+        <div className="resource-grid">
           {contacts.map((contact) => (
-            <article key={contact.id} className="contact-card">
-              <div className="contact-card-top">
-                <div className="contact-card-icon">
-                  <User size={20} />
-                </div>
-                <div>
-                  <p className="contact-role">{contact.role}</p>
-                  <h2 className="contact-name">{contact.name}</h2>
+            <div key={contact.id} className="resource-card">
+              <div className="resource-card-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div className="resource-section-icon">
+                    <User size={20} />
+                  </div>
+                  <div>
+                    <p className="contact-role">{contact.role}</p>
+                    <h4 className="resource-card-title">{contact.name}</h4>
+                  </div>
                 </div>
               </div>
 
@@ -64,7 +66,7 @@ const ImportantContactsPage = () => {
                   <span>{contact.email}</span>
                 </a>
               </div>
-            </article>
+            </div>
           ))}
         </div>
       )}

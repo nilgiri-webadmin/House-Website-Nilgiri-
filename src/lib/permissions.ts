@@ -7,10 +7,11 @@ export const ROLE_DISPLAY_NAMES = {
 } as const;
 
 export const ROLE_OPTIONS = [
-  ROLE_DISPLAY_NAMES.secretary,
-  ROLE_DISPLAY_NAMES.depsec,
-  ROLE_DISPLAY_NAMES.webadmin,
-  'Other',
+  'UHC',
+  'LHC',
+  'Web Administrators',
+  'Community Admin',
+  'Mentor',
 ] as const;
 
 export type RoleOption = typeof ROLE_OPTIONS[number];
