@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import client from '../../api/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Mail, User, Trash2 } from 'lucide-react';
+import { ROLE_OPTIONS } from '@/lib/permissions';
 
 const AdminContacts = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', role: 'Secretary' });
-
-  const ROLES = ['Secretary', 'Deputy Secretary', 'Web Admin', 'Other'];
+  const [formData, setFormData] = useState({ name: '', email: '', role: ROLE_OPTIONS[0] });
 
   useEffect(() => {
     fetchContacts();
@@ -28,14 +27,14 @@ const AdminContacts = () => {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', email: '', role: 'Secretary' });
+    setFormData({ name: '', email: '', role: ROLE_OPTIONS[0] });
     setEditing(null);
   };
 
   const openForm = (item = null) => {
     if (item) {
       setEditing(item);
-      setFormData({ name: item.name || '', email: item.email || '', role: item.role || 'Secretary' });
+      setFormData({ name: item.name || '', email: item.email || '', role: item.role || ROLE_OPTIONS[0] });
     } else {
       resetForm();
     }
@@ -441,7 +440,7 @@ const AdminContacts = () => {
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                     >
-                      {ROLES.map((role) => (
+                      {ROLE_OPTIONS.map((role) => (
                         <option key={role} value={role}>{role}</option>
                       ))}
                     </select>
