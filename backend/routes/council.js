@@ -1,6 +1,7 @@
 import express from 'express';
 import { createClient } from '@supabase/supabase-js';
 import { authenticateToken, requireClubAdmin } from '../middleware/auth.js';
+import { sortByLeadershipPriority } from '../utils/councilPriority.js';
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.get('/', async (req, res) => {
       return res.status(500).json({ error: error.message });
     }
 
-    res.json(data || []);
+    res.json(sortByLeadershipPriority(data || []));
   } catch (error) {
     console.error('Get council members error:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -73,7 +74,7 @@ router.get('/team/:teamName', async (req, res) => {
       return res.status(500).json({ error: error.message });
     }
 
-    res.json(data || []);
+    res.json(sortByLeadershipPriority(data || []));
   } catch (error) {
     console.error('Get team members error:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -113,6 +114,8 @@ router.post('/sync-yaml', authenticateToken, requireClubAdmin, async (req, res) 
       else if (team === 'Mentor') yamlData.mentors.push(entry);
       else if (team === 'Community Admin' || team === 'Community Admins') yamlData.community_admins.push(entry);
     });
+
+    yamlData.niligiri_uhc = sortByLeadershipPriority(yamlData.niligiri_uhc);
 
     const yamlString = yaml.dump(yamlData);
     const targetPath = path.join(process.cwd(), '../public/council-data.yml');

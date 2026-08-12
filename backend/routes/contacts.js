@@ -2,6 +2,7 @@ import express from 'express';
 import { createClient } from '@supabase/supabase-js';
 import { randomUUID } from 'crypto';
 import { authenticateToken, requireRole } from '../middleware/auth.js';
+import { sortByLeadershipPriority } from '../utils/councilPriority.js';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -57,7 +58,7 @@ router.get('/', async (req, res) => {
           .order('created_at', { ascending: false });
 
         if (!error) {
-          return res.json({ contacts: data, source: 'supabase' });
+          return res.json({ contacts: sortByLeadershipPriority(data, (contact) => contact.role), source: 'supabase' });
         }
 
         console.warn('Supabase contacts fetch failed:', error.message);
@@ -66,7 +67,7 @@ router.get('/', async (req, res) => {
       }
     }
 
-    const contacts = await readContactsFromFile();
+    const contacts = sortByLeadershipPriority(await readContactsFromFile(), (contact) => contact.role);
     res.json({ contacts, source: 'json' });
   } catch (error) {
     console.error('Get contacts error:', error);

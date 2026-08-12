@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
+import { sortByLeadershipPriority } from "@/lib/councilPriority";
 
 export interface CouncilMember {
   id: string;
@@ -23,7 +24,7 @@ export function useCouncilMembers(team?: string, region?: string) {
     queryKey,
     queryFn: async () => {
       const res = await api.getCouncil({ team, region });
-      return res.council;
+      return sortByLeadershipPriority(res.council);
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,

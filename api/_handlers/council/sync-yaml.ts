@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../utils/supabase';
 import { requireAdmin } from '../utils/permissions';
+import { sortByLeadershipPriority } from '../utils/councilPriority';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import * as yaml from 'js-yaml';
@@ -72,6 +73,8 @@ async function handlePost(req: AuthRequest, res: VercelResponse) {
 
       yamlData[teamKey].push(yamlMember);
     });
+
+    yamlData.niligiri_uhc = sortByLeadershipPriority(yamlData.niligiri_uhc, (member) => member.position);
 
     // Generate YAML content
     const yamlContent = yaml.dump(yamlData, {

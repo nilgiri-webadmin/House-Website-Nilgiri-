@@ -3,6 +3,50 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import client from '../api/client';
 import yaml from 'js-yaml';
 import './Council.css';
+import { compareLeadershipPriority, sortByLeadershipPriority } from '../lib/councilPriority';
+
+export const COUNCIL_ARCHIVE_YEARS = [
+    { label: '2025-26', file: 'council-2025-26.yml' },
+    { label: '2026-27', file: 'council-2026-27.yml' },
+];
+
+export const flattenYamlCouncilData = (yamlData) => {
+    const flattenedData = [];
+    Object.keys(yamlData).forEach(category => {
+        (yamlData[category] || []).forEach(member => {
+            let team = '';
+            let subTeam = '';
+            if (category === 'niligiri_uhc') {
+                team = 'UHC';
+            } else if (category === 'operations') {
+                team = 'Multimedia/PR/WebOps';
+                const pos = (member.position || '').toLowerCase();
+                if (pos.includes('pr')) {
+                    subTeam = 'PR';
+                } else if (pos.includes('webops') || pos.includes('web-ops')) {
+                    subTeam = 'WebOps';
+                } else {
+                    subTeam = 'Multimedia';
+                }
+            } else if (category === 'regional_coordinators') {
+                team = 'RC';
+            } else if (category === 'mentors') {
+                team = 'Mentors';
+            } else if (category === 'community_admins') {
+                team = 'Community Admins';
+            }
+
+            flattenedData.push({
+                ...member,
+                team,
+                subTeam,
+                role: member.position,
+                profile_photo_url: member.image
+            });
+        });
+    });
+    return flattenedData;
+};
 
 const CouncilCard = ({ member, index }) => {
     const ref = useRef(null);
@@ -74,10 +118,11 @@ const CouncilCard = ({ member, index }) => {
     );
 };
 
-const Council = () => {
+const Council = ({ archive = false }) => {
     const [council, setCouncil] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState('UHC');
+    const [selectedYear, setSelectedYear] = useState(COUNCIL_ARCHIVE_YEARS[0].label);
 
     // Normalize team names from the API to match our UI category buttons
     const normalizeTeam = (member) => {
@@ -109,7 +154,27 @@ const Council = () => {
 
     useEffect(() => {
         const fetchCouncil = async () => {
+            setLoading(true);
             try {
+                if (archive) {
+                    const yearConfig = COUNCIL_ARCHIVE_YEARS.find((y) => y.label === selectedYear);
+                    if (!yearConfig) {
+                        setCouncil([]);
+                        return;
+                    }
+
+                    const yamlResponse = await fetch(`/${yearConfig.file}`);
+                    if (!yamlResponse.ok) {
+                        setCouncil([]);
+                        return;
+                    }
+
+                    const yamlText = await yamlResponse.text();
+                    const yamlData = yaml.load(yamlText) || {};
+                    setCouncil(flattenYamlCouncilData(yamlData));
+                    return;
+                }
+
                 const response = await client.get('/council?limit=20');
                 const councilData = Array.isArray(response.data)
                     ? response.data
@@ -121,8 +186,6 @@ const Council = () => {
                 }
 
                 // Fallback to the static YAML file from Supabase Storage bucket if the API request above fails or is empty.
-
-                // Fetch the static YAML file from Supabase Storage bucket.
                 const yamlResponse = await fetch('https://nvzrcjadhflrsoieqxyu.supabase.co/storage/v1/object/public/public-data/council-data.yml');
                 if (!yamlResponse.ok) {
                     setCouncil([]);
@@ -131,43 +194,7 @@ const Council = () => {
 
                 const yamlText = await yamlResponse.text();
                 const yamlData = yaml.load(yamlText) || {};
-
-                const flattenedData = [];
-                Object.keys(yamlData).forEach(category => {
-                    (yamlData[category] || []).forEach(member => {
-                        let team = '';
-                        let subTeam = '';
-                        if (category === 'niligiri_uhc') {
-                            team = 'UHC';
-                        } else if (category === 'operations') {
-                            team = 'Multimedia/PR/WebOps';
-                            const pos = (member.position || '').toLowerCase();
-                            if (pos.includes('pr')) {
-                                subTeam = 'PR';
-                            } else if (pos.includes('webops') || pos.includes('web-ops')) {
-                                subTeam = 'WebOps';
-                            } else {
-                                subTeam = 'Multimedia';
-                            }
-                        } else if (category === 'regional_coordinators') {
-                            team = 'RC';
-                        } else if (category === 'mentors') {
-                            team = 'Mentors';
-                        } else if (category === 'community_admins') {
-                            team = 'Community Admins';
-                        }
-
-                        flattenedData.push({
-                            ...member,
-                            team,
-                            subTeam,
-                            role: member.position,
-                            profile_photo_url: member.image
-                        });
-                    });
-                });
-
-                setCouncil(flattenedData);
+                setCouncil(flattenYamlCouncilData(yamlData));
             } catch (error) {
                 console.error("Failed to fetch council:", error);
                 setCouncil([]);
@@ -176,18 +203,24 @@ const Council = () => {
             }
         };
         fetchCouncil();
-    }, []);
+    }, [archive, selectedYear]);
 
     let filteredCouncil = [];
+    const getMemberRole = (member) => member.role || member.position;
+
     if (selectedCategory === 'Multimedia/PR/WebOps') {
         filteredCouncil = council.filter(member => member.team === 'Multimedia/PR/WebOps');
-        // Sort: Multimedia first, then PR, then WebOps
         filteredCouncil.sort((a, b) => {
+            const leadershipDiff = compareLeadershipPriority(a, b, getMemberRole);
+            if (leadershipDiff !== 0) return leadershipDiff;
             const order = { 'Multimedia': 1, 'PR': 2, 'WebOps': 3 };
             return (order[a.subTeam] || 4) - (order[b.subTeam] || 4);
         });
     } else {
-        filteredCouncil = council.filter(member => member.team === selectedCategory);
+        filteredCouncil = sortByLeadershipPriority(
+            council.filter(member => member.team === selectedCategory),
+            getMemberRole
+        );
     }
 
     return (
@@ -198,10 +231,34 @@ const Council = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
             >
-                <span className="section-tag">Governance</span>
-                <h2 className="section-title">The House Council</h2>
-                <p className="section-subtitle">Meet the visionary leaders driving Nilgiri forward.</p>
+                <span className="section-tag">{archive ? 'Archive' : 'Governance'}</span>
+                <h2 className="section-title">{archive ? 'Council Archive' : 'The House Council'}</h2>
+                <p className="section-subtitle">
+                    {archive
+                        ? 'Browse past House Council rosters by academic year.'
+                        : 'Meet the visionary leaders driving Nilgiri forward.'}
+                </p>
             </motion.div>
+
+            {archive && (
+                <div className="year-selector-bar">
+                    <label htmlFor="council-year-select" className="year-selector-label">
+                        Academic Year
+                    </label>
+                    <select
+                        id="council-year-select"
+                        className="year-selector"
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(e.target.value)}
+                    >
+                        {COUNCIL_ARCHIVE_YEARS.map((year) => (
+                            <option key={year.label} value={year.label}>
+                                {year.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
 
             <div className="category-bar">
                 <button
@@ -236,14 +293,18 @@ const Council = () => {
                 </button>
             </div>
 
-            {filteredCouncil.length === 0 ? (
+            {loading ? (
+                <div className="forest-empty-state">
+                    <p>Loading council data...</p>
+                </div>
+            ) : filteredCouncil.length === 0 ? (
                 <div className="forest-empty-state">
                     <p>The council is yet to be decided. Kindly check back later</p>
                 </div>
             ) : (
                 <div className="council-grid">
                     {filteredCouncil.map((member, idx) => (
-                        <CouncilCard key={member.id} member={member} index={idx} />
+                        <CouncilCard key={member.id || `${member.name}-${member.role}-${idx}`} member={member} index={idx} />
                     ))}
                 </div>
             )}

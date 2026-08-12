@@ -8,6 +8,7 @@ import MeetupsPage from './pages/MeetupsPage';
 import AchievementsPage from './pages/AchievementsPage';
 import CommunityPage from './pages/CommunityPage';
 import CouncilPage from './pages/CouncilPage';
+import CouncilArchivePage from './pages/CouncilArchivePage';
 import GalleryPage from './pages/GalleryPage';
 import Login from './pages/Login';
 import JoinPage from './pages/JoinPage';
@@ -71,6 +72,7 @@ const AppContent = () => {
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/council" element={<CouncilPage />} />
+        <Route path="/council/archive" element={<CouncilArchivePage />} />
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/important-contacts" element={<ImportantContactsPage />} />

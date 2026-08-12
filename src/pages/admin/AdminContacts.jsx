@@ -3,6 +3,7 @@ import client from '../../api/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Mail, User, Trash2 } from 'lucide-react';
 import { ROLE_OPTIONS } from '@/lib/permissions';
+import { sortByLeadershipPriority } from '@/lib/councilPriority';
 import '../ResourcesPage.css';
 
 const AdminContacts = () => {
@@ -19,7 +20,7 @@ const AdminContacts = () => {
   const fetchContacts = async () => {
     try {
       const response = await client.get('/contacts');
-      setContacts(response.data.contacts || []);
+      setContacts(sortByLeadershipPriority(response.data.contacts || [], (contact) => contact.role));
     } catch (error) {
       console.error('Failed to fetch contacts:', error);
     } finally {

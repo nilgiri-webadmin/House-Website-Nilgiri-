@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import client from '../../api/client';
+import { sortByLeadershipPriority } from '../../lib/councilPriority';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Upload, ImageIcon, User, Briefcase, Mail, Globe, Calendar, Linkedin, RefreshCw } from 'lucide-react';
 
@@ -23,7 +24,7 @@ const AdminCouncil = () => {
 
     /* ── BACKEND LOGIC UNCHANGED ── */
     const fetchMembers = async () => {
-        try { const r = await client.get('/council'); const sorted = (Array.isArray(r.data) ? r.data : []).sort((a, b) => (a.name || '').localeCompare(b.name || '')); setMembers(sorted); }
+        try { const r = await client.get('/council'); const sorted = sortByLeadershipPriority(Array.isArray(r.data) ? r.data : []); setMembers(sorted); }
         catch (e) { console.error(e); } finally { setLoading(false); }
     };
 

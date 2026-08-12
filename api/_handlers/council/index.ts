@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin, supabaseClient } from '../utils/supabase';
 import { requireAdmin } from '../utils/permissions';
+import { sortByLeadershipPriority } from '../utils/councilPriority';
 
 export default async function handler(
   req: VercelRequest,
@@ -58,7 +59,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
       throw error;
     }
 
-    return res.status(200).json(data || []);
+    return res.status(200).json(sortByLeadershipPriority(data || []));
   } catch (error: any) {
     console.error('Error fetching council members:', error);
     return res.status(500).json({ error: 'Internal server error' });

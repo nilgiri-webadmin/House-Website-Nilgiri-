@@ -37,6 +37,7 @@ const Footer = () => {
                             <li><a href="#meetups">Pulse Gatherings</a></li>
                             <li><a href="#communities">The Tribe</a></li>
                             <li><Link to="/council">High Council</Link></li>
+                            <li><Link to="/council/archive">Archive</Link></li>
                         </ul>
                     </div>
 
@@ -48,6 +49,7 @@ const Footer = () => {
                             <li><a href="https://docs.google.com/document/u/1/d/e/2PACX-1vRxGnnDCVAO3KX2CGtMIcJQuDrAasVk2JHbDxkjsGrTP5ShhZK8N6ZSPX89lexKx86QPAUswSzGLsOA/pub" target="_blank" rel="noreferrer">Student Handbook <ExternalLink size={12} /></a></li>
                             <li><a href="https://forms.gle/NQkWj5p8146CPuCBA" target="_blank" rel="noreferrer">Grievance Redressal <ExternalLink size={12} /></a></li>
                             <li><a href="https://drive.google.com/file/d/1_vslwUdBNFCH6DSTLeVlqvX5Rtw57gSD/view" target="_blank" rel="noreferrer">Academic Calendar <ExternalLink size={12} /></a></li>
+                            <li><a href="https://zincxnh.vercel.app/" target="_blank" rel="noreferrer">ZINCxNH <ExternalLink size={12} /></a></li>
                         </ul>
                     </div>
 

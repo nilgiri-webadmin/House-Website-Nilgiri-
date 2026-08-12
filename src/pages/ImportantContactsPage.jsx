@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, User, Briefcase, Users } from 'lucide-react';
 import client from '../api/client';
+import { getLeadershipPriority, sortByLeadershipPriority } from '../lib/councilPriority';
 import './ResourcesPage.css';
 
 const ImportantContactsPage = () => {
@@ -11,7 +12,7 @@ const ImportantContactsPage = () => {
     const fetchContacts = async () => {
       try {
         const response = await client.get('/contacts');
-        setContacts(response.data.contacts || []);
+        setContacts(sortByLeadershipPriority(response.data.contacts || [], (contact) => contact.role));
       } catch (fetchError) {
         console.error('Failed to load important contacts:', fetchError);
       } finally {
@@ -59,8 +60,15 @@ const ImportantContactsPage = () => {
         <div className="resources-empty">the forest is quite right now, come back later to find something new here</div>
       ) : (
         <div className="resources-container">
-          {Object.entries(categorizedContacts).sort().map(([role, items]) => {
+          {Object.entries(categorizedContacts)
+            .sort(([roleA], [roleB]) => {
+              const priorityDiff = getLeadershipPriority(roleA) - getLeadershipPriority(roleB);
+              if (priorityDiff !== 0) return priorityDiff;
+              return roleA.localeCompare(roleB);
+            })
+            .map(([role, items]) => {
             const color = roleColors[role] || '#34d399';
+            const sortedItems = sortByLeadershipPriority(items, (contact) => contact.role);
             return (
               <div key={role} className="resource-section">
                 <div className="resource-section-header">
@@ -72,7 +80,7 @@ const ImportantContactsPage = () => {
                 <div className="resource-subsections">
                   <div>
                     <div className="resource-grid">
-                      {items.map((contact) => (
+                      {sortedItems.map((contact) => (
                         <a key={contact.id} href={`mailto:${contact.email}`} className="resource-card">
                           <div className="resource-card-accent" style={{ background: color }}></div>
                           <div className="resource-card-header">

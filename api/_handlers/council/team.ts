@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../utils/supabase';
+import { sortByLeadershipPriority } from '../utils/councilPriority';
 
 export default async function handler(
   req: VercelRequest,
@@ -30,7 +31,7 @@ export default async function handler(
       throw error;
     }
 
-    return res.status(200).json({ council: data || [] });
+    return res.status(200).json({ council: sortByLeadershipPriority(data || []) });
   } catch (error: any) {
     console.error('Error fetching team members:', error);
     return res

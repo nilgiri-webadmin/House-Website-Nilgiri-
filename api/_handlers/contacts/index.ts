@@ -5,6 +5,7 @@ import * as path from 'path';
 import { randomUUID } from 'crypto';
 import { requireAdmin } from '../utils/permissions';
 import type { AuthRequest } from '../utils/auth';
+import { sortByLeadershipPriority } from '../utils/councilPriority';
 
 const supabase = createClient(
   process.env.SUPABASE_URL || '',
@@ -73,7 +74,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .order('created_at', { ascending: false });
 
           if (!error && data !== null) {
-            return res.status(200).json({ contacts: data, source: 'supabase' });
+            return res.status(200).json({
+              contacts: sortByLeadershipPriority(data, (contact) => contact.role),
+              source: 'supabase'
+            });
           }
 
           console.warn('Supabase fetch contacts error:', error?.message);
@@ -82,7 +86,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       }
 
-      contacts = await readContactsFromFile();
+      contacts = sortByLeadershipPriority(await readContactsFromFile(), (contact) => contact.role);
       return res.status(200).json({ contacts, source: 'json' });
     }
 
