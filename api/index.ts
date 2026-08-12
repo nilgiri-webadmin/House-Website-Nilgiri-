@@ -171,6 +171,18 @@ export default async function handler(
       return linksHandler(req, res);
     }
 
+    if (path === '/api/contacts') {
+      const { default: contactsHandler } = await import('./_handlers/contacts/index');
+      return contactsHandler(req, res);
+    }
+
+    if (path.match(/^\/api\/contacts\/[^/]+$/)) {
+      const contactId = path.split('/')[3];
+      req.query = { ...req.query, id: contactId };
+      const { default: contactHandler } = await import('./_handlers/contacts/[id]');
+      return contactHandler(req, res);
+    }
+
     if (path === '/api/logs/log') {
       const { default: logHandler } = await import('./_handlers/logs/log');
       return logHandler(req, res);

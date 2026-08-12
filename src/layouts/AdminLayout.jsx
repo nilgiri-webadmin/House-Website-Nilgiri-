@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, Grid, LogOut, LayoutDashboard, Users, Calendar, MessageSquare, Trophy, UserCircle, BookOpen } from 'lucide-react';
+import { Bell, Grid, LogOut, LayoutDashboard, Users, Calendar, MessageSquare, Trophy, UserCircle, BookOpen, Mail } from 'lucide-react';
 import Sidebar from '../pages/admin/Sidebar';
 
 const ROLE_DISPLAY_NAMES = {
@@ -59,6 +59,7 @@ const AdminLayout = () => {
         { path: '/admin/council', label: 'Council Members', icon: UserCircle },
         { path: '/admin/complaints', label: 'Complaints', icon: BookOpen },
         { path: '/admin/resources', label: 'Resources', icon: BookOpen },
+        { path: '/admin/contacts', label: 'Contacts', icon: Mail },
     ];
 
     return (

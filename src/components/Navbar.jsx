@@ -65,6 +65,7 @@ const Navbar = () => {
         { name: "Hall of Fame", path: "/achievements" },
         { name: "Community", path: "/community" },
         { name: "Resources", path: "/resources" },
+        { name: "Important Contacts", path: "/important-contacts" },
     ];
 
     return (
@@ -120,6 +121,8 @@ const Navbar = () => {
                                 <Link to="/meetups" onClick={() => setMobileOpen(false)}>MEETUPS</Link>
                                 <Link to="/achievements" onClick={() => setMobileOpen(false)}>HALL OF FAME</Link>
                                 <Link to="/community" onClick={() => setMobileOpen(false)}>COMMUNITY</Link>
+                                <Link to="/resources" onClick={() => setMobileOpen(false)}>RESOURCES</Link>
+                                <Link to="/important-contacts" onClick={() => setMobileOpen(false)}>IMPORTANT CONTACTS</Link>
                             </div>
                         </motion.div>
                     )}

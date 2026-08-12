@@ -21,6 +21,8 @@ import AdminMeetups from './pages/admin/AdminMeetups';
 import AdminCouncil from './pages/admin/AdminCouncil';
 import AdminResources from './pages/admin/AdminResources';
 import ResourcesPage from './pages/ResourcesPage';
+import ImportantContactsPage from './pages/ImportantContactsPage';
+import AdminContacts from './pages/admin/AdminContacts';
 import './App.css';
 
 const ScrollToTop = () => {
@@ -71,6 +73,7 @@ const AppContent = () => {
         <Route path="/council" element={<CouncilPage />} />
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/resources" element={<ResourcesPage />} />
+        <Route path="/important-contacts" element={<ImportantContactsPage />} />
         <Route path="/login" element={<Login />} />
 
         {/* Admin Routes */}
@@ -83,6 +86,7 @@ const AppContent = () => {
           <Route path="council" element={<AdminCouncil />} />
           <Route path="complaints" element={<AdminComplaints />} />
           <Route path="resources" element={<AdminResources />} />
+          <Route path="contacts" element={<AdminContacts />} />
         </Route>
       </Routes>
       {!isAdmin && <Footer />}

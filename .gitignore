@@ -42,3 +42,5 @@ yarn-error.log*
 scratch/
 test.cjs
 test.js
+
+public/council-data.yml
