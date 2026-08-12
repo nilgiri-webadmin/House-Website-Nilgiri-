@@ -244,31 +244,34 @@ const AdminContacts = () => {
         <div className="resource-grid">
           {contacts.map((contact) => (
             <div key={contact.id} className="resource-card">
+              <div className="resource-card-accent" style={{ background: '#34d399' }}></div>
               <div className="resource-card-header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div className="resource-section-icon">
-                    <User size={20} />
-                  </div>
-                  <div>
-                    <p className="contact-role">{contact.role}</p>
-                    <h4 className="resource-card-title">{contact.name}</h4>
-                  </div>
-                </div>
+                <h4 className="resource-card-title">{contact.name}</h4>
+                <User size={16} className="resource-card-icon" style={{ '--hover-color': '#34d399' }} />
               </div>
 
-              <div className="resource-card-body" style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
-                <div className="contact-detail">
-                  <Mail size={14} />
-                  <span>{contact.email}</span>
-                </div>
-                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                  <button className="contact-button" onClick={() => openForm(contact)}>
-                    <User size={14} /> Edit
-                  </button>
-                  <button className="contact-button delete-button" onClick={() => handleDelete(contact.id)}>
-                    <Trash2 size={14} /> Delete
-                  </button>
-                </div>
+              <div className="resource-card-desc-wrap">
+                <User size={12} className="resource-card-desc-icon" />
+                <p className="resource-card-desc">{contact.role}</p>
+              </div>
+              <div className="resource-card-desc-wrap" style={{ marginTop: '0.5rem' }}>
+                <Mail size={12} className="resource-card-desc-icon" />
+                <p className="resource-card-desc">{contact.email}</p>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem' }}>
+                <button 
+                  onClick={() => openForm(contact)}
+                  style={{ background: 'rgba(255,255,255,0.05)', border: 'none', padding: '0.5rem 1rem', borderRadius: '0.5rem', color: '#fff', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                >
+                  <User size={14} /> Edit
+                </button>
+                <button 
+                  onClick={() => handleDelete(contact.id)}
+                  style={{ background: 'rgba(239,68,68,0.1)', border: 'none', padding: '0.5rem 1rem', borderRadius: '0.5rem', color: '#ef4444', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                >
+                  <Trash2 size={14} /> Delete
+                </button>
               </div>
             </div>
           ))}

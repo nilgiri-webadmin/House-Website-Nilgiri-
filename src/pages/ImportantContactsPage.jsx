@@ -44,26 +44,20 @@ const ImportantContactsPage = () => {
         <div className="resource-grid">
           {contacts.map((contact) => (
             <div key={contact.id} className="resource-card">
+              <div className="resource-card-accent" style={{ background: '#34d399' }}></div>
               <div className="resource-card-header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div className="resource-section-icon">
-                    <User size={20} />
-                  </div>
-                  <div>
-                    <p className="contact-role">{contact.role}</p>
-                    <h4 className="resource-card-title">{contact.name}</h4>
-                  </div>
-                </div>
+                <h4 className="resource-card-title">{contact.name}</h4>
+                <User size={16} className="resource-card-icon" style={{ '--hover-color': '#34d399' }} />
               </div>
 
-              <div className="contact-card-body">
-                <div className="contact-detail">
-                  <Briefcase size={14} />
-                  <span>{contact.role}</span>
-                </div>
-                <a href={`mailto:${contact.email}`} className="contact-email">
-                  <Mail size={14} />
-                  <span>{contact.email}</span>
+              <div className="resource-card-desc-wrap">
+                <Briefcase size={12} className="resource-card-desc-icon" />
+                <p className="resource-card-desc">{contact.role}</p>
+              </div>
+              <div className="resource-card-desc-wrap" style={{ marginTop: '0.5rem' }}>
+                <Mail size={12} className="resource-card-desc-icon" />
+                <a href={`mailto:${contact.email}`} className="resource-card-desc" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  {contact.email}
                 </a>
               </div>
             </div>
