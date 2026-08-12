@@ -348,7 +348,7 @@ const AdminContacts = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 };
 
