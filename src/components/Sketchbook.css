@@ -1,0 +1,569 @@
+/* ============================================================================
+   Nilgiri House — field-journal sketchbook.
+   Adapted from the ThreeUI "Sketchbook" CSS-3D reference: nested-strip page
+   curls, direct dragging, pointer tilt, toolbar zoom and a movable loupe —
+   recoloured to the site's black / forest-green system.
+   ========================================================================== */
+
+.nlg-skb {
+  --nlg-ink: #e8eee4;
+  --nlg-ink-soft: rgba(232, 238, 228, 0.62);
+  --nlg-ink-faint: rgba(232, 238, 228, 0.36);
+  --nlg-hairline: rgba(232, 238, 228, 0.14);
+  --nlg-leaf: #4ade80;
+  --nlg-leaf-dim: #16a34a;
+  --nlg-pg: 0.5%; /* the printed page reaches the spread's trim, full bleed */
+
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.28)),
+    url('/background.png') center / cover no-repeat;
+  padding: calc(80px + clamp(20px, 5svh, 56px)) 0 clamp(56px, 9svh, 110px);
+  color: var(--nlg-ink);
+  font-family: 'Outfit', sans-serif;
+}
+
+.nlg-skb *,
+.nlg-skb *::before,
+.nlg-skb *::after { box-sizing: border-box; }
+
+.nlg-skb button { font: inherit; }
+
+.nlg-skb ::selection { background: rgba(74, 222, 128, 0.28); color: #fff; }
+
+.nlg-skb button:focus-visible,
+.nlg-skb a:focus-visible {
+  outline: 1px solid rgba(74, 222, 128, 0.65);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------- header ---- */
+.nlg-skb__head {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-bottom: clamp(26px, 4.5svh, 48px);
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.nlg-skb__tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--nlg-leaf);
+}
+
+.nlg-skb__title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: clamp(1.5rem, 4.6vw, 3rem);
+  line-height: 0.95;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.nlg-skb__title::after {
+  content: "";
+  display: block;
+  width: clamp(1.5rem, 3vw, 3rem);
+  height: 2px;
+  background: var(--nlg-leaf-dim);
+  margin: clamp(10px, 1.4vw, 16px) auto 0;
+}
+
+/* soft lamp-glow behind the book so the black pages separate from black desk */
+.nlg-skb__halo {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: min(1150px, 98vw);
+  aspect-ratio: 1.45;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(50% 50% at 50% 50%,
+    rgba(74, 222, 128, 0.09) 0%, rgba(22, 163, 74, 0.045) 45%, transparent 72%);
+  filter: blur(28px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --------------------------------------------------------- the wrap ------ */
+.nlg-skb__hero {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+}
+
+.nlg-skb__wrap {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.nlg-skb__wrap.ready { opacity: 1; }
+
+.nlg-skb__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  touch-action: pan-y;
+}
+
+.nlg-skb__arrow {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--nlg-ink-faint);
+  cursor: pointer;
+  transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 8;
+}
+.nlg-skb__arrow:hover { color: var(--nlg-ink); }
+
+.nlg-skb__3d {
+  position: relative;
+  flex: 1 1;
+  min-width: 0;
+  max-width: 900px;
+  perspective: 1750px;
+  perspective-origin: 50% 46%;
+}
+
+.nlg-skb__tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--zoom, 1));
+  will-change: transform;
+}
+
+.nlg-skb__book {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1760 / 1240;
+  transform-style: preserve-3d;
+  z-index: 1;
+}
+
+/* the book rests on a lit desk: soft shadow pools underneath, easing off
+   while a leaf is in the air */
+.nlg-skb__cast { position: absolute; pointer-events: none; z-index: 0; }
+.nlg-skb__cast.ambient {
+  left: 5%; right: 5%; top: 27%; bottom: 2%;
+  background: radial-gradient(50% 50% at 50% 58%,
+    rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.32) 40%, rgba(0, 0, 0, 0) 74%);
+  filter: blur(26px);
+  opacity: calc(1 - var(--shade, 0) * 0.42);
+}
+.nlg-skb__cast.contact {
+  left: 9%; right: 9%; top: 62%; bottom: 10%;
+  background: radial-gradient(50% 44% at 50% 42%,
+    rgba(0, 0, 0, 0.66) 0%, rgba(0, 0, 0, 0.3) 48%, rgba(0, 0, 0, 0) 78%);
+  filter: blur(11px);
+  opacity: calc(1 - var(--shade, 0) * 0.5);
+}
+.nlg-skb__cast.hair {
+  left: 12%; right: 12%; top: 70%; bottom: 17%;
+  background: radial-gradient(50% 52% at 50% 40%,
+    rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 76%);
+  filter: blur(4px);
+  opacity: calc(1 - var(--shade, 0) * 0.62);
+}
+
+/* full spread / split halves while a page turns */
+.nlg-skb__full { position: absolute; inset: 0; }
+.nlg-skb__full img { width: 100%; height: 100%; object-fit: fill; display: block; }
+.nlg-skb__half {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+.nlg-skb__half.left { left: 0; }
+.nlg-skb__half.right { left: 50%; }
+.nlg-skb__half-img { width: 200%; max-width: none; height: 100%; object-fit: fill; display: block; }
+.nlg-skb__half-img.right { margin-left: -100%; }
+
+/* the shadow the lifting leaf throws onto the page beneath it */
+.nlg-skb .gutter-shade {
+  position: absolute;
+  top: var(--nlg-pg);
+  bottom: var(--nlg-pg);
+  width: 46%;
+  pointer-events: none;
+  opacity: calc(var(--shade, 0) * 0.62);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+}
+.nlg-skb .gutter-shade.left { right: 0; background: linear-gradient(270deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0) 82%); }
+.nlg-skb .gutter-shade.right { left: 0; background: linear-gradient(90deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0) 82%); }
+
+/* ---- the turning leaf: nested strips forming a curved surface ----------- */
+.nlg-skb .curl {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: calc(var(--bw, 0px) * var(--span));
+  transform-style: preserve-3d;
+  z-index: 6;
+}
+.nlg-skb .curl.next { left: 50%; transform-origin: left center; transform: rotateY(calc(-1 * var(--tt, 0deg))); }
+.nlg-skb .curl.prev { right: 50%; transform-origin: right center; transform: rotateY(var(--tt, 0deg)); }
+.nlg-skb .strip {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: calc(var(--bw, 0px) * var(--span) / var(--n));
+  transform-style: preserve-3d;
+}
+.nlg-skb .curl.next .strip { transform-origin: left center; }
+.nlg-skb .curl.prev .strip { transform-origin: right center; }
+.nlg-skb .curl.next > .strip { left: 0; }
+.nlg-skb .curl.prev > .strip { right: 0; left: auto; }
+.nlg-skb .curl.next .strip .strip { left: 100%; transform: rotateY(var(--td, 0deg)); }
+.nlg-skb .curl.prev .strip .strip { right: 100%; transform: rotateY(calc(-1 * var(--td, 0deg))); }
+.nlg-skb .face {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: -1.1px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background-repeat: no-repeat;
+  background-size: var(--bw, 0px) auto;
+}
+.nlg-skb .face.back { transform: rotateY(180deg); }
+.nlg-skb .face .sh,
+.nlg-skb .face .gl {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+}
+.nlg-skb .strip.edge .face .sh,
+.nlg-skb .strip.edge .face .gl {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 5%, #000 95%, transparent 100%), var(--hf);
+  mask-image: linear-gradient(180deg, transparent 0, #000 5%, #000 95%, transparent 100%), var(--hf);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.nlg-skb .curl.next .strip.edge .face.front,
+.nlg-skb .curl.prev .strip.edge .face.back { --hf: linear-gradient(90deg, #000 0 22%, transparent 96%); }
+.nlg-skb .curl.next .strip.edge .face.back,
+.nlg-skb .curl.prev .strip.edge .face.front { --hf: linear-gradient(270deg, #000 0 22%, transparent 96%); }
+.nlg-skb .face .sh {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--nlg-pg);
+  bottom: var(--nlg-pg);
+  pointer-events: none;
+}
+.nlg-skb .curl.next .face.front .sh,
+.nlg-skb .curl.prev .face.back .sh {
+  background: linear-gradient(90deg, rgba(3, 8, 5, var(--a1, 0)), rgba(3, 8, 5, var(--a2, 0)));
+}
+.nlg-skb .curl.next .face.back .sh,
+.nlg-skb .curl.prev .face.front .sh {
+  background: linear-gradient(90deg, rgba(3, 8, 5, var(--a2, 0)), rgba(3, 8, 5, var(--a1, 0)));
+}
+.nlg-skb .face .gl {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--nlg-pg);
+  bottom: var(--nlg-pg);
+  pointer-events: none;
+  background: #eaffee;
+  opacity: calc(var(--shade, 0) * var(--lit, 1) * var(--lit, 1) * 0.16);
+}
+
+/* ---- the loupe: a brass magnifier lying on the page --------------------- */
+.nlg-skb__loupe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--lr, 270px);
+  height: var(--lr, 270px);
+  pointer-events: none;
+  z-index: 80;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: transform;
+}
+.nlg-skb__loupe.on { opacity: 1; }
+.nlg-skb__loupe.held .ring { cursor: grabbing; }
+.nlg-skb__loupe .ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: grab;
+  padding: calc(var(--lr, 270px) * 0.058);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 10px 18px rgba(0, 0, 0, 0.42),
+    0 26px 40px rgba(0, 0, 0, 0.36),
+    0 48px 66px rgba(0, 0, 0, 0.26);
+}
+.nlg-skb__loupe .ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: linear-gradient(146deg,
+    #fdf7e9 0%, #e6d7b4 14%, #b69d70 32%, #7d6740 50%,
+    #cdbb92 66%, #f4ead3 80%, #9b8459 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 3px rgba(46, 32, 12, 0.6);
+  -webkit-mask-image: radial-gradient(circle closest-side at 50% 50%, transparent 0 88.2%, #000 89.8% 100%);
+  mask-image: radial-gradient(circle closest-side at 50% 50%, transparent 0 88.2%, #000 89.8% 100%);
+}
+.nlg-skb__loupe .grip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--lr, 270px) * 0.74);
+  height: calc(var(--lr, 270px) * 0.125);
+  transform-origin: 0 50%;
+  transform: rotate(40deg) translate(calc(var(--lr, 270px) * 0.33), -50%);
+  border-radius: calc(var(--lr, 270px) * 0.06);
+  pointer-events: auto;
+  cursor: grab;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0 13%, rgba(255, 255, 255, 0) 44%, rgba(0, 0, 0, 0.34) 100%),
+    linear-gradient(90deg, #d9bd82 0 14%, #a9884e 14% 20%, #6d4c2b 20% 62%, #523718 62% 92%, #7a563180 92% 100%);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4), 0 18px 26px rgba(0, 0, 0, 0.24);
+}
+.nlg-skb__lens {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(6, 10, 7, 0.72),
+    inset 0 4px 12px rgba(0, 0, 0, 0.42),
+    inset 0 -7px 16px rgba(234, 255, 238, 0.1);
+}
+.nlg-skb__lens .mag { display: none; }
+
+/* a second copy of the book, beside the glass outside the tilt, scaled about
+   whichever page point the glass is over */
+.nlg-skb__zoomwrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+}
+.nlg-skb__zoominner { position: absolute; inset: 0; transform-origin: 0 0; }
+.nlg-skb__lens::before,
+.nlg-skb__lens::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.nlg-skb__lens::before { z-index: 1; }
+.nlg-skb__lens::after { z-index: 2; }
+.nlg-skb__lens::before {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(0, 0, 0, 0) 54%, rgba(0, 0, 0, 0.16) 76%, rgba(0, 0, 0, 0.46) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(130, 162, 196, 0.22),
+    inset 0 0 0 4px rgba(206, 158, 112, 0.13);
+}
+.nlg-skb__lens::after {
+  background:
+    radial-gradient(36% 26% at 29% 19%, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 76%),
+    radial-gradient(24% 16% at 74% 86%, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 80%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.05) 0 18%, rgba(255, 255, 255, 0) 42%);
+}
+
+/* ---- controls ------------------------------------------------------------ */
+.nlg-skb__tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--nlg-hairline);
+  border-radius: 999px;
+  padding: 5px 7px;
+  background: rgba(10, 16, 11, 0.66);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.nlg-skb .tool {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--nlg-ink-soft);
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.nlg-skb .tool:hover { background: rgba(232, 238, 228, 0.09); color: var(--nlg-ink); }
+.nlg-skb .tool[aria-pressed="true"] { background: rgba(74, 222, 128, 0.14); color: var(--nlg-leaf); }
+.nlg-skb .tool:disabled { opacity: 0.32; cursor: default; background: transparent; }
+.nlg-skb .tool svg { width: 15px; height: 15px; display: block; }
+.nlg-skb .tool-sep { width: 1px; height: 17px; background: var(--nlg-hairline); margin: 0 2px; }
+.nlg-skb__zoomread {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--nlg-ink-faint);
+  min-width: 40px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+@media (pointer: coarse) { .nlg-skb__loupe { display: none; } }
+
+/* invisible hit zones over each page half */
+.nlg-skb .sb-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  z-index: 60;
+  -webkit-tap-highlight-color: transparent;
+}
+.nlg-skb .sb-zone:active { cursor: grabbing; }
+.nlg-skb .sb-prev { left: 0; width: 50%; }
+.nlg-skb .sb-next { right: 0; width: 50%; }
+
+/* ---- captions / hint ----------------------------------------------------- */
+.nlg-skb__captions { display: grid; justify-items: center; min-height: 20px; }
+.nlg-skb__captions > * { grid-area: 1 / 1; margin: 0; }
+.nlg-skb__caption {
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--nlg-ink-soft);
+  text-align: center;
+  padding: 0 12px;
+  animation: nlg-cap-in 0.5s ease both;
+}
+.nlg-skb__caption.live { animation: none; }
+@keyframes nlg-cap-in { 0% { opacity: 0; } }
+
+.nlg-skb__hint {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nlg-ink-faint);
+  transition: opacity 0.4s ease;
+  text-align: center;
+}
+.nlg-skb__hint.gone { opacity: 0; }
+
+.nlg-skb__credits {
+  margin: 2px 0 0;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 238, 228, 0.24);
+  text-align: center;
+  padding: 0 16px;
+}
+.nlg-skb__credits a {
+  color: rgba(232, 238, 228, 0.38);
+  text-decoration: underline;
+  text-decoration-color: rgba(232, 238, 228, 0.2);
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.nlg-skb__credits a:hover { color: var(--nlg-leaf); }
+
+/* intro riffle motion blur */
+.nlg-skb__wrap.intro .nlg-skb__full img,
+.nlg-skb__wrap.intro .nlg-skb__half-img { filter: url(#nlg-sb-blur-1); }
+.nlg-skb__wrap.intro.b2 .nlg-skb__full img,
+.nlg-skb__wrap.intro.b2 .nlg-skb__half-img { filter: url(#nlg-sb-blur-2); }
+.nlg-skb__wrap.intro .nlg-skb__caption { animation: none; }
+
+/* no text selection / image dragging anywhere in the hero */
+.nlg-skb__hero,
+.nlg-skb__hero * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.nlg-skb__hero img { -webkit-user-drag: none; }
+
+/* ---- scroll cue ----------------------------------------------------------- */
+.nlg-skb__cue {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0;
+  background: transparent;
+  padding: 10px 14px;
+  color: var(--nlg-ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  animation: nlg-cue-breathe 2.6s ease-in-out infinite;
+  z-index: 3;
+}
+.nlg-skb__cue:hover { animation: none; opacity: 1; }
+@keyframes nlg-cue-breathe { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.7; } }
+
+/* ---- responsive ----------------------------------------------------------- */
+@media (max-width: 640px) {
+  .nlg-skb__tag { font-size: 9px; letter-spacing: 0.3em; }
+  .nlg-skb__wrap { width: 100vw; margin-inline: calc(50% - 50vw); }
+  .nlg-skb__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 70;
+    padding: 12px 6px;
+  }
+  .nlg-skb__arrow.left { left: 2px; }
+  .nlg-skb__arrow.right { right: 2px; }
+  .nlg-skb__3d { max-width: none; }
+  .nlg-skb__hint { font-size: 9.5px; letter-spacing: 0.1em; padding: 0 16px; }
+  .nlg-skb__caption { font-size: 11px; letter-spacing: 0.18em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nlg-skb__cue { animation: none; opacity: 0.5; }
+  .nlg-skb__wrap { transition: none; }
+}
