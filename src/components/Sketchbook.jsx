@@ -53,8 +53,6 @@ export default function Sketchbook() {
   const zInRef = useRef(null);
   const zOutRef = useRef(null);
   const loupeBtnRef = useRef(null);
-  const cueRef = useRef(null);
-
   useEffect(() => {
     const root = rootRef.current;
     const wrap = wrapRef.current;
@@ -729,11 +727,6 @@ export default function Sketchbook() {
     loupeBtn.addEventListener('click', onLoupeToggle);
     zInBtn.addEventListener('click', onZoomIn);
     zOutBtn.addEventListener('click', onZoomOut);
-    qs('.nlg-skb__arrow.left').addEventListener('click', () => step('prev'));
-    qs('.nlg-skb__arrow.right').addEventListener('click', () => step('next'));
-    cueRef.current.addEventListener('click', () => {
-      window.scrollBy({ top: window.innerHeight * 0.92, behavior: 'smooth' });
-    });
     window.addEventListener('resize', onResize);
     const ro = new ResizeObserver(() => {
       layout();
@@ -857,12 +850,6 @@ export default function Sketchbook() {
           </svg>
 
           <div className="nlg-skb__stage" ref={stageRef}>
-            <button className="nlg-skb__arrow left" aria-label="previous page">
-              <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true">
-                <polyline points="11,3 3,22 11,41" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-
             <div className="nlg-skb__3d" ref={box3dRef}>
               <div className="nlg-skb__tilt">
                 <div className="nlg-skb__cast ambient" aria-hidden="true" />
@@ -882,12 +869,6 @@ export default function Sketchbook() {
                 </span>
               </div>
             </div>
-
-            <button className="nlg-skb__arrow right" aria-label="next page">
-              <svg viewBox="0 0 14 44" width="14" height="44" fill="none" aria-hidden="true">
-                <polyline points="3,3 11,22 3,41" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
           </div>
 
           <div className="nlg-skb__captions" ref={capRef} aria-live="polite" />
@@ -917,7 +898,7 @@ export default function Sketchbook() {
             </button>
           </div>
           <p className="nlg-skb__hint" ref={hintRef}>
-            Drag the page to turn · Drag the glass across it
+            Tap on the pages or turn them using your cursor · Drag the glass across it
           </p>
           <p className="nlg-skb__credits">
             Photographs ·{' '}
@@ -927,13 +908,6 @@ export default function Sketchbook() {
             · CC BY / CC BY-SA
           </p>
         </div>
-
-        <button className="nlg-skb__cue" ref={cueRef} aria-label="scroll to next section">
-          <svg viewBox="0 0 44 22" width="34" height="17" fill="none" aria-hidden="true">
-            <polyline points="3,3 22,11 41,3" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-            <polyline points="3,11 22,19 41,11" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
       </div>
     </section>
   );
