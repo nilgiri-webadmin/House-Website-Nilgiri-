@@ -65,7 +65,7 @@ const Footer = () => {
                                 <Settings size={14} />
                                 <span>ADMIN PORTAL</span>
                             </Link>
-                            <p className="webops-credit">Made by Nilgiri WebOps team ❤️</p>
+                            <p className="webops-credit">Made by <Link to="/contributors" className="webops-credit-link">Nilgiri WebOps team</Link> ❤️</p>
                         </div>
                     </div>
                 </div>

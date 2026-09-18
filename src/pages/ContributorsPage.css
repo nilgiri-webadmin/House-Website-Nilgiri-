@@ -1,0 +1,254 @@
+.contributors-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    position: relative;
+    background: linear-gradient(180deg, #060706 0%, #000 100%);
+}
+
+.contributors-page > :not(.contributors-bg) {
+    position: relative;
+    z-index: 1;
+}
+
+.contributors-container {
+    max-width: 1152px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+/* Tenure section separation — mirrors Resources page section headers */
+.contributors-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.contributors-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contributors-section-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(74, 222, 128, 0.08);
+    color: #4ade80;
+    flex-shrink: 0;
+}
+
+.contributors-section-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+    color: #4ade80;
+    margin: 0;
+}
+
+/* Card grid — mirrors Council cards */
+.contributors-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.contributors-member-wrap {
+    width: 220px;
+    text-align: center;
+    position: relative;
+}
+
+.contributors-member-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.contributors-member-card {
+    width: 100%;
+    text-align: center;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.portrait-container {
+    width: 100%;
+    aspect-ratio: 1/1.2;
+    position: relative;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.portrait-bg {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: 1;
+}
+
+.portrait-img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portrait-placeholder {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #222;
+}
+
+.portrait-placeholder-initials {
+    font-family: var(--font-heading);
+    font-size: 2.6rem;
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    color: #2b2b2e;
+    text-transform: uppercase;
+}
+
+.portrait-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, #000 0%, transparent 60%);
+    z-index: 3;
+    opacity: 0.7;
+    transition: opacity 0.6s ease;
+}
+
+.contributors-member-card:hover .portrait-img {
+    transform: scale(1.05);
+}
+
+.contributors-member-card:hover .portrait-overlay {
+    opacity: 0.4;
+}
+
+.member-info h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+    word-break: break-word;
+}
+
+.contributors-member-card:hover .member-info h3 {
+    color: #4ade80;
+}
+
+.member-info .role {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    opacity: 0.8;
+}
+
+.contributors-socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.contributors-socials a {
+    display: inline-flex;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.contributors-socials a:hover {
+    color: #4ade80;
+}
+
+@media (max-width: 1024px) {
+    .contributors-grid {
+        gap: 30px;
+        max-width: 100%;
+    }
+
+    .contributors-member-wrap {
+        width: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contributors-container {
+        padding: 0;
+    }
+
+    .contributors-grid {
+        gap: 20px;
+    }
+
+    .contributors-member-wrap {
+        width: 45%;
+    }
+
+    .contributors-section-title {
+        font-size: 1.8rem;
+    }
+
+    .member-info h3 {
+        font-size: 14px;
+    }
+
+    .member-info .role {
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contributors-grid {
+        gap: 12px;
+    }
+
+    .contributors-member-wrap {
+        width: 42%;
+        max-width: 160px;
+    }
+
+    .portrait-container {
+        margin-bottom: 8px;
+    }
+
+    .member-info h3 {
+        font-size: 12px;
+        margin-bottom: 2px;
+    }
+
+    .member-info .role {
+        font-size: 7px;
+        letter-spacing: 0.2em;
+    }
+}

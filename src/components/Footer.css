@@ -166,6 +166,18 @@
     letter-spacing: 0.05em;
 }
 
+.webops-credit-link {
+    color: #4ade80;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74, 222, 128, 0.35);
+    transition: all 0.3s ease;
+}
+
+.webops-credit-link:hover {
+    color: #86efac;
+    border-bottom-color: #86efac;
+}
+
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 40px;

@@ -176,6 +176,11 @@ export default async function handler(
       return contactsHandler(req, res);
     }
 
+    if (path === '/api/contributors') {
+      const { default: contributorsHandler } = await import('./_handlers/contributors/index');
+      return contributorsHandler(req, res);
+    }
+
     if (path.match(/^\/api\/contacts\/[^/]+$/)) {
       const contactId = path.split('/')[3];
       req.query = { ...req.query, id: contactId };

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, Grid, LogOut, LayoutDashboard, Users, Calendar, MessageSquare, Trophy, UserCircle, BookOpen, Mail } from 'lucide-react';
+import { Bell, Grid, LogOut, LayoutDashboard, Users, Calendar, MessageSquare, Trophy, UserCircle, BookOpen, Mail, Code2 } from 'lucide-react';
 import Sidebar from '../pages/admin/Sidebar';
 
 const ROLE_DISPLAY_NAMES = {
@@ -30,7 +30,7 @@ const AdminLayout = () => {
                 const payload = JSON.parse(atob(token.split('.')[1]));
                 return { name: payload.name || payload.email || 'User', role: payload.role || 'admin' };
             }
-        } catch (e) { /* ignore */ }
+        } catch { /* ignore */ }
         return { name: 'User', role: 'admin' };
     };
 
@@ -60,6 +60,7 @@ const AdminLayout = () => {
         { path: '/admin/complaints', label: 'Complaints', icon: BookOpen },
         { path: '/admin/resources', label: 'Resources', icon: BookOpen },
         { path: '/admin/contacts', label: 'Contacts', icon: Mail },
+        { path: '/admin/contributors', label: 'Contributors', icon: Code2 },
     ];
 
     return (

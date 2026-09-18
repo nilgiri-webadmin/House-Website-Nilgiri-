@@ -1,0 +1,25 @@
+contributors:
+  - id: aditya-raj
+    name: Aditya Raj
+    tenure: 2026-27
+    image: >-
+      https://nvzrcjadhflrsoieqxyu.supabase.co/storage/v1/object/public/nilgiri_media/Nilgiri%20Website/Contributors/1789717827896-smk4gre82.webp
+    bio: >
+      I'm Aditya Raj, a self-taught full-stack engineer and open-source maintainer
+      pursuing a B.S. in Data Science and Applications at IIT Madras. I've
+      published four Python packages on PyPI, including the GUN101 cryptographic
+      suite (AES-256-GCM, RSA-4096, TPM 2.0), which has attracted external
+      contributors and been reviewed by senior cryptographers on Security Stack
+      Exchange. I build production systems across AI, security, and web
+      engineering — from a disaster-response copilot with RAG-grounded Q&A to a
+      codebase intelligence platform with 3D architecture mapping. I've ranked
+      310 of 46,000+ in Google's PromptWar Hackathon and a published author with various poems published in various anthologies.
+    socials:
+      - platform: github
+        url: https://github.com/dialga-cmd
+      - platform: linkedin
+        url: https://www.linkedin.com/in/aditya-raj-407a0740a/
+      - platform: portfolio
+        url: https://worldaditya.dev
+      - platform: instagram
+        url: https://www.instagram.com/adi.tya.001

@@ -11,7 +11,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const CONTACTS_FILE_PATH = path.join(__dirname, '../../public/important-contacts.json');
+const CONTACTS_FILE_PATH = path.join(import.meta.dirname, '../../public/important-contacts.json');
 
 const readContactsFromFile = async () => {
   try {
